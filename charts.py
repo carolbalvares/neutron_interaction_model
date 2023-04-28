@@ -1,5 +1,5 @@
 import matplotlib.pyplot as plt
-from discretizacao1Dalt import * 
+from main import * 
 
 #ploting graph using discretizacao1Dalt
 #1 way
