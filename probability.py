@@ -1,9 +1,7 @@
-# import seaborn as sns
-# import pandas as pd
 import numpy as np
 
 
-## probability using all indices
+## probability using all index
 #setting vars
 probability = [0.7, 0.1, 0.9, 0.1, 0.6, 0.7, 0.6, 1, 0.45, 0.9]
 free_neutrons = [100000]
@@ -11,9 +9,10 @@ short_prob = []
 #looping
 for e in (range(10)):
     free_neutrons.append(free_neutrons[e] * probability[e])
+free_neutrons.remove(100000)
 #converting floar into int
-int_free_neutrons_all_indices = ['%i' % elem for elem in free_neutrons]
-#print("neutrons amount for each interaction: ", int_free_neutrons_all_indices)
+free_neutrons_all = ['%i' % elem for elem in free_neutrons]
+#print("neutrons amount for each interaction: ", free_neutrons_all_index)
 
 
 #choosing input for second and third probability
@@ -22,38 +21,39 @@ discr_input = int(input('Choose a start from 0 to 9:   '))
 
 ##second probability: from specific discretization for the discr_input :10
 #reseting vars
-probability = [0.7, 0.1, 0.9, 0.1, 0.6, 0.7, 0.6, 1, 0.45, 0.9]
+r_probability = [0.7, 0.1, 0.9, 0.1, 0.6, 0.7, 0.6, 1, 0.45, 0.9]
 free_neutrons = [100000]
-indices = []
-int_free_neutrons = []
+index = []
 #setting vars values
-del probability[0:discr_input]
-indices = range(10-discr_input)
+del r_probability[0:discr_input]
+index = range(10-discr_input)
 #looping
-for e in indices:
-    free_neutrons.append(free_neutrons[e] * probability[e])
+for e in index:
+    free_neutrons.append(free_neutrons[e] * r_probability[e])
+free_neutrons.remove(100000)
 #converting floar into int
-int_free_neutrons_right_indices = ['%i' % elem for elem in free_neutrons]
-#print("neutrons amount for each interaction: ", int_free_neutrons_right_indices)
+free_neutrons_right = ['%i' % elem for elem in free_neutrons]
+#print("neutrons amount for each interaction: ", free_neutrons_right)
 
 
 ##third probability: from specific discretization for the 0 : discr_input
-probability = np.array([0.7, 0.1, 0.9, 0.1, 0.6, 0.7, 0.6, 1, 0.45, 0.9])
+l_probability = np.array([0.7, 0.1, 0.9, 0.1, 0.6, 0.7, 0.6, 1, 0.45, 0.9])
 free_neutrons = [100000]
-indices = []
-int_free_neutrons = []
+index = []
 #setting vars values
-indices = range(discr_input)
-probability = np.take(probability, indices)
+index = range(discr_input)
+l_probability = np.take(l_probability, index)
 #reversing probabilty array
-reversed_prob = probability[::-1]
+l_reversed_prob = l_probability[::-1]
+#print(l_reversed_prob)
 #looping
-for e in indices:
-    free_neutrons.append(free_neutrons[e] * reversed_prob[e])
+for e in index:
+    free_neutrons.append(free_neutrons[e] * l_reversed_prob[e])
+free_neutrons.remove(100000)
 #converting floar into int
-int_free_neutrons_left_indices = ['%i' % elem for elem in free_neutrons]
-#print("neutrons amount for each interaction: ", int_free_neutrons_left_indices)
+free_neutrons_left = ['%i' % elem for elem in free_neutrons]
+#print("neutrons amount for each interaction: ", free_neutrons_left)
 
 
-# settingg data frame
-# prob_df = pd.DataFrame({"probability": probability})
+
+    
