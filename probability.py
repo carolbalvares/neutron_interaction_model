@@ -12,8 +12,8 @@ short_prob = []
 for e in (range(10)):
     free_neutrons.append(free_neutrons[e] * probability[e])
 #converting floar into int
-int_free_neutrons = ['%i' % elem for elem in free_neutrons]
-#print("neutrons amount for each interaction: ", int_free_neutrons)
+int_free_neutrons_all_indices = ['%i' % elem for elem in free_neutrons]
+#print("neutrons amount for each interaction: ", int_free_neutrons_all_indices)
 
 
 #choosing input for second and third probability
@@ -33,8 +33,8 @@ indices = range(10-discr_input)
 for e in indices:
     free_neutrons.append(free_neutrons[e] * probability[e])
 #converting floar into int
-int_free_neutrons = ['%i' % elem for elem in free_neutrons]
-#print("neutrons amount for each interaction: ", int_free_neutrons)
+int_free_neutrons_right_indices = ['%i' % elem for elem in free_neutrons]
+#print("neutrons amount for each interaction: ", int_free_neutrons_right_indices)
 
 
 ##third probability: from specific discretization for the 0 : discr_input
@@ -51,8 +51,8 @@ reversed_prob = probability[::-1]
 for e in indices:
     free_neutrons.append(free_neutrons[e] * reversed_prob[e])
 #converting floar into int
-int_free_neutrons = ['%i' % elem for elem in free_neutrons]
-#print("neutrons amount for each interaction: ", int_free_neutrons)
+int_free_neutrons_left_indices = ['%i' % elem for elem in free_neutrons]
+#print("neutrons amount for each interaction: ", int_free_neutrons_left_indices)
 
 
 # settingg data frame
