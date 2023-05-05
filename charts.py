@@ -1,12 +1,12 @@
-from main import * 
-from probability import *
+from dataframe import *
 import seaborn as sns
+import matplotlib.pyplot as plt
 
-#setting theme
-sns.set_theme(style="darkgrid")
+sns.jointplot(data=prob_all_df, x='all_n', y='probability', palette='Set2',  kind='scatter')
+#plt.show()
 
-tips = sns.load_dataset("tips")
-g = sns.jointplot(x="total_bill", y="tip", data=tips,
-                  kind="reg", truncate=False,
-                  xlim=(0, 60), ylim=(0, 12),
-                  color="m", height=7)
+sns.jointplot(data=prob_l_df, x='l_n', y='l_probability', palette='Set3',  kind='scatter')
+#plt.show()
+
+sns.jointplot(data=prob_r_df, x='r_n', y='r_probability', palette='Set1',  kind='scatter')
+#plt.show()

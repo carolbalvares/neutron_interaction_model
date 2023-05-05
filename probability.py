@@ -53,7 +53,7 @@ for e in l_index:
 free_neutrons.remove(100000)
 #converting floar into int
 free_neutrons_left = ['%i' % elem for elem in free_neutrons]
-print("neutrons amount for each interaction: ", free_neutrons_left)
+#print("neutrons amount for each interaction: ", free_neutrons_left)
 
 
 

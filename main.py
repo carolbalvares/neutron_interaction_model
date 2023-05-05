@@ -13,7 +13,7 @@ samples_df = pd.DataFrame({"values": samples})
 
 # This prints the first 5 elements of dataframe, so you know how it looks like
 samples_df.head()
-print(samples_df)
+#print(samples_df)
 ## Selecting Rows: use .loc in dataframe. It always returns a new df, with the selected rows
 
 # Specific Index 
