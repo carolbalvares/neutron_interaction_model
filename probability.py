@@ -12,7 +12,7 @@ for e in (range(10)):
 free_neutrons.remove(100000)
 #converting floar into int
 free_neutrons_all = ['%i' % elem for elem in free_neutrons]
-#print("neutrons amount for each interaction: ", free_neutrons_all_index)
+print("neutrons amount for each interaction: ", free_neutrons_all)
 
 
 #choosing input for second and third probability
