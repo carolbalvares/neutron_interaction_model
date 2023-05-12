@@ -1,5 +1,6 @@
 from probability import probability, free_neutrons_all, r_probability, free_neutrons_right, l_reversed_prob, free_neutrons_left
 import pandas as pd
+from montecarlotest import *
 
 # setting data frame
 prob_all_df = pd.DataFrame({
@@ -31,3 +32,15 @@ oned_prob_df = pd.DataFrame({
 prob_all_df.head()
 oned_prob_df_T = oned_prob_df.T
 # print(oned_prob_df_T)
+
+
+#creating one dataframe that counts duplicate commission amount
+frequency = results_df['Commission_Amount'].value_counts()
+duplicate_count_df = results_df.pivot_table(index = ['Commission_Amount'], aggfunc='size')
+df.head()
+
+monte_carlo_test_df = pd.DataFrame({
+    "Frequency": frequency,
+    "Comission_Amount":duplicate_count_df,
+})
+monte_carlo_test_df.head()

@@ -64,7 +64,7 @@ pct_df = pd.DataFrame(
 
 n_btw_numbers = []
 n_btw_numbers = pct_df.loc[pct_df['pct_between_to_target'] == True]
-print(n_btw_numbers)
+# print(n_btw_numbers)
 
 
 # Define a list to keep all the results from each simulation that we want to analyze
@@ -92,3 +92,14 @@ for i in range(num_simulations):
     all_stats.append([df['Sales'].sum().round(0),
                       df['Commission_Amount'].sum().round(0),
                       df['Sales_Target'].sum().round(0)])
+    
+results_df = pd.DataFrame.from_records(all_stats, columns=['Sales',
+                                                           'Commission_Amount',
+                                                           'Sales_Target',
+                                                           ])
+
+results_df.describe().style.format('{:,}')
+results_df.head()
+
+
+

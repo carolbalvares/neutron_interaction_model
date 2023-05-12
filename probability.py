@@ -12,7 +12,7 @@ for e in (range(10)):
 free_neutrons.remove(100000)
 #converting floar into int
 free_neutrons_all = ['%i' % elem for elem in free_neutrons]
-print("neutrons amount for each interaction: ", free_neutrons_all)
+# print("neutrons amount for each interaction: ", free_neutrons_all)
 
 
 #choosing input for second and third probability
@@ -46,7 +46,7 @@ l_index = range(discr_input)
 l_probability = np.take(l_probability, l_index)
 #reversing probabilty array
 l_reversed_prob = l_probability[::-1]
-print(l_index)
+# print(l_index)
 #looping
 for e in l_index:
     free_neutrons.append(free_neutrons[e] * l_reversed_prob[e])
