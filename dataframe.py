@@ -35,12 +35,9 @@ oned_prob_df_T = oned_prob_df.T
 
 
 #creating one dataframe that counts duplicate commission amount
-frequency = results_df['Commission_Amount'].value_counts()
-duplicate_count_df = results_df.pivot_table(index = ['Commission_Amount'], aggfunc='size')
+duplicate_count_amount_df = results_df.pivot_table(index = ['Commission_Amount'], aggfunc='size')
 df.head()
 
-monte_carlo_test_df = pd.DataFrame({
-    "Frequency": frequency,
-    "Comission_Amount":duplicate_count_df,
-})
-monte_carlo_test_df.head()
+print(duplicate_count_amount_df)
+
+duplicate_count_amount_df.head()

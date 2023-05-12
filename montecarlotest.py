@@ -4,8 +4,8 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 
 #a mean of 100% and standard deviation of 10%
-avg = 1
-std_dev = .1
+avg = 1.8
+std_dev = .6
 num_reps = 500
 num_simulations = 1000
 
