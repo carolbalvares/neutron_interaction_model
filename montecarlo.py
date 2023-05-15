@@ -6,8 +6,8 @@ import matplotlib.pyplot as plt
 # setting avg, std_dev, num_reps, num_simulations
 avg = 1
 std_dev = 0.3
-num_reps = 500000
-num_simulations = 10000000
+num_reps = 5000
+num_simulations = 10000
 
 # use numpy to generate a list of percentages that will replicate our historical normal distribution
 pct_to_cross = np.random.normal(avg, std_dev, num_reps).round(4)
@@ -19,14 +19,14 @@ for i in range(len(pct_to_cross)):
     if pct_to_cross[i] >= 0.6:
         pct_to_cross_prob.append(pct_to_cross[i])
         count += 1
-
+div = np.divide(1,len(pct_to_cross_prob))
+pct_prob = np.arange(0.0,1.0,div)
 neutron_prob_cross_df = pd.DataFrame({
-    "Cross_prob": pct_to_cross_prob
+    "Cross_prob": pct_to_cross_prob,
+    "Pct_prob": pct_prob
 })
 
-df2 = neutron_prob_cross_df.sort_values('Cross_prob')
-l=sns.distplot(df2)
-plt.show()
+
 
 
 

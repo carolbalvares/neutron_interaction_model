@@ -21,21 +21,14 @@ from montecarlo import *
 # sns.heatmap(oned_prob_df_T, annot=True, fmt="g", cmap='viridis')
 # # plt.show()
 
-#create normal distribution curve with histrogram
-# l=sns.distplot(duplicate_count_amount_df)
-# l.set_xlabel('Comission_Amount') 
-# l.set_ylabel('Frequency')
-# plt.show()
-
-# #checking mean 
-# df2 = duplicate_count_amount_df["Comission_Amount"].mean()
-# print(df2)
-
 
 #firt chart montecarlo
-l=sns.distplot(neutrons_df)
-l.set_xlabel('Comission_Amount') 
-l.set_ylabel('Frequency')
+# df = neutron_prob_cross_df.sort_values('Cross_prob')
+# l=sns.distplot(df)
+# plt.show()
+
+sns.jointplot(data=neutron_prob_cross_df, x='Cross_prob', y='Pct_prob',
+              palette='Set1',  kind='scatter')
 plt.show()
 
 
