@@ -6,8 +6,8 @@ import matplotlib.pyplot as plt
 # setting avg, std_dev, num_reps, num_simulations
 avg = 1
 std_dev = 0.3
-num_reps = 50
-num_simulations = 100
+num_reps = 500000
+num_simulations = 10000000
 
 # use numpy to generate a list of percentages that will replicate our historical normal distribution
 pct_to_cross = np.random.normal(avg, std_dev, num_reps).round(4)
