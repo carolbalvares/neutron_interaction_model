@@ -1,6 +1,5 @@
 from probability import probability, free_neutrons_all, r_probability, free_neutrons_right, l_reversed_prob, free_neutrons_left
 import pandas as pd
-from montecarlotest import *
 
 # setting data frame
 prob_all_df = pd.DataFrame({

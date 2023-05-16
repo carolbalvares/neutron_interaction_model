@@ -2,8 +2,7 @@ from dataframe import *
 import seaborn as sns
 import matplotlib.pyplot as plt
 import pandas as pd
-from montecarlotest import *
-from montecarlo import *
+from montecarlo_1d_1way import *
 # sns.jointplot(data=prob_all_df, x='all_n', y='probability',
 #               palette='Set2',  kind='scatter')
 # # plt.show()
