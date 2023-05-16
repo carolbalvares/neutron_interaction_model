@@ -22,13 +22,13 @@ from montecarlo import *
 # # plt.show()
 
 
-#firt chart montecarlo
+# firt chart montecarlo
 # df = neutron_prob_cross_df.sort_values('Cross_prob')
 # l=sns.distplot(df)
 # plt.show()
 
-sns.jointplot(data=neutron_prob_cross_df, x='Cross_prob', y='Pct_prob',
-              palette='Set1',  kind='scatter')
-plt.show()
+# sns.jointplot(data=neutron_prob_cross_df, x='Cross_prob', y='Pct_prob',
+#               palette='Set1',  kind='scatter')
+# plt.show()
 
 
