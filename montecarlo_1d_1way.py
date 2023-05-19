@@ -1,5 +1,4 @@
 import numpy as np
-import pandas as pd
 
 # creating class
 class One_d_discr: 
@@ -8,10 +7,10 @@ class One_d_discr:
     def n_neutrons_cross(cls, num_samples):
         cls.num_samples = num_samples
         samp_cross_array = []
-        array_num_samples = []
+        array_num_samples = [num_samples]
         r_prob = np.random.rand(1).round(3)
         #print first prob
-        print(r_prob)
+        # print(r_prob)
         r_samples_array = np.random.rand(num_samples).round(3)
         #print first samples
         #print(r_samples_array) 
@@ -36,7 +35,9 @@ class One_d_discr:
 #calling class
 initial_num_samples = int(input('Choose a initial number of samples:   '))
 d_1d_1way = One_d_discr(initial_num_samples)
-print(d_1d_1way.n_neutrons_cross(initial_num_samples))
+array_of_crossed = []
+array_of_crossed = d_1d_1way.n_neutrons_cross(initial_num_samples)
+# print(array_of_crossed)
 
 
 

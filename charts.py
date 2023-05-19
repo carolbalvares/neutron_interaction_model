@@ -6,8 +6,8 @@ from montecarlo_1d_1way import *
 
 # heatmap
 fig, ax = plt.subplots(figsize=(10, 2.5))
-sns.heatmap(oned_prob_df_T, annot=True, fmt="g", cmap='viridis')
-# plt.show()
+sns.heatmap(n_cross_df_T, annot=True, fmt="g", cmap='viridis')
+plt.show()
 
 # sns.jointplot(data=prob_all_df, x='all_n', y='probability',
 #               palette='Set2',  kind='scatter')
