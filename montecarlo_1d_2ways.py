@@ -5,8 +5,8 @@ num_samples = 10
 cross_prob_left = 0.6
 cross_prob_right = 0.7
 
-# if bigger than 0.7 probability of crossing
-same_cross_prob_prob_right = 0.45
+# if bigger than 0.7 probability of crossing to the right discretization
+s_cross_prob_right = 0.45
 
 
 # resseting initial parameters
@@ -28,7 +28,7 @@ for i in range(num_samples):
 for e in range(len(two_ways_samples)):
     random_prob = np.random.rand(1).round(3)
     # print("random prob:         ",random_prob)
-    if random_prob >= same_cross_prob_prob_right:
+    if random_prob >= s_cross_prob_right:
         samp_cross_left_array.append(two_ways_samples[e])
     else:
         samp_cross_right_array.append(two_ways_samples[e])
