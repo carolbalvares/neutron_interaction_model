@@ -3,6 +3,12 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 import pandas as pd
 from montecarlo_1d_1way import *
+
+# heatmap
+fig, ax = plt.subplots(figsize=(10, 2.5))
+sns.heatmap(oned_prob_df_T, annot=True, fmt="g", cmap='viridis')
+# plt.show()
+
 # sns.jointplot(data=prob_all_df, x='all_n', y='probability',
 #               palette='Set2',  kind='scatter')
 # # plt.show()
@@ -14,12 +20,6 @@ from montecarlo_1d_1way import *
 # sns.jointplot(data=prob_r_df, x='r_n', y='r_probability',
 #               palette='Set1',  kind='scatter')
 # # plt.show()
-
-# # heatmap
-# fig, ax = plt.subplots(figsize=(10, 2.5))
-# sns.heatmap(oned_prob_df_T, annot=True, fmt="g", cmap='viridis')
-# # plt.show()
-
 
 # firt chart montecarlo
 # df = neutron_prob_cross_df.sort_values('Cross_prob')
