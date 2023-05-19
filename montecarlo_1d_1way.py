@@ -10,7 +10,11 @@ class One_d_discr:
         samp_cross_array = []
         array_num_samples = []
         r_prob = np.random.rand(1).round(3)
+        #print first prob
+        print(r_prob)
         r_samples_array = np.random.rand(num_samples).round(3)
+        #print first samples
+        #print(r_samples_array) 
         while num_samples !=  0:
             for i in range(num_samples):
                 if r_samples_array[i] >= r_prob:
@@ -19,7 +23,11 @@ class One_d_discr:
             array_num_samples.append(num_samples)
             if num_samples != 0:
                 r_prob = np.random.rand(1).round(3)
+                #print new probability
+                #print('new prob:   ', r_prob)
                 r_samples_array = np.random.rand(num_samples).round(3)
+                #print new array of samples
+                #print('new array of samples:   ', r_prob)
             else:
                 break  
         return array_num_samples
