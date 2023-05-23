@@ -9,6 +9,7 @@ class One_d_discr:
         left_samp_cross_array = np.array([])
         array_num_samples_left = np.array([])
         array_num_samples_right = np.array([])
+        aux = 0
         r_samples_array = np.random.rand(num_samples).round(3)
         print("random samples array:          ", r_samples_array)
         r_prob = np.random.rand(2).round(3)
@@ -16,9 +17,11 @@ class One_d_discr:
         left_prob = r_prob[1]
         print("right prob:          ", right_prob)
         print("left prob:          ", left_prob)
-
+        print(range(num_samples))
+        print(num_samples)
+        print(range(len(r_samples_array)))
         while num_samples != 0:
-            for i in range(num_samples):
+            for i in range(len(r_samples_array)):
                 if len(array_num_samples_left) != 0 or len(array_num_samples_right) != 0:
                     if r_samples_array[i] >= right_prob and r_samples_array[i] < left_prob:
                         right_samp_cross_array = np.append(right_samp_cross_array, r_samples_array[i])
@@ -26,7 +29,9 @@ class One_d_discr:
                         array_num_samples_right = np.append(array_num_samples_right, auxx)
                         array_num_samples_left = np.append(array_num_samples_left, array_num_samples_left[-1])
                         num_samples = num_samples - 1
-                        i = i+1
+                        aux = aux + 1
+                        print("aux:     ", aux)
+                        print("i:      ", i)
                         print("crossed right side:      ", r_samples_array[i])
                     elif r_samples_array[i] >= left_prob and r_samples_array[i] < right_prob:
                         left_samp_cross_array = np.append(left_samp_cross_array, r_samples_array[i])
@@ -34,33 +39,47 @@ class One_d_discr:
                         array_num_samples_left = np.append(array_num_samples_left, auxx)
                         array_num_samples_right = np.append(array_num_samples_right, array_num_samples_right[-1])
                         num_samples = num_samples - 1
+                        aux = aux + 1
+                        print("aux:     ", aux)
+                        print("i:      ", i)
                         print("crossed left side:      ", r_samples_array[i])
-                        i=i+1
                     else:
                         array_num_samples_right = np.append(array_num_samples_right, array_num_samples_right[-1])
                         array_num_samples_left = np.append(array_num_samples_left, array_num_samples_left[-1])
                         print("sample to be recreated:        ", r_samples_array[i])
                         r_samples_array[i] = np.random.rand(1).round(3)
                         print("new sample for _samples_array[i] < left_prob and r_samples_array[i] < right_prob:     ", r_samples_array[i])
+                        print("i:      ", i)
+                        aux = aux + 1
+                        print("aux:     ", aux)
                 else:
                     if r_samples_array[i] > right_prob and r_samples_array[i] < left_prob:
                         right_samp_cross_array = np.append(right_samp_cross_array, r_samples_array[i])
                         array_num_samples_right = np.append(array_num_samples_right, 1)
                         array_num_samples_left = np.append(array_num_samples_left, 0)
                         num_samples = num_samples - 1
+                        print("i:      ", i)
+                        aux = aux + 1
+                        print("aux:     ", aux)
                         print("crossed right side:      ", r_samples_array[i])
                     elif r_samples_array[i] > left_prob and r_samples_array[i] < right_prob:
                         left_samp_cross_array = np.append(left_samp_cross_array, r_samples_array[i])
                         array_num_samples_left = np.append(array_num_samples_left, 1)
                         array_num_samples_right = np.append(array_num_samples_right, 0)
                         num_samples = num_samples - 1
+                        print("i:      ", i)
                         print("crossed left side:      ", r_samples_array[i])
+                        aux = aux + 1
+                        print("aux:     ", aux)
                     else:
                         array_num_samples_right = np.append(array_num_samples_right, 0)
                         array_num_samples_left = np.append(array_num_samples_left, 0)
                         print("sample to be recreated:        ", r_samples_array[i])
                         r_samples_array[i] = np.random.rand(1).round(3)
                         print("new sample for _samples_array[i] > left_prob and r_samples_array[i] > right_prob:     ", r_samples_array[i])
+                        print("i:      ", i)
+                        aux = aux + 1
+                        print("aux:     ", aux)
 
         print("array with left side number of samples:          ", array_num_samples_left)
         print("array with right side number of samples:          ", array_num_samples_right)
