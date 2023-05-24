@@ -119,5 +119,11 @@ class One_d_discr:
 
 initial_num_samples = int(input('Choose an initial number of samples:   '))
 d_1d_1way = One_d_discr(initial_num_samples)
-array_of_crossed = d_1d_1way.n_neutrons_cross(initial_num_samples)
-print("return of class:     ", array_of_crossed)
+# array_of_crossed = d_1d_1way.n_neutrons_cross(initial_num_samples)
+# print("return of class:     ", array_of_crossed)
+
+qt_right, qt_left = d_1d_1way.n_neutrons_cross(initial_num_samples)
+total_int = range(len(qt_left))
+aux = np.array(total_int)
+total_int = aux + 1
+print("total interections:   ", total_int)
