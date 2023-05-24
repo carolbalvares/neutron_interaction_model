@@ -2,12 +2,14 @@ from dataframe import *
 import seaborn as sns
 import matplotlib.pyplot as plt
 import pandas as pd
-from montecarlo_1d_1way import *
+# from montecarlo_1d_2ways import qt_left, qt_right
 
-# heatmap
+# heatmap 1d 1 way
 fig, ax = plt.subplots(figsize=(10, 2.5))
-sns.heatmap(n_cross_df_T, annot=True, fmt="g", cmap='viridis')
+sns.heatmap(df_sel_transp, fmt="g", cmap='coolwarm')
 plt.show()
+
+
 
 # sns.jointplot(data=prob_all_df, x='all_n', y='probability',
 #               palette='Set2',  kind='scatter')
