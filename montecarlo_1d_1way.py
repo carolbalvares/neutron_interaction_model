@@ -14,7 +14,8 @@ class One_d_discr_one:
         cross_amount = np.array([])
         cant_cross_array = np.array([])
         cross_array = np.array([])
-        cross_matrix = np.matrix([])
+        cross_matrix = np.zeros((1, num_samples))
+        print(cross_matrix)
         r_samples_array = np.random.rand(num_samples).round(3)
         cross_prob_array = np.random.rand(discretizations).round(3)
         print("samples array:   ", r_samples_array)
@@ -101,22 +102,21 @@ class One_d_discr_one:
             num_samples = len(cross_array)
             discretizations = discretizations - 1
         
-        #incrementing matrix soon 
-            # cross_matrix = np.vstack([cross_matrix, cross_array])
-            # print("matrix: ",cross_matrix)  # Decrementa a variável auxiliar
-        return cross_amount, cant_cross_amount
+            #incrementing matrix soon 
+            cross_matrix = np.r_[cross_matrix, [cross_amount]]
+            print("matrix: ",cross_matrix)  # Decrementa a variável auxiliar
+            cant_cross_amount = np.array([])
+            cross_amount = np.array([])
+            cant_cross_array = np.array([])
+            cross_array = np.array([])
+        return cross_matrix
 
 
 # calling class
 initial_num_samples = int(input('Choose a initial number of samples:   '))
 initial_num_discr = int(input('Choose a initial number of discretization:   '))
 aux = One_d_discr_one(initial_num_samples, initial_num_discr)
-can_cross, cant_cross = aux.n_neutrons_cross(
+cross_matrix = aux.n_neutrons_cross(
     initial_num_samples, initial_num_discr)
-print("cant cross:   ", cant_cross)
-print("can cross:    ", can_cross)
+print("matrix:       ", cross_matrix)
 
-# total_int = range(len(cant_cross))
-# aux = np.array(total_int)
-# total_int = aux + 1
-# print("total interections:   ", total_int)
