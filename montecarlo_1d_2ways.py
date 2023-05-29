@@ -6,15 +6,18 @@ class One_d_discr:
         self.num_samples = num_samples
 
     def n_neutrons_cross(self, num_samples):
-        right_samp_cross_array = np.array([])
-        left_samp_cross_array = np.array([])
-        array_num_samples_left = np.array([])
-        array_num_samples_right = np.array([])
+        right_samp = np.array([])
+        left_samp = np.array([])
+        dont_cross_samp = np.array([])
+        amount_samples_left = np.array([])
+        amount_samples_right = np.array([])
+        amount_samples_dont_cross = np.array([])
         aux = 0
-        r_samples_array = np.random.rand(num_samples).round(3)
+        auxx = np.array([])
+        r_samples = np.random.rand(num_samples).round(3)
         updated_samples = np.array([])
-        updated_samples = r_samples_array
-        print("random samples array:          ", r_samples_array)
+        updated_samples = r_samples
+        print("random samples array:          ", r_samples)
         r_prob = np.random.rand(2).round(3)
         right_prob = r_prob[0]
         left_prob = r_prob[1]
@@ -22,99 +25,138 @@ class One_d_discr:
         print("left prob:          ", left_prob)
         while num_samples != 0:
             if num_samples == 0:
-                    break
+                break
             for i in range(len(updated_samples)-1, -1, -1):
-                if len(array_num_samples_left) != 0 or len(array_num_samples_right) != 0:
-                    if updated_samples[i] >= right_prob and updated_samples[i] < left_prob:
-                        right_samp_cross_array = np.append(
-                            right_samp_cross_array, updated_samples[i])
-                        aux = array_num_samples_right[-1] + 1
-                        array_num_samples_right = np.append(
-                            array_num_samples_right, aux)
-                        array_num_samples_left = np.append(
-                            array_num_samples_left, array_num_samples_left[-1])
-                        num_samples = num_samples- 1
-                        print("crossed right side:      ", updated_samples[i])
-                        updated_samples = np.delete(updated_samples, i, axis=0)
-                        print("updated_sample:      ", updated_samples)
-                        break
-                    elif updated_samples[i] >= left_prob and updated_samples[i] < right_prob:
-                        left_samp_cross_array = np.append(
-                            left_samp_cross_array, updated_samples[i])
-                        aux = array_num_samples_left[-1]+1
-                        array_num_samples_left = np.append(
-                            array_num_samples_left, aux)
-                        array_num_samples_right = np.append(
-                            array_num_samples_right, array_num_samples_right[-1])
-                        num_samples = num_samples - 1
-                        print("crossed left side:      ", updated_samples[i])
-                        updated_samples = np.delete(updated_samples, i, axis=0)
-                        print("updated_sample:      ", updated_samples)
-                        break
-                    else:
-                        array_num_samples_right = np.append(
-                            array_num_samples_right, array_num_samples_right[-1])
-                        array_num_samples_left = np.append(
-                            array_num_samples_left, array_num_samples_left[-1])
-                        print("sample to be recreated:        ",
-                              updated_samples[i])
-                        updated_samples[i] = np.random.rand(1).round(3)
-                        print(
-                            "new sample for _samples_array[i] < left_prob and updated_samples[i] < right_prob:     ", updated_samples[i])
-                        print("updated_sample:      ", updated_samples)
-
-                else:
+                if len(amount_samples_left) != 0 or len(amount_samples_right) != 0:
+                    # 2nd case
                     if updated_samples[i] > right_prob and updated_samples[i] < left_prob:
-                        right_samp_cross_array = np.append(
-                            right_samp_cross_array, updated_samples[i])
-                        array_num_samples_right = np.append(
-                            array_num_samples_right, 1)
-                        array_num_samples_left = np.append(
-                            array_num_samples_left, 0)
+                        right_samp = np.append(
+                            right_samp, updated_samples[i])
+                        aux = amount_samples_right[-1] + 1
+                        amount_samples_right = np.append(
+                            amount_samples_right, aux)
+                        amount_samples_left = np.append(
+                            amount_samples_left, amount_samples_left[-1])
+                        amount_samples_dont_cross = np.append(
+                            amount_samples_dont_cross, amount_samples_dont_cross[-1])
                         num_samples = num_samples - 1
-                        print("i:      ", i)
                         print("crossed right side:      ", updated_samples[i])
                         updated_samples = np.delete(updated_samples, i, axis=0)
                         print("updated_sample:      ", updated_samples)
                         break
+                    # 1st case
                     elif updated_samples[i] > left_prob and updated_samples[i] < right_prob:
-                        left_samp_cross_array = np.append(
-                            left_samp_cross_array, updated_samples[i])
-                        array_num_samples_left = np.append(
-                            array_num_samples_left, 1)
-                        array_num_samples_right = np.append(
-                            array_num_samples_right, 0)
+                        left_samp = np.append(
+                            left_samp, updated_samples[i])
+                        aux = amount_samples_left[-1]+1
+                        amount_samples_left = np.append(
+                            amount_samples_left, aux)
+                        amount_samples_right = np.append(
+                            amount_samples_right, amount_samples_right[-1])
+                        amount_samples_dont_cross = np.append(
+                            amount_samples_dont_cross, amount_samples_dont_cross[-1])
                         num_samples = num_samples - 1
-                        print("i:      ", i)
                         print("crossed left side:      ", updated_samples[i])
                         updated_samples = np.delete(updated_samples, i, axis=0)
                         print("updated_sample:      ", updated_samples)
                         break
-                    else:
-                        array_num_samples_right = np.append(
-                            array_num_samples_right, 0)
-                        array_num_samples_left = np.append(
-                            array_num_samples_left, 0)
-                        print("sample to be recreated:        ",
-                              updated_samples[i])
-                        updated_samples[i] = np.random.rand(1).round(3)
-                        print(
-                            "new sample for _samples_array[i] > left_prob and updated_samples[i] > right_prob:     ", updated_samples[i])
+                    # 4th case
+                    elif updated_samples[i] < left_prob and updated_samples[i] < right_prob:
+                        dont_cross_samp = np.append(
+                            dont_cross_samp, updated_samples[i])
+                        aux = amount_samples_dont_cross[-1]+1
+                        amount_samples_dont_cross = np.append(
+                            amount_samples_dont_cross, aux)
+                        amount_samples_left = np.append(
+                            amount_samples_left, amount_samples_left[-1])
+                        amount_samples_right = np.append(
+                            amount_samples_right, amount_samples_right[-1])
+                        num_samples = num_samples - 1
+                        print("crossed left side:      ", updated_samples[i])
+                        updated_samples = np.delete(updated_samples, i, axis=0)
                         print("updated_sample:      ", updated_samples)
-        
-        left_samp_cross_array = np.transpose(left_samp_cross_array)
-        right_samp_cross_array = np.transpose(right_samp_cross_array)
+                        break
+                    #else:
+                        # amount_samples_right = np.append(
+                        #     amount_samples_right, amount_samples_right[-1])
+                        # amount_samples_left = np.append(
+                        #     amount_samples_left, amount_samples_left[-1])
+                        # amount_samples_dont_cross = np.append(
+                        #     amount_samples_dont_cross, amount_samples_dont_cross[-1])
+                        # r_prob = np.random.rand(2).round(3)
+                        # right_prob = r_prob[0]
+                        # left_prob = r_prob[1]
+                        # print("right prob:          ", right_prob)
+                        # print("left prob:          ", left_prob)
+                    else:
+                        auxx = np.append(
+                            dont_cross_samp, updated_samples[i])
+                        amount_samples_dont_cross = np.append(
+                            amount_samples_dont_cross, amount_samples_dont_cross[-1])
+                        amount_samples_left = np.append(
+                            amount_samples_left, amount_samples_left[-1])
+                        amount_samples_right = np.append(
+                            amount_samples_right, amount_samples_right[-1])
+                else:
+                    if updated_samples[0] > right_prob and updated_samples[0] < left_prob:
+                        right_samp = np.append(
+                            right_samp, updated_samples[i])
+                        amount_samples_right = np.append(
+                            amount_samples_right, 1)
+                        amount_samples_left = np.append(
+                            amount_samples_left, 0)
+                        amount_samples_dont_cross = np.append(
+                            amount_samples_dont_cross, 0)
+                        num_samples = num_samples - 1
+                        print("crossed right side:      ", updated_samples[0])
+                        updated_samples = np.delete(updated_samples, i, axis=0)
+                        print("updated_sample:      ", updated_samples)
+                        break
+                    # 1st case
+                    elif updated_samples[0] > left_prob and updated_samples[0] < right_prob:
+                        left_samp = np.append(
+                            left_samp, updated_samples[0])
+                        amount_samples_left = np.append(
+                            amount_samples_left, 1)
+                        amount_samples_right = np.append(
+                            amount_samples_right, amount_samples_right[-1])
+                        amount_samples_dont_cross = np.append(
+                            amount_samples_dont_cross, amount_samples_dont_cross[-1])
+                        num_samples = num_samples - 1
+                        print("crossed left side:      ", updated_samples[i])
+                        updated_samples = np.delete(updated_samples, i, axis=0)
+                        print("updated_sample:      ", updated_samples)
+                        break
+                    # 4th case
+                    elif updated_samples[i] < left_prob and updated_samples[i] < right_prob:
+                        dont_cross_samp = np.append(
+                            dont_cross_samp, updated_samples[i])
+                        aux = amount_samples_dont_cross[-1]+1
+                        amount_samples_dont_cross = np.append(
+                            amount_samples_dont_cross, aux)
+                        amount_samples_left = np.append(
+                            amount_samples_left, amount_samples_left[-1])
+                        amount_samples_right = np.append(
+                            amount_samples_right, amount_samples_right[-1])
+                        num_samples = num_samples - 1
+                        print("crossed left side:      ", updated_samples[i])
+                        updated_samples = np.delete(updated_samples, i, axis=0)
+                        print("updated_sample:      ", updated_samples)
+                        break
+
+        left_samp = np.transpose(left_samp)
+        right_samp = np.transpose(right_samp)
 
         print("array with left side number of samples:          ",
-              array_num_samples_left)
+              amount_samples_left)
         print("array with right side number of samples:          ",
-              array_num_samples_right)
+              amount_samples_right)
         print("samples that have crossed to the left side:          ",
-              left_samp_cross_array)
+              left_samp)
         print("samples that have crossed to the right side:          ",
-              right_samp_cross_array)
+              right_samp)
 
-        return array_num_samples_right, array_num_samples_left
+        return amount_samples_right, amount_samples_left
 
 
 initial_num_samples = int(input('Choose an initial number of samples:   '))
