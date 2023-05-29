@@ -104,7 +104,7 @@ class One_d_discr_one:
         
             #incrementing matrix soon 
             cross_matrix = np.r_[cross_matrix, [cross_amount]]
-            print("matrix: ",cross_matrix)  # Decrementa a variável auxiliar
+            # print("matrix: ",cross_matrix)  # Decrementa a variável auxiliar
             cant_cross_amount = np.array([])
             cross_amount = np.array([])
             cant_cross_array = np.array([])
