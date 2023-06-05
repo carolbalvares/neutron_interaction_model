@@ -6,7 +6,7 @@ import pandas as pd
 
 # heatmap 1d 1 way
 fig, ax = plt.subplots(figsize=(10, 2.5))
-sns.heatmap(df_1d_1w, annot=True,fmt="g", cmap='coolwarm')
+sns.heatmap(df_1d_1w, annot=False,fmt="g", cmap='coolwarm')
 plt.show()
 
 

@@ -1,171 +1,181 @@
 import numpy as np
 
 
-class One_d_discr:
-    def __init__(self, num_samples):
+# creating class
+class One_d_discr_one:
+    def __init__(self, num_samples, discretizations):
         self.num_samples = num_samples
+        self.discretizations = discretizations
 
-    def n_neutrons_cross(self, num_samples):
-        right_samp = np.array([])
-        left_samp = np.array([])
-        dont_cross_samp = np.array([])
-        amount_samples_left = np.array([])
-        amount_samples_right = np.array([])
-        amount_samples_dont_cross = np.array([])
-        aux = 0
-        auxx = np.array([])
-        r_samples = np.random.rand(num_samples).round(3)
-        updated_samples = np.array([])
-        updated_samples = r_samples
-        print("random samples array:          ", r_samples)
-        r_prob = np.random.rand(2).round(3)
-        right_prob = r_prob[0]
-        left_prob = r_prob[1]
-        print("right prob:          ", right_prob)
-        print("left prob:          ", left_prob)
-        while num_samples != 0:
-            if num_samples == 0:
-                break
-            for i in range(len(updated_samples)-1, -1, -1):
-                if len(amount_samples_left) != 0 or len(amount_samples_right) != 0:
-                    # 2nd case
-                    if updated_samples[i] > right_prob and updated_samples[i] < left_prob:
-                        right_samp = np.append(
-                            right_samp, updated_samples[i])
-                        aux = amount_samples_right[-1] + 1
-                        amount_samples_right = np.append(
-                            amount_samples_right, aux)
-                        amount_samples_left = np.append(
-                            amount_samples_left, amount_samples_left[-1])
-                        amount_samples_dont_cross = np.append(
-                            amount_samples_dont_cross, amount_samples_dont_cross[-1])
-                        num_samples = num_samples - 1
-                        print("crossed right side:      ", updated_samples[i])
-                        updated_samples = np.delete(updated_samples, i, axis=0)
-                        print("updated_sample:      ", updated_samples)
-                        break
-                    # 1st case
-                    elif updated_samples[i] > left_prob and updated_samples[i] < right_prob:
-                        left_samp = np.append(
-                            left_samp, updated_samples[i])
-                        aux = amount_samples_left[-1]+1
-                        amount_samples_left = np.append(
-                            amount_samples_left, aux)
-                        amount_samples_right = np.append(
-                            amount_samples_right, amount_samples_right[-1])
-                        amount_samples_dont_cross = np.append(
-                            amount_samples_dont_cross, amount_samples_dont_cross[-1])
-                        num_samples = num_samples - 1
-                        print("crossed left side:      ", updated_samples[i])
-                        updated_samples = np.delete(updated_samples, i, axis=0)
-                        print("updated_sample:      ", updated_samples)
-                        break
-                    # 4th case
-                    elif updated_samples[i] < left_prob and updated_samples[i] < right_prob:
-                        dont_cross_samp = np.append(
-                            dont_cross_samp, updated_samples[i])
-                        aux = amount_samples_dont_cross[-1]+1
-                        amount_samples_dont_cross = np.append(
-                            amount_samples_dont_cross, aux)
-                        amount_samples_left = np.append(
-                            amount_samples_left, amount_samples_left[-1])
-                        amount_samples_right = np.append(
-                            amount_samples_right, amount_samples_right[-1])
-                        num_samples = num_samples - 1
-                        print("crossed left side:      ", updated_samples[i])
-                        updated_samples = np.delete(updated_samples, i, axis=0)
-                        print("updated_sample:      ", updated_samples)
-                        break
-                    #else:
-                        # amount_samples_right = np.append(
-                        #     amount_samples_right, amount_samples_right[-1])
-                        # amount_samples_left = np.append(
-                        #     amount_samples_left, amount_samples_left[-1])
-                        # amount_samples_dont_cross = np.append(
-                        #     amount_samples_dont_cross, amount_samples_dont_cross[-1])
-                        # r_prob = np.random.rand(2).round(3)
-                        # right_prob = r_prob[0]
-                        # left_prob = r_prob[1]
-                        # print("right prob:          ", right_prob)
-                        # print("left prob:          ", left_prob)
+    def n_neutrons_cross(self, num_samples, discretizations):
+        self.num_samples = num_samples
+        cant_cross_amount = np.array([])
+        left_amount = np.array([])
+        right_amount = np.array([])
+        tt_amount = np.array([])
+        cant_cross_array = np.array([])
+        left_array = np.array([])
+        right_array = np.array([])
+        cross_matrix = np.zeros((1, num_samples))
+        r_samples_array = np.random.rand(num_samples).round(3)
+        auxx = discretizations*2
+        cross_prob_array = np.random.rand(auxx).round(3)
+        left_prob_array = np.array([0.2, 0.95])
+        right_prob_array = np.array([0.1, 0.2])
+        for i in range(auxx):
+            if (i % 2) == 0:
+                left_prob_array = np.append(
+                    left_prob_array, cross_prob_array[i])
+            else:
+                right_prob_array = np.append(
+                    right_prob_array, cross_prob_array[i])
+        aux_array = r_samples_array
+        for i in range(num_samples):
+            discretizations = self.discretizations
+            right_prob = 0.2
+            left_prob = 0.1
+            print("left prob: ", left_prob)
+            print("right prob:", right_prob)
+            prob_else = True
+            while prob_else:
+                if len(left_amount) != 0:
+                    if left_prob > aux_array[i] > right_prob:
+                        aux = right_amount[-1] + 1
+                        right_amount = np.append(right_amount, aux)
+                        right_array = np.append(
+                            right_array, aux_array[i])
+                        left_amount = np.append(
+                            left_amount, left_amount[-1])
+                        left_array = np.append(
+                            left_array, 0.000
+                        )
+                        cant_cross_amount = np.append(
+                            cant_cross_amount, cant_cross_amount[-1])
+                        cant_cross_array = np.append(
+                            cant_cross_array, 0.000
+                        )
+
+                        prob_else = False
+
+                    elif left_prob < aux_array[i] < right_prob:
+                        aux = left_amount[-1] + 1
+                        left_amount = np.append(left_amount, aux)
+                        left_array = np.append(
+                            left_array, aux_array[i])
+                        right_amount = np.append(
+                            right_amount, right_amount[-1])
+                        right_array = np.append(
+                            right_array, 0.000
+                        )
+                        cant_cross_amount = np.append(
+                            cant_cross_amount, cant_cross_amount[-1])
+                        cant_cross_array = np.append(
+                            cant_cross_array, 0.000
+                        )
+
+                        prob_else = False
+
+                    elif left_prob > aux_array[i] and right_prob > aux_array[i]:
+                        aux = cant_cross_amount[-1] + 1
+                        cant_cross_amount = np.append(
+                            cant_cross_amount, aux)
+                        cant_cross_array = np.append(
+                            cant_cross_array, aux_array[i])
+                        left_amount = np.append(
+                            left_amount, left_amount[-1])
+                        left_array = np.append(
+                            left_array, 0.000
+                        )
+                        right_amount = np.append(
+                            right_amount, right_amount[-1])
+                        right_array = np.append(
+                            right_array, 0.000
+                        )
+                        aux_array[i] = 0
+
+                        prob_else = False
+
                     else:
-                        auxx = np.append(
-                            dont_cross_samp, updated_samples[i])
-                        amount_samples_dont_cross = np.append(
-                            amount_samples_dont_cross, amount_samples_dont_cross[-1])
-                        amount_samples_left = np.append(
-                            amount_samples_left, amount_samples_left[-1])
-                        amount_samples_right = np.append(
-                            amount_samples_right, amount_samples_right[-1])
+                        cross_prob_array = np.random.rand(
+                            2).round(3)
+                        left_prob = cross_prob_array[0]
+                        right_prob = cross_prob_array[1]
+
+                        prob_else = True
+
                 else:
-                    if updated_samples[0] > right_prob and updated_samples[0] < left_prob:
-                        right_samp = np.append(
-                            right_samp, updated_samples[i])
-                        amount_samples_right = np.append(
-                            amount_samples_right, 1)
-                        amount_samples_left = np.append(
-                            amount_samples_left, 0)
-                        amount_samples_dont_cross = np.append(
-                            amount_samples_dont_cross, 0)
-                        num_samples = num_samples - 1
-                        print("crossed right side:      ", updated_samples[0])
-                        updated_samples = np.delete(updated_samples, i, axis=0)
-                        print("updated_sample:      ", updated_samples)
-                        break
-                    # 1st case
-                    elif updated_samples[0] > left_prob and updated_samples[0] < right_prob:
-                        left_samp = np.append(
-                            left_samp, updated_samples[0])
-                        amount_samples_left = np.append(
-                            amount_samples_left, 1)
-                        amount_samples_right = np.append(
-                            amount_samples_right, amount_samples_right[-1])
-                        amount_samples_dont_cross = np.append(
-                            amount_samples_dont_cross, amount_samples_dont_cross[-1])
-                        num_samples = num_samples - 1
-                        print("crossed left side:      ", updated_samples[i])
-                        updated_samples = np.delete(updated_samples, i, axis=0)
-                        print("updated_sample:      ", updated_samples)
-                        break
-                    # 4th case
-                    elif updated_samples[i] < left_prob and updated_samples[i] < right_prob:
-                        dont_cross_samp = np.append(
-                            dont_cross_samp, updated_samples[i])
-                        aux = amount_samples_dont_cross[-1]+1
-                        amount_samples_dont_cross = np.append(
-                            amount_samples_dont_cross, aux)
-                        amount_samples_left = np.append(
-                            amount_samples_left, amount_samples_left[-1])
-                        amount_samples_right = np.append(
-                            amount_samples_right, amount_samples_right[-1])
-                        num_samples = num_samples - 1
-                        print("crossed left side:      ", updated_samples[i])
-                        updated_samples = np.delete(updated_samples, i, axis=0)
-                        print("updated_sample:      ", updated_samples)
-                        break
+                    if left_prob > aux_array[i] > right_prob:
+                        right_amount = np.append(right_amount, 1)
+                        right_prob_array = np.append(
+                            right_prob_array, aux_array[0])
+                        right_array = np.append(right_array, aux_array[i])
+                        left_amount = np.append(
+                            left_amount, 0)
+                        left_array = np.append(
+                            left_array, 0.000
+                        )
+                        cant_cross_amount = np.append(
+                            cant_cross_amount, 0)
+                        cant_cross_array = np.append(
+                            cant_cross_array, 0.000
+                        )
 
-        left_samp = np.transpose(left_samp)
-        right_samp = np.transpose(right_samp)
+                        prob_else = False
 
-        print("array with left side number of samples:          ",
-              amount_samples_left)
-        print("array with right side number of samples:          ",
-              amount_samples_right)
-        print("samples that have crossed to the left side:          ",
-              left_samp)
-        print("samples that have crossed to the right side:          ",
-              right_samp)
+                    elif left_prob < aux_array[i] < right_prob:
+                        left_amount = np.append(left_amount, 1)
+                        left_array = np.append(
+                            left_array, aux_array[0])
+                        right_amount = np.append(
+                            right_amount, 0)
+                        right_array = np.append(
+                            right_array, 0.000
+                        )
+                        cant_cross_amount = np.append(
+                            cant_cross_amount, 0)
+                        cant_cross_array = np.append(
+                            cant_cross_array, 0.000
+                        )
+  
 
-        return amount_samples_right, amount_samples_left
+                        prob_else = False
+                    elif left_prob > aux_array[i] and right_prob > aux_array[i]:
+                        cant_cross_amount = np.append(
+                            cant_cross_amount, 1)
+                        cant_cross_array = np.append(
+                            cant_cross_array, aux_array[0])
+                        left_amount = np.append(
+                            left_amount, 0)
+                        left_array = np.append(
+                            left_array, 0.000
+                        )
+                        right_amount = np.append(
+                            right_amount, 0)
+                        right_array = np.append(
+                            right_array, 0.000
+                        )
+                        aux_array[i] = 0
+   
+
+                        prob_else = False
+
+                    else:
+                        cross_prob_array = np.random.rand(
+                            2).round(3)
+                        left_prob = cross_prob_array[0]
+                        right_prob = cross_prob_array[1]
+
+                        prob_else = True
 
 
-initial_num_samples = int(input('Choose an initial number of samples:   '))
-d_1d_1way = One_d_discr(initial_num_samples)
-# array_of_crossed = d_1d_1way.n_neutrons_cross(initial_num_samples)
-# print("return of class:     ", array_of_crossed)
+        return cross_matrix
 
-qt_right, qt_left = d_1d_1way.n_neutrons_cross(initial_num_samples)
-total_int = range(len(qt_left))
-aux = np.array(total_int)
-total_int = aux + 1
-print("total interections:   ", total_int)
+
+# calling class
+initial_num_samples = int(input('Choose a initial number of samples:   '))
+initial_num_discr = int(input('Choose a initial number of discretization:   '))
+aux = One_d_discr_one(initial_num_samples, initial_num_discr)
+cross_matrix = aux.n_neutrons_cross(
+    initial_num_samples, initial_num_discr)
+print("matrix:       ", cross_matrix)
+

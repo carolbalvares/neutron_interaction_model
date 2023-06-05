@@ -15,7 +15,7 @@ class One_d_discr_one:
         cant_cross_array = np.array([])
         cross_array = np.array([])
         cross_matrix = np.zeros((1, num_samples))
-        print(cross_matrix)
+        # print(cross_matrix)
         r_samples_array = np.random.rand(num_samples).round(3)
         cross_prob_array = np.random.rand(discretizations).round(3)
         print("samples array:   ", r_samples_array)
@@ -35,12 +35,12 @@ class One_d_discr_one:
                         cross_array = np.append(
                             cross_array, 0.000
                         )
-                        print("sample:", aux_array[i])
-                        print("probability of crossing:", cross_prob_array[e])
-                        print("cant cross array:  ", cant_cross_array)
-                        print("amount that didnt crossed:   ", cant_cross_amount)
-                        print("can cross array:  ", cross_array)
-                        print("amount that crossed:   ", cross_amount)
+                        # print("sample:", aux_array[i])
+                        # print("probability of crossing:", cross_prob_array[e])
+                        # print("cant cross array:  ", cant_cross_array)
+                        # print("amount that didnt crossed:   ", cant_cross_amount)
+                        # print("can cross array:  ", cross_array)
+                        # print("amount that crossed:   ", cross_amount)
 
                         num_samples = num_samples - 1
                         
@@ -53,12 +53,12 @@ class One_d_discr_one:
                         cant_cross_array = np.append(
                             cant_cross_array, 0.000
                         )
-                        print("sample:", aux_array[i])
-                        print("probability of crossing:", cross_prob_array[e])
-                        print("cant cross array:  ", cant_cross_array)
-                        print("amount that didnt crossed:   ", cant_cross_amount)
-                        print("can cross array:  ", cross_array)
-                        print("amount that crossed:   ", cross_amount)
+                        # print("sample:", aux_array[i])
+                        # print("probability of crossing:", cross_prob_array[e])
+                        # print("cant cross array:  ", cant_cross_array)
+                        # print("amount that didnt crossed:   ", cant_cross_amount)
+                        # print("can cross array:  ", cross_array)
+                        # print("amount that crossed:   ", cross_amount)
 
                         num_samples = num_samples - 1
                         
@@ -71,12 +71,12 @@ class One_d_discr_one:
                         cross_array = np.append(
                             cross_array, 0.000
                         )
-                        print("sample:", aux_array[i])
-                        print("probability of crossing:", cross_prob_array[e])
-                        print("cant cross array:  ", cant_cross_array)
-                        print("amount that didnt crossed:   ", cant_cross_amount)
-                        print("can cross array:  ", cross_array)
-                        print("amount that crossed:   ", cross_amount)
+                        # print("sample:", aux_array[i])
+                        # print("probability of crossing:", cross_prob_array[e])
+                        # print("cant cross array:  ", cant_cross_array)
+                        # print("amount that didnt crossed:   ", cant_cross_amount)
+                        # print("can cross array:  ", cross_array)
+                        # print("amount that crossed:   ", cross_amount)
 
                         num_samples = num_samples - 1
                         
@@ -89,16 +89,16 @@ class One_d_discr_one:
                         cant_cross_array = np.append(
                             cant_cross_array, 0.000
                         )
-                        print("sample:", aux_array[i])
-                        print("probability of crossing:", cross_prob_array[e])
-                        print("cant cross array:  ", cant_cross_array)
-                        print("amount that didnt crossed:   ", cant_cross_amount)
-                        print("can cross array:  ", cross_array)
-                        print("amount that crossed:   ", cross_amount)
+                        # print("sample:", aux_array[i])
+                        # print("probability of crossing:", cross_prob_array[e])
+                        # print("cant cross array:  ", cant_cross_array)
+                        # print("amount that didnt crossed:   ", cant_cross_amount)
+                        # print("can cross array:  ", cross_array)
+                        # print("amount that crossed:   ", cross_amount)
                         num_samples = num_samples - 1
                         
             aux_array=cross_array
-            print("aux array pos a analise de todas samples:    ",aux_array)
+            # print("aux array pos a analise de todas samples:    ",aux_array)
             num_samples = len(cross_array)
             discretizations = discretizations - 1
         
