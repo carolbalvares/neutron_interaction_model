@@ -6,7 +6,7 @@ p_Th232 = 11.724
 p_U233  = 16.7   ####procurar com mais informações
 p_O = 1.429
 p_Fe = 7.874
-# p_LBE = 
+# p_H2O = 
 #source:https://www.nuclear-power.com/i ; https://iopscience.iop.org/article/10.1088/1742-6596/98/6/062017/pdf 
 
 general_height =  4.2672 #m
@@ -47,8 +47,8 @@ outlet_temp = 330 #K
 # volume m^3 -- unity
 vol_UO2 = (((fuel_pellet_radius) ** 2 ) * np.pi * general_height)*10**(-4)
 vol_Fe = ((clad_area - gap_area)* (clad_radius*2*np.pi)  * general_height)*10**(-4)
-# vol_H2O = (area_H2O * general_height)*10**(-4)
-# vol_Fa = (fa_lenght**2)*general_height*10**(-4)
+vol_H2O = (area_H2O * general_height)*10**(-4)
+vol_Fa = (fa_lenght**2)*general_height*10**(-4)
 
 #volume m^3 -- total
 #core configuration: 185 (FA)???? * (17 * 17) (The fuel rods in each fuel assembly are arranged in 17 x 17 rectangular lattices) *  28 (layers) * 89 (number of FA)
@@ -61,8 +61,8 @@ tt_vol_H2O = aux *  vol_H2O
 # tt_volume = n_FA * vol_Fa
 
 
-print("tt_act_core_vol", tt_act_core_vol)
-print("tt_vol_UO2", tt_vol_UO2)
-print("tt_vol_Fe", tt_vol_Fe)
-print("tt_vol_H2O", tt_vol_H2O)
-print("tt", tt_volume)
+# print("tt_act_core_vol", tt_act_core_vol)
+# print("tt_vol_UO2", tt_vol_UO2)
+# print("tt_vol_Fe", tt_vol_Fe)
+# print("tt_vol_H2O", tt_vol_H2O)
+# print("tt", tt_volume)
