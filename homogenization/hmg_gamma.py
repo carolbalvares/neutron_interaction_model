@@ -22,7 +22,7 @@ macro_gamma_O = n_O * micro_ab_O * 10 ** (-24)
 # calculations
 
 macro_cs_gamma = (((macro_gamma_U235 + macro_gamma_U238 + macro_gamma_O)*(tt_vol_UO2)) +
-                       (micro_ab_O * tt_vol_H2O) + (macro_ab_Fe * tt_vol_Fe))/tt_act_core_vol
+                       (macro_ab_H2O * tt_vol_H2O) + (macro_ab_Fe * tt_vol_Fe))/tt_act_core_vol
 
 
 micro_cs_gamma = (((macro_gamma_U235 + macro_gamma_U238 + macro_gamma_O)*(tt_vol_UO2)) +
