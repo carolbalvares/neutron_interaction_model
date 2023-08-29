@@ -11,6 +11,17 @@ p_Fe = 7.874
 
 general_height =  4.2672 #m
 
+# atomic number density : N = (density*Na)/m
+Na = 6.02214076 * 10**(23)
+dens = 10.5  # convention
+m = ((0.0495/235.04393 + 0.9505/238.05078)**(-1)+15.999*2)
+n_UO2 = dens * Na / m
+n_U235 = (0.0495 * Na * 10.5 / 235.04393) * (238.05078 / m)
+n_U238 = (0.9505 * Na * 10.5 / 238.05078) * (235.04393 / m)
+n_O = 2 * n_UO2
+n_Fe = 7.874 * Na / 55.845
+n_H2O = 0.999 * Na / 18.015
+
 #dimensions reactor core
 active_core_diameter = 2.4127 #m
 core_average_power_density = 51.26 #W/C

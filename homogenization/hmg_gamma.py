@@ -10,17 +10,8 @@ micro_gamma_U238 = 2.73
 micro_ab_O = 20 * 10**(-5)
 macro_ab_Fe = 0.22
 macro_ab_H2O = 0.022
-Na = 6.02214076 * 10**(23)
-dens = 10.5  # convention
 
-# atomic number density : N = (density*Na)/m
-m = ((0.0495/235.04393 + 0.9505/238.05078)**(-1)+15.999*2)
-n_UO2 = dens * Na / m
-n_U235 = (0.0495 * Na * 10.5 / 235.04393) * (238.05078 / m)
-n_U238 = (0.9505 * Na * 10.5 / 238.05078) * (235.04393 / m)
-n_O = 2 * n_UO2
-n_Fe = 7.874 * Na / 55.845
-n_H2O = 0.999 * Na / 18.015
+
 
 # parameters
 macro_gamma_U235 = n_U235 * micro_gamma_U235 * 10 ** (-24)
