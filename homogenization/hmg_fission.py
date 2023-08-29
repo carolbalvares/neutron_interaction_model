@@ -1,4 +1,5 @@
-import numpy as np
+import sys
+sys.path.append('../')  # Adjust the path as needed
 from parameters import *
 
 # core homogenization
@@ -40,25 +41,6 @@ micro_gamma_gamma = (((macro_gamma_U235 + macro_gamma_U238 + macro_gamma_O)*(tt_
 macro_gamma_s = (((macro_gamma_U235 + macro_gamma_U238 + macro_gamma_O)*(tt_vol_UO2)) +
                        (macro_ab_H2O * tt_vol_H2O) + (macro_ab_Fe * tt_vol_Fe))/tt_act_core_vol
 
-
-# macro sigma n s = (sum of macroscopic cross section of U235, U238 and O) * Vfuel + macroscopic cross section H2O * VH2O + macroscopic cross section Fe * VolFe 
-# + (sum of macroscopic cross section U238 (?????????) and oxygen) * (Voxygen(? como achar)
-
-
-# micro signa n s = ((sum of macroscopic cross section of U235, U238 and O) * Vfuel + macroscopic cross section H2O * VH2O + macroscopic cross section Fe * VolFe)
-# / (Vtotal*(NUO2 + NH2O + NFe))
-
-#macro sigma n f = (Macroscopic section (U238 OU 235????)*Vfuel)
-
-#micro sigma n f = (Macroscopic section (U238 OU 235????)*Vfuel + Macroscopic Section O * Vfuel)/(Nfuel + ?????)*Vtotal
-
-
-#macro sigma tr = micro sigma tr U238 * NU238 * Vfuel + micro sigma tr U235 * NU235 * VFuel + (microsigma tr*N*V)H2O + (microsigma tr*N*V)Fe
-
-
-#diffusion coefficient = d_coef = 1/(3*macro sigma tr)
-
-#square of diffusion lenght = sq_d_len = D/macro sigma absortion (qual elemento usar para o sigma de absorção?)
 
 
 # source:
