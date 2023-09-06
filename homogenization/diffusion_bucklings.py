@@ -17,9 +17,9 @@ tt_nt_yield = 2.4355
 mi_d = 2/(3*18) #18 = Water molecular mass
 avg_free_path_transp = 1 / (macro_cs_scattering*(1-mi_d))
 dif_coef = avg_free_path_transp / 3
-
+print("dif", dif_coef)
 dif_lenght = dif_coef / macro_cs_absorption
-
+print("difll",dif_lenght)
 
 #buckling  
 radial_buckling = (2.405/r_o)**2  # where r_o is the active core radius 
