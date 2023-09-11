@@ -10,6 +10,7 @@ p_Fe = 7.874
 #source:https://www.nuclear-power.com/i ; https://iopscience.iop.org/article/10.1088/1742-6596/98/6/062017/pdf 
 
 general_height =  4.2672 #m
+power =  1000*(10**6) # MWt (335 MWe)
 
 # atomic number density : N = (density*Na)/m
 Na = 6.02214076 * 10**(23)
