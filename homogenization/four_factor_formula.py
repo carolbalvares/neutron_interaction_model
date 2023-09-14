@@ -1,25 +1,27 @@
 from hmg_gamma import *
-from hmg_scattering import macro_cs_scattering, macro_scattering_H2O, micro_scattering_U238
-from hmg_fission import macro_cs_fission
-from hmg_absorption import macro_cs_absorption, micro_abs_H2O
+from hmg_scattering import *
+from hmg_fission import *
+from hmg_absorption import *
 from parameters import *
 import sys
 sys.path.append('../')  # Adjust the path as needed
 # given data
 v = 2.4355  # for thermal 235U
 
-# Reproduction Factor ############
-rpd_fact = v * macro_cs_fission/macro_cs_absorption
+# Reproduction Factor
+rpd_fact = v * n_U235 * micro_fission_U235*10**(24)/(n_U235*micro_fission_U235*10**(
+    24)+n_U235*micro_scattering_U235*10**(24) + n_U238*micro_scattering_U238*10**(24))
 print("rpd_fact", rpd_fact)
 
 # Fast Fission Factor
-total_cs = macro_cs_fission + macro_cs_gamma + macro_cs_absorption + macro_cs_scattering
+total_cs = macro_cs_fission + macro_cs_gamma + \
+    macro_cs_absorption + macro_cs_scattering
 typical_value = 1.04
 fast_fis_fact = 1 + (power/(1-power*((v*macro_cs_fission+macro_cs_scattering)/(total_cs)))) * \
     (macro_cs_fission/(total_cs)) * \
     (v-1-(macro_cs_gamma/macro_cs_fission))
-print("fast_fis_fact",fast_fis_fact)
-#problema na cross section total
+print("fast_fis_fact", fast_fis_fact)
+# problema na cross section total
 
 # Thermal Utilization Factor
 ther_utiliz_fact = macro_cs_gamma_fuel/(macro_cs_gamma_fuel+macro_abs_H2O)
@@ -36,10 +38,10 @@ log_energy_decrease = 2/(mass_num_target_nucleus+2/3)
 #                        (log_energy_decrease*macro_scattering_H2O*tt_vol_H2O))
 N = 0.9505 * n_UO2
 auxx = n_H2O/N
-ress_esc_prob =  auxx*micro_abs_H2O*10**(24)
+ress_esc_prob = auxx*micro_abs_H2O*10**(24)
 print("ress_esc_prob", ress_esc_prob)
 
-kinf = rpd_fact *fast_fis_fact*ther_utiliz_fact* ress_esc_prob
+kinf = rpd_fact * fast_fis_fact*ther_utiliz_fact * ress_esc_prob
 print("kinf", kinf)
 # Data:
 # https://www.nuclear-power.com/nuclear-power/reactor-physics/nuclear-fission-chain-reaction/resonance-escape-probability/
