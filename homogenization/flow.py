@@ -3,11 +3,10 @@ from scipy.special import jn
 from parameters import *
 import sys
 sys.path.append('../')  # Adjust the path as needed
-import pandas as pd
 import matplotlib.pyplot as plt
 
 
-from mpl_toolkits import mplot3d
+# from mpl_toolkits import mplot3d
 
 
 
@@ -27,7 +26,7 @@ def matrix_flow(flow, index):
     return matriz
 
 auxiliar = 2.405/r_o
-radius_array = np.arange(-np.pi, np.pi, 0.1)
+radius_array = np.arange(0.5*-np.pi, 0.5*np.pi, 0.1)
 radius_array_polar = []
 for r in radius_array:
     radius_array_polar = np.append(radius_array_polar, r_o*np.cos(r))
@@ -39,25 +38,22 @@ j_positive = pos(j_0)
 e_r = 200.7
 
 aux = 3.63 * power / (tt_act_core_vol * e_r * macro_cs_fission)
-height_array = np.arange(-np.pi, np.pi, 0.1)
+height_array = np.arange(0.5*-np.pi,0.5* np.pi, 0.1)
 height_array_polar = []
 for h in radius_array:
     height_array_polar = np.append(height_array_polar, z_o*np.sin(h))
 
 
-print(len(radius_array))
-print(len(height_array))
-
 flow = np.empty((len(radius_array_polar), len(height_array)))
 
 for i, h in enumerate(height_array):
     for j, r in enumerate(radius_array_polar):
-        auxx = aux * j * np.cos(np.pi * h / z_o)
+        auxx = aux * r * np.cos(np.pi * h / z_o)
         flow[i, j] = auxx
         
   
 max = np.max(flow)
-print(max)
+print(np.cos(np.pi * h / z_o))
 
 
 fig = plt.figure()
