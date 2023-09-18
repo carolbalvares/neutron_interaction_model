@@ -68,10 +68,6 @@ plt.title('Flow in function of radius and height')
 plt.show()
 
 
-# poltar funcao de bessel e de altura de 0 a pi/2
-# fcs total = abs + scattering
-# ver documento que ele mandou, fazer densidade dos uranios juntos
-
 # data
 # https://docs.scipy.org/doc/scipy-1.0.0/reference/generated/scipy.special.jn.html
 #https://jakevdp.github.io/PythonDataScienceHandbook/04.12-three-dimensional-plotting.html
