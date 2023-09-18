@@ -18,10 +18,10 @@ def pos(j_0):
     return [x for x in j_0 if x > 0] 
 
 
-def matrix_flow(flow, index):
+def matrix_flux(flux, index):
     matriz = []
-    for i in range(0, len(flow), index):
-        sublista = flow[i:i+index]
+    for i in range(0, len(flux), index):
+        sublista = flux[i:i+index]
         matriz.append(sublista)
     return matriz
 
@@ -44,26 +44,26 @@ for h in radius_array:
     height_array_polar = np.append(height_array_polar, z_o*np.sin(h))
 
 
-flow = np.empty((len(radius_array_polar), len(height_array)))
+flux = np.empty((len(radius_array_polar), len(height_array)))
 
 for i, h in enumerate(height_array):
     for j, r in enumerate(radius_array_polar):
         auxx = aux * r * np.cos(np.pi * h / z_o)
-        flow[i, j] = auxx
+        flux[i, j] = auxx
         
   
-max = np.max(flow)
+max = np.max(flux)
 print(np.cos(np.pi * h / z_o))
 
 
 fig = plt.figure()
 ax = plt.axes(projection='3d')
-ax.contour3D(radius_array, height_array, flow, 50, cmap='binary')
+ax.contour3D(radius_array, height_array, flux, 50, cmap='binary')
 ax.set_xlabel('x')
 ax.set_ylabel('y')
 ax.set_zlabel('z');
 ax.view_init(60, 35)
-plt.title('Flow in function of radius and height')
+plt.title('flux in function of radius and height')
 
 plt.show()
 
