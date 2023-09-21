@@ -1,4 +1,4 @@
-from hmg_fission import macro_cs_fission
+from homogenization.hmg_fission import macro_cs_fission
 from scipy.special import jn
 from parameters import *
 import sys

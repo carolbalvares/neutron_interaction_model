@@ -6,7 +6,7 @@ from parameters import *
 import sys
 sys.path.append('../')  # Adjust the path as needed
 # given data
-v = 2.4355  # for thermal 235U
+
 
 # Reproduction Factor
 rpd_fact = v * n_U235 * micro_fission_U235*10**(24)/(n_U235*micro_fission_U235*10**(

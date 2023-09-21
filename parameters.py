@@ -1,5 +1,6 @@
 import numpy as np
 
+v = 2.4355  # for thermal 235U
 ## core homogenization
 # density g/cm^3 at STP
 p_Th232 = 11.724
