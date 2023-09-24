@@ -34,7 +34,6 @@ macro_cs_gamma = (((macro_gamma_U235 + macro_gamma_U238 + macro_gamma_O)*(tt_vol
 micro_cs_gamma = (((macro_gamma_U235 + macro_gamma_U238 + macro_gamma_O)*(tt_vol_UO2)) +
                        (macro_abs_H2O * tt_vol_H2O) + (macro_gamma_Fe * tt_vol_Fe))/(tt_act_core_vol * (n_UO2 + n_H2O + n_Fe))
 
-print(micro_cs_gamma)
 # print("micro_cs_gamma", micro_cs_gamma)
 # source:
 # 1- Nuclear Reactor Analysis - James Duderstadt, Louis Hamilton  (data)

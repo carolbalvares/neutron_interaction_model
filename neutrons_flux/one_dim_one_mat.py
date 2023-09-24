@@ -1,11 +1,10 @@
+import sys
+sys.path.append('../')  # Adjust the path as needed
 from homogenization.hmg_fission import macro_cs_fission
 from homogenization.hmg_gamma import macro_cs_gamma_fuel
 from parameters import *
-import sys
-sys.path.append('../')  # Adjust the path as needed
-
 # material chosen: UO2
-initial_neutrons = 1000
+initial_neutrons = 100000
 
 micro_scattering_U235 = 15.04 * 10 ** (-24)
 micro_scattering_U238 = 9.360 * 10 ** (-24)
@@ -25,8 +24,6 @@ macro_cs_UO2_absorption = macro_cs_gamma_fuel + macro_cs_fission
 scattering = 1/macro_cs_UO2_scattering
 
 absorption = 1/macro_cs_UO2_absorption
-print(scattering)
-print(absorption)
 
 
 mi = 2/(3*m)
@@ -40,11 +37,20 @@ sigma_s = round(macro_cs_UO2_scattering, 3)
 final_neutrons = initial_neutrons * \
     (1 - macro_cs_UO2_scattering)**scattering * \
     (1-macro_cs_UO2_absorption)**absorption
-
-print("final neutrons:", final_neutrons)
+final_neutrons_1d_1m = np.round(final_neutrons)
+print("final final_neutrons_1d_1m:", final_neutrons_1d_1m)
 
 # 2 discretization
+num_discr = int(input('Choose a number of discretization:   '))
+final_neutrons_mult_discr = initial_neutrons * ((1-macro_cs_UO2_scattering)**scattering)**num_discr * ((1-macro_cs_UO2_absorption)**absorption)**num_discr
+final_neutrons_mult_discr_2m = np.round(final_neutrons_mult_discr)
+print(final_neutrons_mult_discr_2m)
 
+
+# 2 discretization with 2 materials 
+macro_cs_mt2_scattering = 0.0987
+macro_cs_mt2_absorption = 0.2205
 
 # strange value https://www.dgtresearch.com/diffusion-coefficients/
 # https://www.nuclear-power.com/nuclear-power/reactor-physics/neutron-diffusion-theory/neutron-current-density/
+# Não há uma regra específica da comunidade científica para arredondamento de nêutrons além do arredondamento para o número inteiro mais próximo.
