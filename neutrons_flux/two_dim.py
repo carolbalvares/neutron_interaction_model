@@ -1,5 +1,3 @@
-
-
 import sys
 sys.path.append('../')
 from parameters import *
@@ -52,7 +50,7 @@ final_neutrons = final_neutrons_2d_direct * \
 final_neutrons_2d_diagonal = np.round(final_neutrons)
 print("final_neutrons_2d_direct:", final_neutrons_2d_direct)
 print("final_neutrons_2d_diagonal", final_neutrons_2d_diagonal)
-print(4*final_neutrons_2d_direct + 4 * final_neutrons_2d_diagonal)
+print("total neutrons", 4*final_neutrons_2d_direct + 4 * final_neutrons_2d_diagonal)
 
 
 matrix = np.array([
@@ -64,5 +62,5 @@ matrix = np.array([
 
 plt.imshow(matrix, cmap='viridis', interpolation='nearest')
 plt.colorbar()  # Adicione uma barra de cores
-plt.title('Fluxo de Elementos em uma Matriz 3x3')
+plt.title('Fluxo de Nêutronsl')
 plt.show()
