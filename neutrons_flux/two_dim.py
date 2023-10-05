@@ -30,63 +30,69 @@ class One_d_one_material:
         # cant_cross_array = np.array([])
         cross_array = np.array([])
         aux_array = np.array([])
-        r_samples_array = np.random.rand(num_samples).round(3)
-        print("samples array:   ", r_samples_array)
-        aux_array = r_samples_array
-        for e in range(discretizations):
-            cross_array = np.array([])
-            cross_amount = 0
-            cant_cross_amount = 0
-            cant_cross_amount = False
-            num_samples_aux = num_samples
-            for i in range(num_samples_aux):
-                if cant_cross_amount != False:
-                    if prob_abs[e] > aux_array[i] or prob_scat[e] > aux_array[i]:
-                        cant_cross_amount += 1
-                        # cant_cross_array = np.append(
-                        #     cant_cross_array, aux_array[i])
-                        cross_array = np.append(
-                            cross_array, 0.000
-                        )
+        cross_matrix = np.zeros((1, num_samples))
+        
+        for j in range(6):
+            r_samples_array = np.random.rand(num_samples).round(3)
+            print("samples array:   ", r_samples_array)
+            aux_array = r_samples_array
+            discretizations_aux = discretizations
+            for e in range(discretizations_aux):
+                cross_array = np.array([])
+                cross_amount = 0
+                cant_cross_amount = 0
+                cant_cross_amount = False
+                num_samples_aux = num_samples
+                for i in range(num_samples_aux):
+                    if cant_cross_amount != False:
+                        if prob_abs[j, e] > aux_array[i] or prob_scat[j, e] > aux_array[i]:
+                            cant_cross_amount += 1
+                            # cant_cross_array = np.append(
+                            #     cant_cross_array, aux_array[i])
+                            cross_array = np.append(
+                                cross_array, 0.000
+                            )
 
-                        num_samples_aux = num_samples_aux - 1
+                            num_samples_aux = num_samples_aux - 1
 
-                    else:
-                        cross_amount += 1
-                        cross_array = np.append(cross_array, aux_array[i])
-                        # cant_cross_array = np.append(
-                        #     cant_cross_array, 0.000
-                        # )
+                        else:
+                            cross_amount += 1
+                            cross_array = np.append(cross_array, aux_array[i])
+                            # cant_cross_array = np.append(
+                            #     cant_cross_array, 0.000
+                            # )
 
-                        num_samples_aux = num_samples_aux - 1
-
-                else:
-                    if prob_abs[e] > aux_array[i] or prob_scat[e] > aux_array[i]:
-                        cant_cross_amount = 1
-                        # cant_cross_array = np.append(
-                        #     cant_cross_array, aux_array[0])
-                        cross_amount = 0
-                        cross_array = np.append(cross_array, 0.000)
-                        num_samples_aux = num_samples_aux - 1
+                            num_samples_aux = num_samples_aux - 1
 
                     else:
-                        cross_amount = 1
-                        cross_array = np.append(cross_array, aux_array[i])
-                        # cant_cross_array = np.append(
-                        #     cant_cross_array, 0.000
-                        # )
-                        cant_cross_amount = 0
-                        num_samples_aux = num_samples_aux - 1
+                        if np.any(prob_abs[j, e] > aux_array[i]) or np.any(prob_scat[j, e] > aux_array[i]):
+                            cant_cross_amount = 1
+                            # cant_cross_array = np.append(
+                            #     cant_cross_array, aux_array[0])
+                            cross_amount = 0
+                            cross_array = np.append(cross_array, 0.000)
+                            num_samples_aux = num_samples_aux - 1
 
-            discretizations = discretizations - 1
-            aux_array = cross_array
-            non_zero_indices = aux_array != 0
-            new_random_values = np.random.rand(non_zero_indices.sum()).round(3)
-            aux_array[non_zero_indices] = new_random_values
-            print("discretization:  ", discretizations)
-            print("aux_array", aux_array)
+                        else:
+                            cross_amount = 1
+                            cross_array = np.append(cross_array, aux_array[i])
+                            # cant_cross_array = np.append(
+                            #     cant_cross_array, 0.000
+                            # )
+                            cant_cross_amount = 0
+                            num_samples_aux = num_samples_aux - 1
 
-        return cross_amount
+                discretizations_aux = discretizations_aux - 1
+                aux_array = cross_array
+                non_zero_indices = aux_array != 0
+                new_random_values = np.random.rand(
+                    non_zero_indices.sum()).round(3)
+                aux_array[non_zero_indices] = new_random_values
+                print("discretization:  ", discretizations_aux)
+                print("aux_array", aux_array)
+                print("cross_array:  ", cross_array)
+            cross_matrix = np.vstack((cross_matrix, cross_array))
+        return cross_matrix
 
 
 micro_scattering_U235 = 15.04 * 10 ** (-24)
@@ -122,14 +128,16 @@ initial_num_discr = int(input('Choose a initial number of discretization:   '))
 initial_neutrons = int(input("Choose initial number of neutrons:    "))
 
 
-prob_abs = np.array([prob_abs_UO2, pron_abs_Fe])
-prob_scat = np.array([prob_scat_UO2, prob_scat_Fe])
+prob_abs = np.matrix([[prob_abs_UO2, prob_abs_UO2], [prob_abs_UO2, prob_abs_UO2],
+                    [prob_abs_UO2, prob_abs_UO2], [prob_abs_UO2, prob_abs_UO2], [prob_abs_UO2, prob_abs_UO2], [prob_abs_UO2, prob_abs_UO2]])
+prob_scat = np.matrix([[prob_scat_UO2, prob_scat_UO2], [prob_scat_UO2, prob_scat_UO2],
+                     [prob_scat_UO2, prob_scat_UO2], [prob_scat_UO2, prob_scat_UO2], [prob_scat_UO2, prob_scat_UO2], [prob_scat_UO2, prob_scat_UO2]])
 
 aux = One_d_one_material(
     initial_neutrons, initial_num_discr, prob_abs, prob_scat)
-cross_amount = aux.n_neutrons_cross(
+cross_matrix = aux.n_neutrons_cross(
     initial_neutrons, initial_num_discr, prob_abs, prob_scat)
-print("amount that crosses:       ", cross_amount)
+print("matrix that crosses:       ", cross_matrix)
 
 # strange value https://www.dgtresearch.com/diffusion-coefficients/
 # https://www.nuclear-power.com/nuclear-power/reactor-physics/neutron-diffusion-theory/neutron-current-density/
