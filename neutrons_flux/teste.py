@@ -16,17 +16,15 @@ sys.path.append('../')
 
 
 class One_d_one_material:
-    def __init__(self, num_samples, distance, tt_cross_section, discretizations):
+    def __init__(self, num_samples, distance_array, tt_cross_section):
         self.num_samples = num_samples
-        self.distance = distance
+        self.distance_array = distance_array
         self.tt_cross_section = tt_cross_section
-        self.discretizations = discretizations
 
-    def n_neutrons_cross(self, num_samples, distance, tt_cross_section, discretizations):
-        self.distance = distance
+    def n_neutrons_cross(self, num_samples, distance_array, tt_cross_section):
+        self.distance_array = distance_array
         self.num_samples = num_samples
         self.tt_cross_section = tt_cross_section
-        self.discretizations = discretizations
         # cant_cross_array = np.array([])
         cross_array = np.array([])
         dist_to_collision = 0
@@ -34,7 +32,7 @@ class One_d_one_material:
         r_samples_array = np.random.rand(num_samples).round(3)
         print("samples array:   ", r_samples_array)
         aux_array = r_samples_array
-        for e in range(discretizations):
+        for e in range(len(distance_array)):
             cross_array = np.array([])
             cross_amount = 0
             cant_cross_amount = 0
@@ -44,7 +42,7 @@ class One_d_one_material:
                 dist_to_collision = -np.log(1-aux_array[i])/tt_cross_section
                 print("dist to collision", dist_to_collision)
                 if cant_cross_amount != False:
-                    if dist_to_collision < distance :
+                    if dist_to_collision < distance_array[e] :
                         cant_cross_amount += 1
                         cross_array = np.append(
                             cross_array, 0.000
@@ -59,7 +57,7 @@ class One_d_one_material:
                         num_samples_aux = num_samples_aux - 1
 
                 else:
-                    if dist_to_collision < distance :
+                    if dist_to_collision < distance_array[e] :
                         cant_cross_amount = 1
                         cross_amount = 0
                         cross_array = np.append(cross_array, 0.000)
@@ -71,12 +69,12 @@ class One_d_one_material:
                         cant_cross_amount = 0
                         num_samples_aux = num_samples_aux - 1
 
-            discretizations = discretizations - 1
+            # discretizations = discretizations - 1
             aux_array = cross_array
             non_zero_indices = aux_array != 0
             new_random_values = np.random.rand(non_zero_indices.sum()).round(3)
             aux_array[non_zero_indices] = new_random_values
-            print("discretization:  ", discretizations)
+            # print("discretization:  ", discretizations)
             print("aux_array", aux_array)
 
         return cross_amount
@@ -107,13 +105,19 @@ macro_tt_Fe = macro_cs_Fe_absorption + macro_scattering_Fe
 
 initial_num_discr = int(input('Choose a initial number of discretization:   '))
 initial_neutrons = int(input("Choose initial number of neutrons:    "))
-distance = float(input("Distance:     "))
+distance = int(input("Distance:     "))
 
+
+distance_array = np.array([])
+for i in range(distance):
+    distance_array = np.append(distance_array, i+1)
+
+print("distance_array", distance_array)
 
 aux = One_d_one_material(
-    initial_neutrons, distance, macro_tt_UO2, initial_num_discr)
+    initial_neutrons, distance_array, macro_tt_UO2)
 cross_amount = aux.n_neutrons_cross(
-    initial_neutrons, distance, macro_tt_UO2, initial_num_discr)
+    initial_neutrons, distance_array, macro_tt_UO2)
 print("amount that crosses:       ", cross_amount)
 
 # strange value https://www.dgtresearch.com/diffusion-coefficients/
