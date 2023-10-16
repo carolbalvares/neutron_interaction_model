@@ -23,6 +23,7 @@ class Two_d_one_material:
         self.num_samples = num_samples
         self.tt_cross_section = tt_cross_section
         cross_matrix = np.zeros((3, 3))
+        cross_amount_matrix = np.zeros((3, 3))
         # cant_cross_array = np.array([])
         cross_array = np.array([])
         cross_amount_array = np.array([])
@@ -35,7 +36,7 @@ class Two_d_one_material:
         aux_array = r_samples_array
         auxx = 9
 
-        for e in range(len(distance_array)):
+        for e in range(1):
             cross_array = np.array([])
             cross_amount = 0
             cant_cross_amount = 0
@@ -43,11 +44,12 @@ class Two_d_one_material:
             for i in range(auxx):
                 for r in range(3):
                     for c in range(3):
+                        print("e", e)
                         print("r", r)
                         print("c", c)
                         print("i", i)
                         print("aux_array", aux_array[i])
-                        if r % 2 != 0 and c % 2 != 0 and (r != 1 or c != 1):
+                        if (r % 2 != 0 and c % 2 == 0) or (r % 2 == 0 and c % 2 != 0):
                             if aux_array[i] != 1:
                                 dist_to_collision = - \
                                     np.log(1 - aux_array[i]
@@ -60,7 +62,6 @@ class Two_d_one_material:
                                     np.log(1 - aux_array[i]
                                            ) / tt_cross_section
                             print("dist to collision", dist_to_collision)
-                            # print("dist to collision", dist_to_collision)
                             if cant_cross_amount != False:
                                 if dist_to_collision < distance_array[e]:
                                     cant_cross_amount += 1
@@ -68,28 +69,26 @@ class Two_d_one_material:
                                         cross_array, 0.000
                                     )
                                     cross_matrix[r][c] = 0.00
-                                    i += 1
                                     print("cross matrix", cross_matrix)
-                                    auxx -= 1
+                                    
 
                                 else:
                                     cross_amount += 1
                                     cross_array = np.append(
                                         cross_array, aux_array[i])
                                     cross_matrix[r][c] = aux_array[i]
-                                    i += 1
+                                    cross_amount_matrix[r][c] += 1
                                     print("cross matrix", cross_matrix)
-                                    auxx -= 1
-
+                                    
+                                i += 1
                             else:
                                 if dist_to_collision < distance_array[e]:
                                     cant_cross_amount = 1
                                     cross_amount = 0
                                     cross_array = np.append(cross_array, 0.000)
                                     cross_matrix[r][c] = 0.00
-                                    i += 1
                                     print("cross matrix", cross_matrix)
-                                    auxx -= 1
+                                    
 
                                 else:
                                     cross_amount = 1
@@ -97,9 +96,9 @@ class Two_d_one_material:
                                         cross_array, aux_array[i])
                                     cant_cross_amount = 0
                                     cross_matrix[r][c] = aux_array[i]
-                                    i += 1
+                                    cross_amount_matrix[r][c] += 1
                                     print("cross matrix", cross_matrix)
-                                    auxx -= 1
+                                i += 1    
 
                         # discretizations = discretizations - 1
                         # print("cross matrix final", cross_matrix)
@@ -109,7 +108,7 @@ class Two_d_one_material:
                         # new_random_values = np.random.rand(non_zero_indices.sum()).round(3)
                         # aux_array[non_zero_indices] = new_random_values
 
-                        elif r % 2 == 0 and c % 2 == 0 and (r!=1 and c!=1):
+                        elif r % 2 == 0 and c % 2 == 0:
                             print("aux_array", aux_array[i])
                             if aux_array[i] != 1:
                                 dist_to_collision = - \
@@ -123,7 +122,6 @@ class Two_d_one_material:
                                     np.log(1 - aux_array[i]
                                            ) / tt_cross_section
                             print("dist to collision", dist_to_collision)
-                            # print("dist to collision", dist_to_collision)
                             if cant_cross_amount != False:
                                 if dist_to_collision < distance_array[e]*np.sqrt(2):
                                     cant_cross_amount += 1
@@ -131,17 +129,16 @@ class Two_d_one_material:
                                         cross_array, 0.000
                                     )
                                     cross_matrix[r][c] = 0.00
-                                    i += 1
                                     print("cross matrix", cross_matrix)
-                                    auxx -= 1
+                                    
                                 else:
                                     cross_amount += 1
                                     cross_array = np.append(
                                         cross_array, aux_array[i])
                                     cross_matrix[r][c] = aux_array[i]
-                                    i += 1
+                                    cross_amount_matrix[r][c] += 1
                                     print("cross matrix", cross_matrix)
-                                    auxx -= 1
+                                i += 1
 
                             else:
                                 if dist_to_collision < distance_array[e]*np.sqrt(2) :
@@ -149,23 +146,21 @@ class Two_d_one_material:
                                     cross_amount = 0
                                     cross_array = np.append(cross_array, 0.000)
                                     cross_matrix[r][c] = 0.00
-                                    i += 1
                                     print("cross matrix", cross_matrix)
-                                    auxx  -= 1
                                         
                                 else:
                                     cross_amount = 1
                                     cross_array = np.append(cross_array, aux_array[i])
                                     cant_cross_amount = 0
                                     cross_matrix[r][c] = aux_array[i]
-                                    i += 1
+                                    cross_amount_matrix[r][c] += 1
                                     print("cross matrix", cross_matrix)
-                                    auxx  -= 1
-                                        
+                                    
+                                i += 1
                         else:
                             cross_matrix[1][1] = num_samples
                             i+=1
-                        print("cross matrix final", cross_matrix)
+                            print("cross matrix", cross_matrix)
                             # cross_amount_array = np.append(cross_amount_array, cross_amount)
                             # aux_array = cross_array
                             # non_zero_indices = aux_array != 0
@@ -173,7 +168,7 @@ class Two_d_one_material:
                             # aux_array[non_zero_indices] = new_random_values
                             # print("aux_array", aux_array)
                             
-
+        print("cross matrix amount final", cross_amount_matrix)
         return cross_amount_array
 
 
@@ -204,8 +199,8 @@ distance = int(input("Distance:     "))
 
 
 distance_array = np.array([])
-for i in range(distance):
-    distance_array = np.append(distance_array, i+1)
+for l in range(distance):
+    distance_array = np.append(distance_array, l+1)
 
 aux = Two_d_one_material(
     initial_neutrons, distance_array, macro_tt_UO2)
