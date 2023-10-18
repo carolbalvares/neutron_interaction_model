@@ -168,8 +168,8 @@ class Two_d_one_material:
                                     
                                 i += 1
                         else:
-                            cross_matrix[1][1] = num_samples
-                            cross_amount_matrix[1][1] = num_samples
+                            cross_matrix[avg_row-1][avg_column-1] = num_samples
+                            cross_amount_matrix[avg_row-1][avg_column-1] = num_samples
                             i+=1
                             print("cross matrix", cross_matrix)
                             # cross_amount_array = np.append(cross_amount_array, cross_amount)
