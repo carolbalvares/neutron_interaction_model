@@ -7,26 +7,28 @@ from parameters import *
 
 
 
-# import matplotlib.pyplot as plt
-# import pandas as pd
-# import seaborn as sns
+import matplotlib.pyplot as plt
+import pandas as pd
+import seaborn as sns
 
 
 class Two_d_one_material:
-    def __init__(self, num_samples, distance_array, tt_cross_section):
+    def __init__(self, num_samples, distance_array, tt_cross_section, row, column):
         self.num_samples = num_samples
         self.distance_array = distance_array
         self.tt_cross_section = tt_cross_section
+        self.row = row
+        self.column = column
 
-    def n_neutrons_cross(self, num_samples, distance_array, tt_cross_section):
+    def n_neutrons_cross(self, num_samples, distance_array, tt_cross_section, row, column):
         self.distance_array = distance_array
         self.num_samples = num_samples
         self.tt_cross_section = tt_cross_section
-        cross_matrix = np.zeros((3, 3))
-        cross_amount_matrix = np.zeros((3, 3))
-        # cant_cross_array = np.array([])
+        self.row = row
+        self.column = column
+        cross_matrix = np.zeros((row, column))
+        cross_amount_matrix = np.zeros((row, column))
         cross_array = np.array([])
-        cross_amount_array = np.array([])
         dist_to_collision = 0
         r_samples_array = np.random.rand(num_samples).round(3)
         print("samples array:   ", r_samples_array)
@@ -34,10 +36,14 @@ class Two_d_one_material:
         # divided_array = r_samples_array.reshape((8, elements_per_subarray))
         # aux_array = divided_array
         aux_array = r_samples_array
-        column = 3
-        row = 3
-        auxx = column * row
-
+        if row %2==0:
+            avg_row = (row/2)+1
+        else:
+            avg_row = round((row+0.1)/2)
+        if column %2==0:
+            avg_column = (column/2)+1
+        else:
+            avg_column = round((column+0.1)/2)
         for e in range(1):
             cross_array = np.array([])
             cross_amount = 0
@@ -46,7 +52,7 @@ class Two_d_one_material:
             i = 0
             while i < len(aux_array):
                 for r in range(row):
-                    for c in range(3):
+                    for c in range(column):
                         print("e", e)
                         print("r", r)
                         print("c", c)
@@ -202,30 +208,37 @@ macro_tt_Fe = macro_cs_Fe_absorption + macro_scattering_Fe
 
 initial_neutrons = int(input("Choose initial number of neutrons:    "))
 distance = int(input("Distance:     "))
+rowcol = int(input("Choose your matrix dimension:     "))
 
 
 distance_array = np.array([])
 for l in range(distance):
     distance_array = np.append(distance_array, l+1)
-
+rowcol_array = np.array([])
+column = np.array([])
+row = np.array([])
+for x in range(rowcol):
+    column = np.append(column, x+1)
+    row = np.append(row, x+1)
+    
+    
 aux = Two_d_one_material(
-    initial_neutrons, distance_array, macro_tt_UO2)
-cross_amount_array = aux.n_neutrons_cross(
-    initial_neutrons, distance_array, macro_tt_UO2)
-print("amount that crosses:       ", cross_amount_array)
-
-# aux = 1
-
-# cross_df = pd.DataFrame({'Distance': distance_array, 'CrossAmount': cross_amount_array, 'Index': aux})
+    initial_neutrons, distance_array, macro_tt_UO2, rowcol, rowcol)
+cross_amount_matrix = aux.n_neutrons_cross(
+    initial_neutrons, distance_array, macro_tt_UO2, rowcol, rowcol)
 
 
-# # Criar um heatmap
-# heatmap_data = cross_df.pivot( index = 'Index', columns='Distance', values='CrossAmount')
-# sns.heatmap(heatmap_data, cmap='viridis', annot=True, fmt='.1f', cbar_kws={'label': 'Cross Amount'})
-# plt.xlabel('Distance')
-# plt.ylabel('Sample')
-# plt.title('Neutron Cross Amount Heatmap')
-# plt.show()
+
+
+# Criar um heatmap
+sns.heatmap(cross_amount_matrix, annot=True, cmap='viridis', fmt=".1f", linewidths=.5)
+plt.xlabel('Column')
+plt.ylabel('Row')
+plt.title('Neutron Cross Amount Heatmap')
+plt.show()
+
+
+#####problema de matrizes par (deixar pra depois)
 
 # strange value https://www.dgtresearch.com/diffusion-coefficients/
 # https://www.nuclear-power.com/nuclear-power/reactor-physics/neutron-diffusion-theory/neutron-current-density/
