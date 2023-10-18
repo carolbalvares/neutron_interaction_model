@@ -34,15 +34,18 @@ class Two_d_one_material:
         # divided_array = r_samples_array.reshape((8, elements_per_subarray))
         # aux_array = divided_array
         aux_array = r_samples_array
-        auxx = 9
+        column = 3
+        row = 3
+        auxx = column * row
 
         for e in range(1):
             cross_array = np.array([])
             cross_amount = 0
             cant_cross_amount = 0
             cant_cross_amount = False
-            for i in range(auxx):
-                for r in range(3):
+            i = 0
+            while i < len(aux_array):
+                for r in range(row):
                     for c in range(3):
                         print("e", e)
                         print("r", r)
@@ -98,7 +101,7 @@ class Two_d_one_material:
                                     cross_matrix[r][c] = aux_array[i]
                                     cross_amount_matrix[r][c] += 1
                                     print("cross matrix", cross_matrix)
-                                i += 1    
+                                i += 1   
 
                         # discretizations = discretizations - 1
                         # print("cross matrix final", cross_matrix)
@@ -123,6 +126,7 @@ class Two_d_one_material:
                                            ) / tt_cross_section
                             print("dist to collision", dist_to_collision)
                             if cant_cross_amount != False:
+                            #errado
                                 if dist_to_collision < distance_array[e]*np.sqrt(2):
                                     cant_cross_amount += 1
                                     cross_array = np.append(
@@ -159,6 +163,7 @@ class Two_d_one_material:
                                 i += 1
                         else:
                             cross_matrix[1][1] = num_samples
+                            cross_amount_matrix[1][1] = num_samples
                             i+=1
                             print("cross matrix", cross_matrix)
                             # cross_amount_array = np.append(cross_amount_array, cross_amount)
@@ -167,9 +172,10 @@ class Two_d_one_material:
                             # new_random_values = np.random.rand(non_zero_indices.sum()).round(3)
                             # aux_array[non_zero_indices] = new_random_values
                             # print("aux_array", aux_array)
-                            
+                        c +=1
+                    r+=1        
         print("cross matrix amount final", cross_amount_matrix)
-        return cross_amount_array
+        return cross_amount_matrix
 
 
 micro_scattering_U235 = 15.04 * 10 ** (-24)
