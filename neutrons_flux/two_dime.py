@@ -55,8 +55,6 @@ class Probability:
                     c+=1
                 r+=1
             i+=1
-  
-
         return prob_matrix
 
 
@@ -74,7 +72,7 @@ class Two_dimensions:
         self.column = column
         self.num_samples = num_samples
         self.prob_matrix = prob_matrix
-        cross_amount_matrix = np.zeros((row, column))
+        cross_amount_matrix = np.zeros((len(row), len(column)))
         total_spaces = row * column
         half_row = len(row) // 2
         half_col = len(column) // 2
@@ -92,11 +90,16 @@ class Two_dimensions:
         ]
 
         for r in range(len(row)):
+            print("entrou no r")
             for c in range(len(column)):
+                print("entrou no c")
                 for direction in directions:
                     i, j = half_row, half_col
+                    print("i", i)
+                    print("j", j)
                     cross_amount_matrix[half_row][half_col] = num_samples
-                    while 0 <= i < row and 0 <= j < column:
+                    while 0 <= i < len(row) and 0 <= j < len(column):
+                        print("entrou no while")
                         if prob_matrix[i][j] >= 1:
                             print("ola")
                         else:
@@ -147,5 +150,6 @@ r_array_result = obj.random(initial_neutrons)
 item = Probability( initial_neutrons, macro_tt_UO2, row, column, r_array_result)
 prob_matrix = item.distance(initial_neutrons, macro_tt_UO2, row, column, r_array_result)
 aux = Two_dimensions(initial_neutrons, macro_tt_UO2, row, column,prob_matrix)
+cross_amount_matrix = aux.cross_amount(macro_tt_UO2, row, column, initial_neutrons, prob_matrix)
 
 # como fazer quando tiver numero diferente de colunas e linhas
