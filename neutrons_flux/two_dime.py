@@ -5,24 +5,19 @@ from homogenization.hmg_fission import macro_cs_fission
 import sys
 sys.path.append('../')
 
+
 class Random_array:
     def __init__(self, num_samples):
+        self.num_samples = num_samples
+        
+    def random(self, num_samples):
         self.num_samples = num_samples
         r_samples_array = np.random.rand(num_samples).round(3)
         print("samples array:   ", r_samples_array)
         return r_samples_array
 
 
-class Distance:
-    def __init__(self, num_samples, tt_cross_section, row, column):
-        self.num_samples = num_samples
-        self.tt_cross_section = tt_cross_section
-        self.row = row
-        self.column = column
-
-
-
-class Two_dimensions:
+class Probability:
     def __init__(self, num_samples, tt_cross_section, row, column, r_array):
         self.num_samples = num_samples
         self.tt_cross_section = tt_cross_section
@@ -30,53 +25,78 @@ class Two_dimensions:
         self.column = column
         self.r_array = r_array
 
-    def random_array(self, num_samples, r_array):
-        self.num_samples = num_samples
-        self.r_array = r_array
-        r_samples_array = np.random.rand(num_samples).round(3)
-        print("samples array:   ", r_samples_array)
-        r_array = r_samples_array
-        return r_array
-
     def distance(self, num_samples, tt_cross_section, row, column, r_array):
         self.num_samples = num_samples
         self.tt_cross_section = tt_cross_section
         self.row = row
         self.column = column
         self.r_array = r_array
-        prob_matrix = np.zeros((row, column))
+        print("rarray", r_array)
+        prob_matrix = np.zeros((len(row), len(column)))
         i = 0
+        print("row", row)
         while i < len(r_array):
-            for r in row:
-                for c in column:
-                    if (r % 2 != 0 and c % 2 == 0) or (r % 2 == 0 and c % 2 != 0):
-                        if r_array[i] != 1:
-                            dist_to_collision = - \
-                                np.log(1 - r_array[i]
-                                       ) / tt_cross_section
-                        else:
-                            while r_array[i] == 1:
-                                r_array[i] = round(
-                                    np.random.rand(), 3)
-                            dist_to_collision = - \
-                                np.log(1 - r_array[i]
-                                       ) / tt_cross_section
-                            prob_matrix[r][c] = dist_to_collision
-                    else 
+            for r in range(len(row)):
+                for c in range(len(column)):
+                    if r_array[i] != 1:
+                        dist_to_collision = - \
+                            np.log(1 - r_array[i]
+                                   ) / tt_cross_section
+                    else:
+                        while r_array[i] == 1:
+                            r_array[i] = round(
+                                np.random.rand(), 3)
+                        dist_to_collision = - \
+                            np.log(1 - r_array[i]
+                                   ) / tt_cross_section
+                    prob_matrix[r][c] = dist_to_collision
 
-    def cross_amount(self, tt_cross_section, row, column):
+        return prob_matrix
+
+
+class Two_dimensions:
+    def __init__(self, num_samples, tt_cross_section, row, column,prob_matrix):
+        self.num_samples = num_samples
         self.tt_cross_section = tt_cross_section
         self.row = row
         self.column = column
+        self.prob_matrix = prob_matrix
+
+    def cross_amount(self, tt_cross_section, row, column, num_samples, prob_matrix):
+        self.tt_cross_section = tt_cross_section
+        self.row = row
+        self.column = column
+        self.num_samples = num_samples
+        self.prob_matrix = prob_matrix
         cross_amount_matrix = np.zeros((row, column))
-        aux = 3
-        aux_matrix = np.zeros((aux, aux))
-        print("aux matriz", aux_matrix)
         total_spaces = row * column
-        for i in total_spaces:
-            for r in row:
-                for c in column:
-                    for x in
+        half_row = len(row) // 2
+        half_col = len(column) // 2
+
+        # Definir direções
+        directions = [
+            (0, -1),  # Para a esquerda
+            (0, 1),   # Para a direita
+            (-1, 0),  # Para cima
+            (1, 0),   # Para baixo
+            (-1, 1),  # Diagonal superior direita
+            (1, 1),   # Diagonal inferior direita
+            (1, -1),  # Diagonal inferior esquerda
+            (-1, -1)  # Diagonal superior esquerda
+        ]
+
+        for r in range(len(row)):
+            for c in range(len(column)):
+                for direction in directions:
+                    i, j = half_row, half_col
+                    cross_amount_matrix[half_row][half_col] = num_samples
+                    while 0 <= i < row and 0 <= j < column:
+                        if prob_matrix[i][j] >= 1:
+                            print("ola")
+                        i += direction[0]
+                        j += direction[1]
+
+        return False
 
 
 micro_scattering_U235 = 15.04 * 10 ** (-24)
@@ -108,14 +128,14 @@ rowcol_array = np.array([])
 column = np.array([])
 row = np.array([])
 for x in range(rowcol):
-    column = np.append(column, x+1)
-    row = np.append(row, x+1)
+    column = np.append(column, int(x+1))
+    row = np.append(row, int(x+1))
 
 
-aux = Two_dimensions(
-    initial_neutrons, macro_tt_UO2, rowcol, rowcol)
-random_array = aux.random_array(
-    initial_neutrons)
-cross_amount = aux.cross_amount(macro_tt_UO2, rowcol, rowcol)
+obj = Random_array(initial_neutrons)
+r_array_result = obj.random(initial_neutrons)
+item = Probability( initial_neutrons, macro_tt_UO2, row, column, r_array_result)
+prob_matrix = item.distance(initial_neutrons, macro_tt_UO2, row, column, r_array_result)
+aux = Two_dimensions(initial_neutrons, macro_tt_UO2, row, column,prob_matrix)
 
 # como fazer quando tiver numero diferente de colunas e linhas
