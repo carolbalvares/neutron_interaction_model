@@ -34,10 +34,12 @@ class Probability:
         print("rarray", r_array)
         prob_matrix = np.zeros((len(row), len(column)))
         i = 0
+        r = 0
+        c = 0
         print("row", row)
         while i < len(r_array):
-            for r in range(len(row)):
-                for c in range(len(column)):
+            while r < len(row):
+                while c < len(column):
                     if r_array[i] != 1:
                         dist_to_collision = - \
                             np.log(1 - r_array[i]
@@ -50,6 +52,10 @@ class Probability:
                             np.log(1 - r_array[i]
                                    ) / tt_cross_section
                     prob_matrix[r][c] = dist_to_collision
+                    c+=1
+                r+=1
+            i+=1
+  
 
         return prob_matrix
 
@@ -93,8 +99,12 @@ class Two_dimensions:
                     while 0 <= i < row and 0 <= j < column:
                         if prob_matrix[i][j] >= 1:
                             print("ola")
+                        else:
+                            print("hello")
                         i += direction[0]
                         j += direction[1]
+                        r+=1
+                        c+=1
 
         return False
 
