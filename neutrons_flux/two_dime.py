@@ -1,15 +1,16 @@
+import sys
+sys.path.append('../')
 from parameters import *
 from homogenization.hmg_scattering import macro_scattering_Fe
 from homogenization.hmg_gamma import macro_cs_gamma_fuel, macro_gamma_Fe
 from homogenization.hmg_fission import macro_cs_fission
-import sys
-sys.path.append('../')
+
 
 
 class Random_array:
     def __init__(self, num_samples):
         self.num_samples = num_samples
-        
+
     def random(self, num_samples):
         self.num_samples = num_samples
         r_samples_array = np.random.rand(num_samples).round(3)
@@ -34,32 +35,32 @@ class Probability:
         print("rarray", r_array)
         prob_matrix = np.zeros((len(row), len(column)))
         i = 0
-        r = 0
-        c = 0
-        print("row", row)
         while i < len(r_array):
+            r = 0
             while r < len(row):
+                c = 0
                 while c < len(column):
-                    if r_array[i] != 1:
-                        dist_to_collision = - \
-                            np.log(1 - r_array[i]
-                                   ) / tt_cross_section
-                    else:
-                        while r_array[i] == 1:
-                            r_array[i] = round(
-                                np.random.rand(), 3)
-                        dist_to_collision = - \
-                            np.log(1 - r_array[i]
-                                   ) / tt_cross_section
-                    prob_matrix[r][c] = dist_to_collision
-                    c+=1
-                r+=1
-            i+=1
+                    if i < len(r_array):
+                        if r_array[i] != 1:
+                            dist_to_collision = -np.log(1 - r_array[i]) / tt_cross_section
+                            prob_matrix[r][c] = dist_to_collision
+                        else:
+                            while i < len(r_array) and r_array[i] == 1:
+                                r_array[i] = round(np.random.rand(), 3)
+                                i += 1
+                                if i < len(r_array):
+                                    dist_to_collision = -np.log(1 - r_array[i]) / tt_cross_section
+                                    prob_matrix[r][c] = dist_to_collision
+                    i += 1
+                    c += 1
+                r += 1
+            
+        print("prob matrix", prob_matrix)
         return prob_matrix
 
 
 class Two_dimensions:
-    def __init__(self, num_samples, tt_cross_section, row, column,prob_matrix):
+    def __init__(self, num_samples, tt_cross_section, row, column, prob_matrix):
         self.num_samples = num_samples
         self.tt_cross_section = tt_cross_section
         self.row = row
@@ -89,25 +90,20 @@ class Two_dimensions:
             (-1, -1)  # Diagonal superior esquerda
         ]
 
-        for r in range(len(row)):
-            print("entrou no r")
-            for c in range(len(column)):
-                print("entrou no c")
-                for direction in directions:
-                    i, j = half_row, half_col
-                    print("i", i)
-                    print("j", j)
-                    cross_amount_matrix[half_row][half_col] = num_samples
-                    while 0 <= i < len(row) and 0 <= j < len(column):
-                        print("entrou no while")
-                        if prob_matrix[i][j] >= 1:
-                            print("ola")
-                        else:
-                            print("hello")
-                        i += direction[0]
-                        j += direction[1]
-                        r+=1
-                        c+=1
+        for direction in directions:
+            i, j = half_row, half_col
+            print("i", i)
+            print("j", j)
+            cross_amount_matrix[half_row][half_col] = num_samples
+            while 0 <= i < len(row) and 0 <= j < len(column):
+                print("entrou no while", prob_matrix[i][j])
+                if prob_matrix[i][j] >= 1:
+                    print("ola")
+                else:
+                    print("hello")
+                i += direction[0]
+                j += direction[1]
+                
 
         return False
 
@@ -147,9 +143,11 @@ for x in range(rowcol):
 
 obj = Random_array(initial_neutrons)
 r_array_result = obj.random(initial_neutrons)
-item = Probability( initial_neutrons, macro_tt_UO2, row, column, r_array_result)
-prob_matrix = item.distance(initial_neutrons, macro_tt_UO2, row, column, r_array_result)
-aux = Two_dimensions(initial_neutrons, macro_tt_UO2, row, column,prob_matrix)
-cross_amount_matrix = aux.cross_amount(macro_tt_UO2, row, column, initial_neutrons, prob_matrix)
+item = Probability(initial_neutrons, macro_tt_UO2, row, column, r_array_result)
+prob_matrix = item.distance(
+    initial_neutrons, macro_tt_UO2, row, column, r_array_result)
+aux = Two_dimensions(initial_neutrons, macro_tt_UO2, row, column, prob_matrix)
+cross_amount_matrix = aux.cross_amount(
+    macro_tt_UO2, row, column, initial_neutrons, prob_matrix)
 
 # como fazer quando tiver numero diferente de colunas e linhas
