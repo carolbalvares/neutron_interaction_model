@@ -1,9 +1,9 @@
 import sys
 sys.path.append('../')
-from parameters import *
-from homogenization.hmg_scattering import macro_scattering_Fe
-from homogenization.hmg_gamma import macro_cs_gamma_fuel, macro_gamma_Fe
 from homogenization.hmg_fission import macro_cs_fission
+from homogenization.hmg_gamma import macro_cs_gamma_fuel, macro_gamma_Fe
+from homogenization.hmg_scattering import macro_scattering_Fe
+from parameters import *
 
 
 
@@ -14,7 +14,6 @@ class Random_array:
     def random(self, num_samples):
         self.num_samples = num_samples
         r_samples_array = np.random.rand(num_samples).round(3)
-        print("samples array:   ", r_samples_array)
         return r_samples_array
 
 
@@ -42,19 +41,22 @@ class Probability:
                 while c < len(column):
                     if i < len(r_array):
                         if r_array[i] != 1:
-                            dist_to_collision = -np.log(1 - r_array[i]) / tt_cross_section
+                            dist_to_collision = - \
+                                np.log(1 - r_array[i]) / tt_cross_section
                             prob_matrix[r][c] = dist_to_collision
                         else:
                             while i < len(r_array) and r_array[i] == 1:
                                 r_array[i] = round(np.random.rand(), 3)
                                 i += 1
                                 if i < len(r_array):
-                                    dist_to_collision = -np.log(1 - r_array[i]) / tt_cross_section
+                                    dist_to_collision = - \
+                                        np.log(1 - r_array[i]) / \
+                                        tt_cross_section
                                     prob_matrix[r][c] = dist_to_collision
                     i += 1
                     c += 1
                 r += 1
-            
+
         print("prob matrix", prob_matrix)
         return prob_matrix
 
@@ -74,6 +76,8 @@ class Two_dimensions:
         self.num_samples = num_samples
         self.prob_matrix = prob_matrix
         cross_amount_matrix = np.zeros((len(row), len(column)))
+        aux_matrix = np.zeros((3, 3))
+        print(aux_matrix)
         total_spaces = row * column
         half_row = len(row) // 2
         half_col = len(column) // 2
@@ -89,21 +93,29 @@ class Two_dimensions:
             (1, -1),  # Diagonal inferior esquerda
             (-1, -1)  # Diagonal superior esquerda
         ]
+        # print("half col", half_col)
+        # for r in range(len(row)):
+        #     for c in range(len(column)):
+        #         i, j = half_row, half_col
+        #         central_spot = prob_matrix[half_row][half_col]
+        #         print("inicio", central_spot)
+        #         # caso ímpar
+        #         ############ primeiro quadrante##############
+        r_aux = half_row
+        while r_aux >= 0:
+            c_aux = half_col
+            while c_aux >= 0:
+                cross_amount_matrix[r_aux][c_aux] = prob_matrix[r_aux][c_aux]
+                print("cross_amount_matrix", cross_amount_matrix)
+                print("raux", r_aux)
+                print("caux", c_aux)
+                central_spot = cross_amount_matrix[r_aux][c_aux]
+                print("central spot", central_spot)
+                c_aux = c_aux - 1
+            r_aux = r_aux - 1
 
-        for direction in directions:
-            i, j = half_row, half_col
-            print("i", i)
-            print("j", j)
-            cross_amount_matrix[half_row][half_col] = num_samples
-            while 0 <= i < len(row) and 0 <= j < len(column):
-                print("entrou no while", prob_matrix[i][j])
-                if prob_matrix[i][j] >= 1:
-                    print("ola")
-                else:
-                    print("hello")
-                i += direction[0]
-                j += direction[1]
-                
+            # caso par
+            # while 0 <= i < len(row) and 0 <= j < len(column):
 
         return False
 
