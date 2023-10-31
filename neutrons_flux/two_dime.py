@@ -1,10 +1,9 @@
+from parameters import *
+from homogenization.hmg_scattering import macro_scattering_Fe
+from homogenization.hmg_gamma import macro_cs_gamma_fuel, macro_gamma_Fe
+from homogenization.hmg_fission import macro_cs_fission
 import sys
 sys.path.append('../')
-from homogenization.hmg_fission import macro_cs_fission
-from homogenization.hmg_gamma import macro_cs_gamma_fuel, macro_gamma_Fe
-from homogenization.hmg_scattering import macro_scattering_Fe
-from parameters import *
-
 
 
 class Random_array:
@@ -77,64 +76,75 @@ class Two_dimensions:
         self.prob_matrix = prob_matrix
         cross_amount_matrix = np.zeros((len(row), len(column)))
         aux_matrix = np.zeros((3, 3))
-        print(aux_matrix)
         total_spaces = row * column
         half_row = len(row) // 2
         half_col = len(column) // 2
-        ###########first quadrant##############
-        r_aux = half_row
-        while r_aux >= 0:
-            c_aux = half_col
-            while c_aux < len(column):
-                cross_amount_matrix[r_aux][c_aux] = prob_matrix[r_aux][c_aux]
-                print("cross_amount_matrix", cross_amount_matrix)
-                print("raux", r_aux)
-                print("caux", c_aux)
-                central_spot = cross_amount_matrix[r_aux][c_aux]
-                print("central spot", central_spot)
-                c_aux = c_aux + 1
-            r_aux = r_aux - 1
-        ###########second quadrant##############
-        r_aux = half_row
-        while r_aux >= 0:
-            c_aux = half_col
-            while c_aux >= 0:
-                cross_amount_matrix[r_aux][c_aux] = prob_matrix[r_aux][c_aux]
-                print("cross_amount_matrix", cross_amount_matrix)
-                print("raux", r_aux)
-                print("caux", c_aux)
-                central_spot = cross_amount_matrix[r_aux][c_aux]
-                print("central spot", central_spot)
-                c_aux = c_aux - 1
-            r_aux = r_aux - 1
-        ###########third quadrant##############
-        r_aux = half_row
-        while r_aux < len(row):
-            c_aux = half_col
-            while c_aux >= 0:
-                cross_amount_matrix[r_aux][c_aux] = prob_matrix[r_aux][c_aux]
-                print("cross_amount_matrix", cross_amount_matrix)
-                print("raux", r_aux)
-                print("caux", c_aux)
-                central_spot = cross_amount_matrix[r_aux][c_aux]
-                print("central spot", central_spot)
-                c_aux = c_aux - 1
-            r_aux = r_aux + 1
-        ###########fourth quadrant##############
-        r_aux = half_row
-        while r_aux < len(row):
-            c_aux = half_col
-            while c_aux < len(column):
-                cross_amount_matrix[r_aux][c_aux] = prob_matrix[r_aux][c_aux]
-                print("cross_amount_matrix", cross_amount_matrix)
-                print("raux", r_aux)
-                print("caux", c_aux)
-                central_spot = cross_amount_matrix[r_aux][c_aux]
-                print("central spot", central_spot)
-                c_aux = c_aux + 1
-            r_aux = r_aux + 1
-            
+        aux_array = [1,0,2]
+        aux_array2 = [1, 2, 0]
+        row_aux_array = [half_row, half_row+1, half_row-1]
+        column_aux_array = [half_col, half_col+1, half_col-1]
+        ########### first quadrant##############
 
+        r_aux = half_row
+        while r_aux >= 0:
+            c_aux = half_col
+            while c_aux < len(column):
+                cross_amount_matrix[r_aux][c_aux] = prob_matrix[r_aux][c_aux]
+                c_aux = c_aux + 1
+            r_aux = r_aux - 1
+
+        # r_aux = half_row-1
+        # while r_aux >= 0:
+        #     c_aux = half_col-1
+        #     while c_aux < len(column):
+        #         print("caux", c_aux)
+        # i = 0
+        # while i < 2:
+        #     j = 0
+        #     while j < 2:
+        #         aux_matrix[aux_array[i]][aux_array2[j]
+        #                                  ] = cross_amount_matrix[row_aux_array[-i]][column_aux_array[j]]
+        #         print("matriz", aux_matrix)
+        #         print("[aux_array[i]]", aux_array[i])
+        #         print("aux_array[j]", aux_array2[j])
+        #         print("j antes", j)
+        #         print("i antes", i)
+        #         j = j+1
+        #         print("j depois", j)
+        #         # c_aux = c_aux + 1
+        #         print("caux depois", c_aux)
+        #     i = i+1
+        #     print("i depois", i)
+        #     # r_aux = r_aux - 1
+        #     print("raux depois", r_aux)
+
+            # ########### second quadrant##############
+            # r_aux = half_row
+            # while r_aux >= 0:
+            #     c_aux = half_col
+            #     while c_aux >= 0:
+            #         cross_amount_matrix[r_aux][c_aux] = prob_matrix[r_aux][c_aux]
+            #         central_spot = cross_amount_matrix[r_aux][c_aux]
+            #         c_aux = c_aux - 1
+            #     r_aux = r_aux - 1
+            # ########### third quadrant##############
+            # r_aux = half_row
+            # while r_aux < len(row):
+            #     c_aux = half_col
+            #     while c_aux >= 0:
+            #         cross_amount_matrix[r_aux][c_aux] = prob_matrix[r_aux][c_aux]
+            #         central_spot = cross_amount_matrix[r_aux][c_aux]
+            #         c_aux = c_aux - 1
+            #     r_aux = r_aux + 1
+            # ########### fourth quadrant##############
+            # r_aux = half_row
+            # while r_aux < len(row):
+            #     c_aux = half_col
+            #     while c_aux < len(column):
+            #         cross_amount_matrix[r_aux][c_aux] = prob_matrix[r_aux][c_aux]
+            #         central_spot = cross_amount_matrix[r_aux][c_aux]
+            #         c_aux = c_aux + 1
+            #     r_aux = r_aux + 1
 
             # caso par
             # while 0 <= i < len(row) and 0 <= j < len(column):
