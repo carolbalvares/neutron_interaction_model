@@ -81,10 +81,11 @@ class Two_dimensions:
         half_col = len(column) // 2
         aux_array = [1,0,2]
         aux_array2 = [1, 2, 0]
-        row_aux_array = [half_row, half_row+1, half_row-1]
-        column_aux_array = [half_col, half_col+1, half_col-1]
+        row_aux_array = [half_row, half_row+1]
+        row_aux_array2= [half_row, half_row-1]
+        column_aux_array = [half_col, half_col+1]
+        column_aux_array2 = [half_col, half_col-1]
         ########### first quadrant##############
-
         r_aux = half_row
         while r_aux >= 0:
             c_aux = half_col
@@ -92,31 +93,63 @@ class Two_dimensions:
                 cross_amount_matrix[r_aux][c_aux] = prob_matrix[r_aux][c_aux]
                 c_aux = c_aux + 1
             r_aux = r_aux - 1
+        ########### second quadrant##############
+        r_aux = half_row
+        while r_aux >= 0:
+            c_aux = half_col
+            while c_aux >= 0:
+                cross_amount_matrix[r_aux][c_aux] = prob_matrix[r_aux][c_aux]
+                c_aux = c_aux - 1
+            r_aux = r_aux - 1
+        ########### third quadrant##############
+        r_aux = half_row
+        while r_aux < len(row):
+            c_aux = half_col
+            while c_aux >= 0:
+                cross_amount_matrix[r_aux][c_aux] = prob_matrix[r_aux][c_aux]
+                c_aux = c_aux - 1
+            r_aux = r_aux + 1
+        ########### fourth quadrant##############
+        r_aux = half_row
+        while r_aux < len(row):
+            c_aux = half_col
+            while c_aux < len(column):
+                cross_amount_matrix[r_aux][c_aux] = prob_matrix[r_aux][c_aux]
+                c_aux = c_aux + 1
+            r_aux = r_aux + 1
 
         # r_aux = half_row-1
         # while r_aux >= 0:
         #     c_aux = half_col-1
         #     while c_aux < len(column):
         #         print("caux", c_aux)
-        # i = 0
-        # while i < 2:
-        #     j = 0
-        #     while j < 2:
-        #         aux_matrix[aux_array[i]][aux_array2[j]
-        #                                  ] = cross_amount_matrix[row_aux_array[-i]][column_aux_array[j]]
-        #         print("matriz", aux_matrix)
-        #         print("[aux_array[i]]", aux_array[i])
-        #         print("aux_array[j]", aux_array2[j])
-        #         print("j antes", j)
-        #         print("i antes", i)
-        #         j = j+1
-        #         print("j depois", j)
-        #         # c_aux = c_aux + 1
-        #         print("caux depois", c_aux)
-        #     i = i+1
-        #     print("i depois", i)
-        #     # r_aux = r_aux - 1
-        #     print("raux depois", r_aux)
+        i = 0
+        while i < 2:
+            j = 0
+            while j < 2:
+                aux_matrix[aux_array[i]][aux_array2[j]
+                                         ] = cross_amount_matrix[row_aux_array2[-i]][column_aux_array[j]]
+                j = j+1
+            i = i+1
+        print("matriz", aux_matrix)
+        i = 0
+        while i < 2:
+            j = 0
+            while j < 2:
+                aux_matrix[aux_array[i]][aux_array[j]
+                                         ] = cross_amount_matrix[row_aux_array2[-i]][column_aux_array2[j]]
+                print("matriz", aux_matrix)
+                print("1",row_aux_array2[-i])
+                print("2",column_aux_array2[j])
+                print("cross amout matrix", cross_amount_matrix)
+                print("[aux_array[i]]", aux_array[i])
+                print("aux_array[j]", aux_array[j])
+                print("j antes", j)
+                print("i antes", i)
+                j = j+1
+                print("j depois", j)
+            i = i+1
+            print("i depois", i)
 
             # ########### second quadrant##############
             # r_aux = half_row
