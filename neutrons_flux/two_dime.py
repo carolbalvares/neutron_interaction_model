@@ -79,12 +79,13 @@ class Two_dimensions:
         half_col = len(column) // 2
         center_spot_array = np.array([])
         center_spot_array = range(initial_neutrons)
+        position_array = np.array([])
         # ########### first quadrant##############
         # r_aux = half_row
         # while r_aux >= 0:
         #             c_aux = half_col
         #             while c_aux < len(column):
-        #                 cross_amount_matrix[r_aux][c_aux] = prob_matrix[r_aux][c_aux]
+        #                 cross_amount_matrix[r_aux][c_aux] = 
         #                 c_aux = c_aux + 1
         #             r_aux = r_aux - 1
         #         ########### second quadrant##############
@@ -112,44 +113,67 @@ class Two_dimensions:
         #                 c_aux = c_aux + 1
         #             r_aux = r_aux + 1
 
+
         aux_array = [1, 0, 2]
         aux_array2 = [1, 2, 0]
+        center_spot_array = [1, 2, 3]  # Adapte conforme necessário
+        position_array = []
+
         for cr in center_spot_array:
-            center_spot = center_spot_array[cr]
-            center_aux_array = [center_spot, center_spot+1]
-            center_aux_array2 = [center_spot, center_spot-1]
-            ########### first quadrant##############
+            center_spot = cr
+            center_aux_array = [center_spot, center_spot + 1]
+            center_aux_array2 = [center_spot, center_spot - 1]
+
+            ########### first quadrant ##############
             i = 0
             while i < 2:
                 j = 0
                 while j < 2:
-                    aux_matrix[aux_array[i]][aux_array2[j]
-                                             ] = prob_matrix[center_aux_array2[-i]][center_aux_array[j]]
-                    j = j+1
-                i = i+1
-            print("matriz", aux_matrix)
-            ########### second quadrant##############
-            i = 0
-            while i < 2:
-                j = 0
-                while j < 2:
-                    aux_matrix[aux_array[i]][aux_array[j]
-                                             ] = prob_matrix[center_aux_array2[-i]][center_aux_array2[j]]
-                    j = j+1
-                i = i+1
-            print("matriz", aux_matrix)
-            ########### third and fourth quadrant##############
-            row_aux_array3 = [0, 1, 2]
-            column_aux_array3 = [center_spot-1, center_spot, center_spot+1]
-            i = 0
-            while i <= 2:
-                aux_matrix[2][row_aux_array3[i]
-                              ] = prob_matrix[center_spot+1][column_aux_array3[i]]
-                i = i+1
-            cr = cr+1
+                    aux_matrix[aux_array[i]][aux_array2[j]] = prob_matrix[center_aux_array2[-i]][center_aux_array[j]]
+                    array = [[center_aux_array2[-i], center_aux_array[j]]]
+                    position_array.extend(array)
+                    j = j + 1
+                i = i + 1
+
             print("matriz", aux_matrix)
 
-        return False
+            ########### second quadrant ##############
+            i = 0
+            while i < 2:
+                j = 0
+                while j < 2:
+                    aux_matrix[aux_array[i]][aux_array[j]] = prob_matrix[center_aux_array2[-i]][center_aux_array2[j]]
+                    array = [[center_aux_array2[-i], center_aux_array2[j]]]
+                    position_array.extend(array)
+                    j = j + 1
+                i = i + 1
+
+            print("matriz", aux_matrix)
+
+            ########### third and fourth quadrant ##############
+            row_aux_array3 = [0, 1, 2]
+            column_aux_array3 = [center_spot - 1, center_spot, center_spot + 1]
+            i = 0
+            while i <= 2:
+                aux_matrix[2][row_aux_array3[i]] = prob_matrix[center_spot + 1][column_aux_array3[i]]
+                array = [[center_spot + 1, column_aux_array3[i]]]
+                position_array.extend(array)
+                i = i + 1
+                print("matriz", aux_matrix)
+
+            cr = cr + 1
+
+        # Fora do loop, se necessário
+        for p in position_array:
+            for r in range(3):
+                # Calcular as coordenadas na matriz 7x7
+                x = p[0] - 1
+                y = p[1] - 1
+
+                # Atribuir valor da matriz 3x3 à matriz 7x7
+                cross_amount_matrix[x, y] = aux_matrix[r, :]
+                print("tentativa", cross_amount_matrix)
+
 
 
 micro_scattering_U235 = 15.04 * 10 ** (-24)
