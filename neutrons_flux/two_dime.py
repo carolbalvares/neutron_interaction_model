@@ -1,9 +1,10 @@
-from parameters import *
-from homogenization.hmg_scattering import macro_scattering_Fe
-from homogenization.hmg_gamma import macro_cs_gamma_fuel, macro_gamma_Fe
-from homogenization.hmg_fission import macro_cs_fission
 import sys
 sys.path.append('../')
+from homogenization.hmg_fission import macro_cs_fission
+from homogenization.hmg_gamma import macro_cs_gamma_fuel, macro_gamma_Fe
+from homogenization.hmg_scattering import macro_scattering_Fe
+from parameters import *
+
 
 
 class Random_array:
@@ -61,92 +62,92 @@ class Probability:
 
 
 class Two_dimensions:
-    def __init__(self, num_samples, tt_cross_section, row, column, prob_matrix):
-        self.num_samples = num_samples
-        self.tt_cross_section = tt_cross_section
+    def __init__(self, num_samples, tt_cross_section, row, column, prob_matrix, initial_neutrons):
         self.row = row
         self.column = column
         self.prob_matrix = prob_matrix
+        self.initial_neutrons = initial_neutrons
 
-    def cross_amount(self, tt_cross_section, row, column, num_samples, prob_matrix):
-        self.tt_cross_section = tt_cross_section
+    def quadrants(self, row, column, prob_matrix, initial_neutrons):
         self.row = row
         self.column = column
-        self.num_samples = num_samples
+        self.initial_neutrons = initial_neutrons
         self.prob_matrix = prob_matrix
         cross_amount_matrix = np.zeros((len(row), len(column)))
         aux_matrix = np.zeros((3, 3))
-        total_spaces = row * column
         half_row = len(row) // 2
         half_col = len(column) // 2
-        aux_array = [1,0,2]
-        aux_array2 = [1, 2, 0]
-        row_aux_array = [half_row, half_row+1]
-        row_aux_array2= [half_row, half_row-1]
-        column_aux_array = [half_col, half_col+1]
-        column_aux_array2 = [half_col, half_col-1]
-        ########### first quadrant##############
-        r_aux = half_row
-        while r_aux >= 0:
-            c_aux = half_col
-            while c_aux < len(column):
-                cross_amount_matrix[r_aux][c_aux] = prob_matrix[r_aux][c_aux]
-                c_aux = c_aux + 1
-            r_aux = r_aux - 1
-        ########### second quadrant##############
-        r_aux = half_row
-        while r_aux >= 0:
-            c_aux = half_col
-            while c_aux >= 0:
-                cross_amount_matrix[r_aux][c_aux] = prob_matrix[r_aux][c_aux]
-                c_aux = c_aux - 1
-            r_aux = r_aux - 1
-        ########### third quadrant##############
-        r_aux = half_row
-        while r_aux < len(row):
-            c_aux = half_col
-            while c_aux >= 0:
-                cross_amount_matrix[r_aux][c_aux] = prob_matrix[r_aux][c_aux]
-                c_aux = c_aux - 1
-            r_aux = r_aux + 1
-        ########### fourth quadrant##############
-        r_aux = half_row
-        while r_aux < len(row):
-            c_aux = half_col
-            while c_aux < len(column):
-                cross_amount_matrix[r_aux][c_aux] = prob_matrix[r_aux][c_aux]
-                c_aux = c_aux + 1
-            r_aux = r_aux + 1
+        center_spot_array = np.array([])
+        center_spot_array = range(initial_neutrons)
+        # ########### first quadrant##############
+        # r_aux = half_row
+        # while r_aux >= 0:
+        #             c_aux = half_col
+        #             while c_aux < len(column):
+        #                 cross_amount_matrix[r_aux][c_aux] = prob_matrix[r_aux][c_aux]
+        #                 c_aux = c_aux + 1
+        #             r_aux = r_aux - 1
+        #         ########### second quadrant##############
+        # r_aux = half_row
+        # while r_aux >= 0:
+        #             c_aux = half_col
+        #             while c_aux >= 0:
+        #                 cross_amount_matrix[r_aux][c_aux] = prob_matrix[r_aux][c_aux]
+        #                 c_aux = c_aux - 1
+        #             r_aux = r_aux - 1
+        #         ########### third quadrant##############
+        # r_aux = half_row
+        # while r_aux < len(row):
+        #             c_aux = half_col
+        #             while c_aux >= 0:
+        #                 cross_amount_matrix[r_aux][c_aux] = prob_matrix[r_aux][c_aux]
+        #                 c_aux = c_aux - 1
+        #             r_aux = r_aux + 1
+        #         ########### fourth quadrant##############
+        # r_aux = half_row
+        # while r_aux < len(row):
+        #             c_aux = half_col
+        #             while c_aux < len(column):
+        #                 cross_amount_matrix[r_aux][c_aux] = prob_matrix[r_aux][c_aux]
+        #                 c_aux = c_aux + 1
+        #             r_aux = r_aux + 1
 
-       ########### first quadrant##############
-        i = 0
-        while i < 2:
-            j = 0
-            while j < 2:
-                aux_matrix[aux_array[i]][aux_array2[j]
-                                         ] = cross_amount_matrix[row_aux_array2[-i]][column_aux_array[j]]
-                j = j+1
-            i = i+1
-        print("matriz", aux_matrix)
-        ########### second quadrant##############
-        i = 0
-        while i < 2:
-            j = 0
-            while j < 2:
-                aux_matrix[aux_array[i]][aux_array[j]
-                                         ] = cross_amount_matrix[row_aux_array2[-i]][column_aux_array2[j]]
-                j = j+1
-            i = i+1
-        print("matriz", aux_matrix)
-        ########### third and fourth quadrant##############
-        row_aux_array3 = [0,1,2]
-        column_aux_array3 = [half_col-1, half_col, half_col+1]
-        i=0
-        while i <= 2:
-            aux_matrix[2][row_aux_array3[i]
-                                    ] = cross_amount_matrix[half_row+1][column_aux_array3[i]]
-            i = i+1
-        print("matriz", aux_matrix)
+        aux_array = [1, 0, 2]
+        aux_array2 = [1, 2, 0]
+        for cr in center_spot_array:
+            center_spot = center_spot_array[cr]
+            center_aux_array = [center_spot, center_spot+1]
+            center_aux_array2 = [center_spot, center_spot-1]
+            ########### first quadrant##############
+            i = 0
+            while i < 2:
+                j = 0
+                while j < 2:
+                    aux_matrix[aux_array[i]][aux_array2[j]
+                                             ] = prob_matrix[center_aux_array2[-i]][center_aux_array[j]]
+                    j = j+1
+                i = i+1
+            print("matriz", aux_matrix)
+            ########### second quadrant##############
+            i = 0
+            while i < 2:
+                j = 0
+                while j < 2:
+                    aux_matrix[aux_array[i]][aux_array[j]
+                                             ] = prob_matrix[center_aux_array2[-i]][center_aux_array2[j]]
+                    j = j+1
+                i = i+1
+            print("matriz", aux_matrix)
+            ########### third and fourth quadrant##############
+            row_aux_array3 = [0, 1, 2]
+            column_aux_array3 = [center_spot-1, center_spot, center_spot+1]
+            i = 0
+            while i <= 2:
+                aux_matrix[2][row_aux_array3[i]
+                              ] = prob_matrix[center_spot+1][column_aux_array3[i]]
+                i = i+1
+            cr = cr+1
+            print("matriz", aux_matrix)
 
         return False
 
@@ -189,8 +190,9 @@ r_array_result = obj.random(initial_neutrons)
 item = Probability(initial_neutrons, macro_tt_UO2, row, column, r_array_result)
 prob_matrix = item.distance(
     initial_neutrons, macro_tt_UO2, row, column, r_array_result)
-aux = Two_dimensions(initial_neutrons, macro_tt_UO2, row, column, prob_matrix)
-cross_amount_matrix = aux.cross_amount(
-    macro_tt_UO2, row, column, initial_neutrons, prob_matrix)
+aux = Two_dimensions(initial_neutrons, macro_tt_UO2, row,
+                     column, prob_matrix, initial_neutrons)
+cross_amount_matrix = aux.quadrants(
+    row, column, prob_matrix, initial_neutrons)
 
 # como fazer quando tiver numero diferente de colunas e linhas
