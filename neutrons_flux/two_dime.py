@@ -120,7 +120,7 @@ class Two_dimensions:
         position_array = []
 
         for cr in center_spot_array:
-            center_spot = cr
+            center_spot = cr = half_col
             center_aux_array = [center_spot, center_spot + 1]
             center_aux_array2 = [center_spot, center_spot - 1]
 
@@ -129,7 +129,11 @@ class Two_dimensions:
             while i < 2:
                 j = 0
                 while j < 2:
-                    aux_matrix[aux_array[i]][aux_array2[j]] = prob_matrix[center_aux_array2[-i]][center_aux_array[j]]
+                    aux_matrix[aux_array[i]][aux_array2[j]] = prob_matrix[center_aux_array2[i]][center_aux_array[j]]
+                    print("center_aux_array2[i]", center_aux_array2[i])
+                    print("center_aux_array[j]",center_aux_array[j])
+                    print("[aux_array[i]]", [aux_array[i]])
+                    print("[aux_array2[j]]", [aux_array2[j]])
                     array = [[center_aux_array2[-i], center_aux_array[j]]]
                     position_array.extend(array)
                     j = j + 1
