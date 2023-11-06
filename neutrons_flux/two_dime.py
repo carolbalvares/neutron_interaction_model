@@ -80,39 +80,6 @@ class Two_dimensions:
         center_spot_array = np.array([])
         center_spot_array = range(initial_neutrons)
         position_array = np.array([])
-        # ########### first quadrant##############
-        # r_aux = half_row
-        # while r_aux >= 0:
-        #             c_aux = half_col
-        #             while c_aux < len(column):
-        #                 cross_amount_matrix[r_aux][c_aux] = 
-        #                 c_aux = c_aux + 1
-        #             r_aux = r_aux - 1
-        #         ########### second quadrant##############
-        # r_aux = half_row
-        # while r_aux >= 0:
-        #             c_aux = half_col
-        #             while c_aux >= 0:
-        #                 cross_amount_matrix[r_aux][c_aux] = prob_matrix[r_aux][c_aux]
-        #                 c_aux = c_aux - 1
-        #             r_aux = r_aux - 1
-        #         ########### third quadrant##############
-        # r_aux = half_row
-        # while r_aux < len(row):
-        #             c_aux = half_col
-        #             while c_aux >= 0:
-        #                 cross_amount_matrix[r_aux][c_aux] = prob_matrix[r_aux][c_aux]
-        #                 c_aux = c_aux - 1
-        #             r_aux = r_aux + 1
-        #         ########### fourth quadrant##############
-        # r_aux = half_row
-        # while r_aux < len(row):
-        #             c_aux = half_col
-        #             while c_aux < len(column):
-        #                 cross_amount_matrix[r_aux][c_aux] = prob_matrix[r_aux][c_aux]
-        #                 c_aux = c_aux + 1
-        #             r_aux = r_aux + 1
-
 
         aux_array = [1, 0, 2]
         aux_array2 = [1, 2, 0]
@@ -157,11 +124,15 @@ class Two_dimensions:
                     row_aux_array3 = [0, 1, 2]
                     column_aux_array3 = [hc - 1, hc, hc + 1]
                     i = 0
-                    while i <= 2:
-                        aux_matrix[2][row_aux_array3[i]] = prob_matrix[hr + 1][column_aux_array3[i]]
-                        array = [[hr + 1, column_aux_array3[i]]]
-                        position_array.extend(array)
-                        i = i + 1
+                    auxx = hr+1
+                    while auxx != len(row):
+                        
+                        while i <= 2:
+                            aux_matrix[2][row_aux_array3[i]] = prob_matrix[auxx][column_aux_array3[i]]
+                            array = [[hr + 1, column_aux_array3[i]]]
+                            position_array.extend(array)
+                            i = i + 1
+                        auxx = auxx+1
                         
                     print("aux matriz cm cr deslocado", aux_matrix)
                     hr = hr + 1
