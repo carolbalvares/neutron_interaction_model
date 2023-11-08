@@ -43,7 +43,7 @@ class Probability:
                         if r_array[i] != 1:
                             dist_to_collision = - \
                                 np.log(1 - r_array[i]) / tt_cross_section
-                            prob_matrix[r][c] = dist_to_collision
+                            prob_matrix[r][c] = round(dist_to_collision,4)
                         else:
                             while i < len(r_array) and r_array[i] == 1:
                                 r_array[i] = round(np.random.rand(), 3)
@@ -52,7 +52,7 @@ class Probability:
                                     dist_to_collision = - \
                                         np.log(1 - r_array[i]) / \
                                         tt_cross_section
-                                    prob_matrix[r][c] = dist_to_collision
+                                    prob_matrix[r][c] = round(dist_to_collision,4)
                     i += 1
                     c += 1
                 r += 1
@@ -87,11 +87,11 @@ class Two_dimensions:
         position_array = []
 
         hc = half_col
-        while hc < len(column) : 
+        while hc < len(column): 
                 hr = half_row 
                 while hr < len(row):
                     center_aux_array2_r = [hr, hr - 1]
-                    center_aux_array_c = [hc, hc + 1]
+                    center_aux_array_c = [hc-1, hc]
                     center_aux_array2_c = [hc, hc - 1]
 
                     ########### first quadrant ##############
@@ -122,7 +122,7 @@ class Two_dimensions:
 
                     ########### third and fourth quadrant ##############
                     row_aux_array3 = [0, 1, 2]
-                    column_aux_array3 = [hc - 1, hc, hc + 1]
+                    column_aux_array3 = [hc - 2, hc-1, hc]
                     i = 0
                     auxx = hr+1
                     while auxx != len(row):
