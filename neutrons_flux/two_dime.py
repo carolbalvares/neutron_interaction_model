@@ -83,17 +83,17 @@ class Two_dimensions:
 
         aux_array = [1, 0, 2]
         aux_array2 = [1, 2, 0]
-        center_spot_array = [1, 2, 3]  # Adapte conforme necessário
         position_array = []
-
+        
+        
+        #first part#
         hc = half_col
-        while hc < len(column): 
+        while hc >= 0: 
                 hr = half_row 
-                while hr < len(row):
+                while hr >= 0:
                     center_aux_array2_r = [hr, hr - 1]
                     center_aux_array_c = [hc-1, hc]
                     center_aux_array2_c = [hc, hc - 1]
-
                     ########### first quadrant ##############
                     i = 0
                     while i < 2:
@@ -104,9 +104,6 @@ class Two_dimensions:
                             position_array.extend(array)
                             j = j + 1
                         i = i + 1
-
-                    
-
                     ########### second quadrant ##############
                     i = 0
                     while i < 2:
@@ -117,9 +114,53 @@ class Two_dimensions:
                             position_array.extend(array)
                             j = j + 1
                         i = i + 1
-
-                
-
+                    ########### third and fourth quadrant ##############
+                    row_aux_array3 = [0, 1, 2]
+                    column_aux_array3 = [hc - 2, hc-1, hc]
+                    i = 0
+                    auxx = hr+1
+                    while auxx != len(row):
+                        
+                        while i <= 2:
+                            aux_matrix[2][row_aux_array3[i]] = prob_matrix[auxx][column_aux_array3[i]]
+                            array = [[hr + 1, column_aux_array3[i]]]
+                            position_array.extend(array)
+                            i = i + 1
+                        auxx = auxx+1
+                        
+                    print("aux matriz cm cr deslocado", aux_matrix)
+                    hr = hr - 1
+                hc = hc - 1
+       
+       
+        #second part#
+        hc = half_col
+        while hc < len(column): 
+                hr = half_row 
+                while hr < len(row):
+                    center_aux_array2_r = [hr, hr - 1]
+                    center_aux_array_c = [hc-1, hc]
+                    center_aux_array2_c = [hc, hc - 1]
+                    ########### first quadrant ##############
+                    i = 0
+                    while i < 2:
+                        j = 0
+                        while j < 2:
+                            aux_matrix[aux_array[i]][aux_array2[j]] = prob_matrix[center_aux_array2_r[i]][center_aux_array_c[j]]
+                            array = [[center_aux_array2_r[-i], center_aux_array_c[j]]]
+                            position_array.extend(array)
+                            j = j + 1
+                        i = i + 1
+                    ########### second quadrant ##############
+                    i = 0
+                    while i < 2:
+                        j = 0
+                        while j < 2:
+                            aux_matrix[aux_array[i]][aux_array[j]] = prob_matrix[center_aux_array2_r[-i]][center_aux_array2_c[j]]
+                            array = [[center_aux_array2_r[-i], center_aux_array2_c[j]]]
+                            position_array.extend(array)
+                            j = j + 1
+                        i = i + 1
                     ########### third and fourth quadrant ##############
                     row_aux_array3 = [0, 1, 2]
                     column_aux_array3 = [hc - 2, hc-1, hc]
@@ -137,17 +178,54 @@ class Two_dimensions:
                     print("aux matriz cm cr deslocado", aux_matrix)
                     hr = hr + 1
                 hc = hc + 1
-                    
-                # # Fora do loop, se necessário
-                # for p in position_array:
-                #     for r in range(3):
-                #         # Calcular as coordenadas na matriz 7x7
-                #         x = p[0] - 1
-                #         y = p[1] - 1
-
-                #         # Atribuir valor da matriz 3x3 à matriz 7x7
-                #         cross_amount_matrix[x, y] = aux_matrix[r, :]
-                #         print("tentativa", cross_amount_matrix)
+       
+       
+        #third part#
+        hc = half_col
+        while hc < len(column): 
+                hr = half_row 
+                while 0 <= hr:
+                    center_aux_array2_r = [hr, hr - 1]
+                    center_aux_array_c = [hc-1, hc]
+                    center_aux_array2_c = [hc, hc - 1]
+                    ########### first quadrant ##############
+                    i = 0
+                    while i < 2:
+                        j = 0
+                        while j < 2:
+                            aux_matrix[aux_array[i]][aux_array2[j]] = prob_matrix[center_aux_array2_r[i]][center_aux_array_c[j]]
+                            array = [[center_aux_array2_r[-i], center_aux_array_c[j]]]
+                            position_array.extend(array)
+                            j = j + 1
+                        i = i + 1
+                    ########### second quadrant ##############
+                    i = 0
+                    while i < 2:
+                        j = 0
+                        while j < 2:
+                            aux_matrix[aux_array[i]][aux_array[j]] = prob_matrix[center_aux_array2_r[-i]][center_aux_array2_c[j]]
+                            array = [[center_aux_array2_r[-i], center_aux_array2_c[j]]]
+                            position_array.extend(array)
+                            j = j + 1
+                        i = i + 1
+                    ########### third and fourth quadrant ##############
+                    row_aux_array3 = [0, 1, 2]
+                    column_aux_array3 = [hc - 2, hc-1, hc]
+                    i = 0
+                    auxx = hr+1
+                    while auxx != len(row):
+                        
+                        while i <= 2:
+                            aux_matrix[2][row_aux_array3[i]] = prob_matrix[auxx][column_aux_array3[i]]
+                            array = [[hr + 1, column_aux_array3[i]]]
+                            position_array.extend(array)
+                            i = i + 1
+                        auxx = auxx+1
+                        
+                    print("aux matriz cm cr deslocado", aux_matrix)
+                    hr = hr - 1
+                hc = hc + 1
+                
                     
 
 
