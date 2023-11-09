@@ -117,7 +117,7 @@ class Two_dimensions:
                         i = i + 1
                     ########### third and fourth quadrant ##############
                     row_aux_array3 = [0, 1, 2]
-                    column_aux_array3 = [hc - 2, hc-1, hc]
+                    column_aux_array3 = [hc - 1, hc, hc+1]
                     i = 0
                     auxx = hr+1
                     while auxx != len(row):
@@ -167,7 +167,7 @@ class Two_dimensions:
                         i = i + 1
                     ########### third and fourth quadrant ##############
                     row_aux_array3 = [0, 1, 2]
-                    column_aux_array3 = [hc - 2, hc-1, hc]
+                    column_aux_array3 =[hc - 1, hc, hc+1]
                     i = 0
                     auxx = hr+1
                     while auxx != len(row):
@@ -218,7 +218,7 @@ class Two_dimensions:
                         i = i + 1
                     ########### third and fourth quadrant ##############
                     row_aux_array3 = [0, 1, 2]
-                    column_aux_array3 = [hc - 2, hc-1, hc]
+                    column_aux_array3 = [hc - 1, hc, hc+1]
                     i = 0
                     auxx = hr+1
                     while auxx != len(row):
@@ -269,7 +269,7 @@ class Two_dimensions:
                         i = i + 1
                     ########### third and fourth quadrant ##############
                     row_aux_array3 = [0, 1, 2]
-                    column_aux_array3 = [hc - 2, hc-1, hc]
+                    column_aux_array3 =[hc - 1, hc, hc+1]
                     i = 0
                     auxx = hr+1
                     while auxx != len(row):
