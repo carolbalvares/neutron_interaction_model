@@ -4,7 +4,9 @@ from homogenization.hmg_fission import macro_cs_fission
 from homogenization.hmg_gamma import macro_cs_gamma_fuel, macro_gamma_Fe
 from homogenization.hmg_scattering import macro_scattering_Fe
 from parameters import *
-
+import matplotlib.pyplot as plt
+import pandas as pd
+import seaborn as sns
 
 
 class Random_array:
@@ -64,6 +66,22 @@ class Probability:
         print("matrix_corners", matrix_corners)
         return matrix_corners
 
+class Distance:
+    def __init__(self, row, column ):
+        self.row = row
+        self.column = column
+        
+    def dist(self,row,column):
+        self.row = row
+        self.column = column
+        half_row = (len(row)) // 2
+        half_col = (len(column)) // 2
+        distance_matrix =  np.zeros((len(row), len(column)))
+        for i in range(len(row)):
+            for j in range(len(column)):
+                distance_matrix[i][j] = np.sqrt((i - half_row)**2 + (j - half_col)**2)
+        print("dist", distance_matrix)
+        return distance_matrix
 
 class Two_dimensions:
     def __init__(self, num_samples, tt_cross_section, row, column, prob_matrix, initial_neutrons):
@@ -77,14 +95,11 @@ class Two_dimensions:
         self.column = column
         self.initial_neutrons = initial_neutrons
         self.prob_matrix = prob_matrix
-        cross_amount_matrix = np.zeros((len(row), len(column)))
+        cross_amount_matrix = np.zeros(((len(row)+2), (len(column)+2)))
         aux_matrix = np.zeros((3, 3))
         half_row = (len(row) + 2) // 2
         half_col = (len(column) + 2) // 2
-        center_spot_array = np.array([])
-        center_spot_array = range(initial_neutrons)
-        position_array = np.array([])
-
+        neutrons = initial_neutrons
         # Part 1 - First Quadrant
         aux_array = [1, 0, 2]
         aux_array2 = [1, 2, 0]
@@ -101,8 +116,8 @@ class Two_dimensions:
                         j = 0
                         while j < 2:
                                 aux_matrix[aux_array[i]][aux_array2[j]] = prob_matrix[center_aux_array2_r[i]][center_aux_array_c[j]]
-                                # array = [[center_aux_array2_r[-i], center_aux_array_c[j]]]
-                                # position_array.extend(array)
+                                if aux_matrix[i][j] >= 1:
+                                    cross_amount_matrix[center_aux_array2_r[i]][center_aux_array_c[j]] = cross_amount_matrix[center_aux_array2_r[i]][center_aux_array_c[j]] + 1
                                 j = j + 1
                         i = i + 1
                     ########### second quadrant ##############
@@ -111,8 +126,8 @@ class Two_dimensions:
                         j = 0
                         while j < 2:
                             aux_matrix[aux_array[i]][aux_array[j]] = prob_matrix[center_aux_array2_r[-i]][center_aux_array2_c[j]]
-                            # array = [[center_aux_array2_r[-i], center_aux_array2_c[j]]]
-                            # position_array.extend(array)
+                            if aux_matrix[i][j] >= 1:
+                                    cross_amount_matrix[center_aux_array2_r[i]][center_aux_array_c[j]] += 1
                             j = j + 1
                         i = i + 1
                     ########### third and fourth quadrant ##############
@@ -124,11 +139,15 @@ class Two_dimensions:
                         
                         while i <= 2:
                             aux_matrix[2][row_aux_array3[i]] = prob_matrix[auxx][column_aux_array3[i]]
-                            # array = [[hr + 1, column_aux_array3[i]]]
-                            # position_array.extend(array)
+                            if aux_matrix[2][row_aux_array3[i]] >= 1:
+                                    cross_amount_matrix[auxx][column_aux_array3[i]] += 1
                             i = i + 1
                         auxx = auxx+1                  
                     print("aux matriz 1", aux_matrix)
+                    print("cross_matrix", cross_amount_matrix)
+                    # aux_matrix[1][1] = neutrons
+                    # div_neutrons = np.floor(neutrons/8)
+  
                     hr = hr - 1
             hc = hc - 1
        
@@ -151,8 +170,8 @@ class Two_dimensions:
                                 aux_matrix[aux_array[i]][aux_array2[j]]= 0
                             else:
                                 aux_matrix[aux_array[i]][aux_array2[j]] = prob_matrix[center_aux_array2_r[i]][center_aux_array_c[j]]
-                                # array = [[center_aux_array2_r[-i], center_aux_array_c[j]]]
-                                # position_array.extend(array)
+                            if aux_matrix[i][j] >= 1:
+                                    cross_amount_matrix[center_aux_array2_r[i]][center_aux_array_c[j]] += 1
                             j = j + 1
                         i = i + 1
                     ########### second quadrant ##############
@@ -161,8 +180,8 @@ class Two_dimensions:
                         j = 0
                         while j < 2:
                             aux_matrix[aux_array[i]][aux_array[j]] = prob_matrix[center_aux_array2_r[-i]][center_aux_array2_c[j]]
-                            # array = [[center_aux_array2_r[-i], center_aux_array2_c[j]]]
-                            # position_array.extend(array)
+                            if aux_matrix[i][j] >= 1:
+                                    cross_amount_matrix[center_aux_array2_r[i]][center_aux_array_c[j]] += 1
                             j = j + 1
                         i = i + 1
                     ########### third and fourth quadrant ##############
@@ -174,10 +193,11 @@ class Two_dimensions:
                         
                         while i <= 2:
                             aux_matrix[2][row_aux_array3[i]] = prob_matrix[auxx][column_aux_array3[i]]
-                            # array = [[hr + 1, column_aux_array3[i]]]
-                            # position_array.extend(array)
+                            if aux_matrix[2][row_aux_array3[i]] >= 1:
+                                    cross_amount_matrix[auxx][column_aux_array3[i]] += 1
                             i = i + 1
-                        auxx = auxx+1                
+                        auxx = auxx+1   
+                    print("cross_matrix", cross_amount_matrix)             
                     print("aux matriz 2", aux_matrix)
                     hr = hr + 1
             hc = hc + 1
@@ -202,8 +222,8 @@ class Two_dimensions:
                                 aux_matrix[aux_array[i]][aux_array2[j]]= 0
                             else:
                                 aux_matrix[aux_array[i]][aux_array2[j]] = prob_matrix[center_aux_array2_r[i]][center_aux_array_c[j]]
-                                # array = [[center_aux_array2_r[-i], center_aux_array_c[j]]]
-                                # position_array.extend(array)
+                            if aux_matrix[i][j] >= 1:
+                                    cross_amount_matrix[center_aux_array2_r[i]][center_aux_array_c[j]] += 1
                             j = j + 1
                         i = i + 1
                     ########### second quadrant ##############
@@ -212,8 +232,8 @@ class Two_dimensions:
                         j = 0
                         while j < 2:
                             aux_matrix[aux_array[i]][aux_array[j]] = prob_matrix[center_aux_array2_r[-i]][center_aux_array2_c[j]]
-                            # array = [[center_aux_array2_r[-i], center_aux_array2_c[j]]]
-                            # position_array.extend(array)
+                            if aux_matrix[i][j] >= 1:
+                                    cross_amount_matrix[center_aux_array2_r[i]][center_aux_array_c[j]] += 1
                             j = j + 1
                         i = i + 1
                     ########### third and fourth quadrant ##############
@@ -225,10 +245,11 @@ class Two_dimensions:
                         
                         while i <= 2:
                             aux_matrix[2][row_aux_array3[i]] = prob_matrix[auxx][column_aux_array3[i]]
-                            # array = [[hr + 1, column_aux_array3[i]]]
-                            # position_array.extend(array)
+                            if aux_matrix[2][row_aux_array3[i]] >= 1:
+                                    cross_amount_matrix[auxx][column_aux_array3[i]] += 1
                             i = i + 1
-                        auxx = auxx+1                      
+                        auxx = auxx+1 
+                    print("cross_matrix", cross_amount_matrix)                     
                     print("aux matriz 3", aux_matrix)
                     hr = hr - 1
             hc = hc + 1
@@ -253,8 +274,8 @@ class Two_dimensions:
                                 aux_matrix[aux_array[i]][aux_array2[j]]= 0
                             else:
                                 aux_matrix[aux_array[i]][aux_array2[j]] = prob_matrix[center_aux_array2_r[i]][center_aux_array_c[j]]
-                                # array = [[center_aux_array2_r[-i], center_aux_array_c[j]]]
-                                # position_array.extend(array)
+                            if aux_matrix[i][j] >= 1:
+                                    cross_amount_matrix[center_aux_array2_r[i]][center_aux_array_c[j]] += 1
                             j = j + 1
                         i = i + 1
                     ########### second quadrant ##############
@@ -263,8 +284,8 @@ class Two_dimensions:
                         j = 0
                         while j < 2:
                             aux_matrix[aux_array[i]][aux_array[j]] = prob_matrix[center_aux_array2_r[-i]][center_aux_array2_c[j]]
-                            # array = [[center_aux_array2_r[-i], center_aux_array2_c[j]]]
-                            # position_array.extend(array)
+                            if aux_matrix[i][j] >= 1:
+                                    cross_amount_matrix[center_aux_array2_r[i]][center_aux_array_c[j]] += 1
                             j = j + 1
                         i = i + 1
                     ########### third and fourth quadrant ##############
@@ -276,13 +297,15 @@ class Two_dimensions:
                         
                         while i <= 2:
                             aux_matrix[2][row_aux_array3[i]] = prob_matrix[auxx][column_aux_array3[i]]
-                            # array = [[hr + 1, column_aux_array3[i]]]
-                            # position_array.extend(array)
+                            if aux_matrix[2][row_aux_array3[i]] >= 1:
+                                    cross_amount_matrix[auxx][column_aux_array3[i]] += 1
                             i = i + 1
                         auxx = auxx+1
+                    print("cross_matrix", cross_amount_matrix)
                     print("aux matriz 4", aux_matrix)
                     hr = hr + 1
-            hc = hc - 1       
+            hc = hc - 1  
+        return cross_amount_matrix     
                     
 
 # problema ta no while que ta se sobrepondo a terceira e quarta parte debugar printando cada novo centro e elemneto
@@ -308,6 +331,9 @@ macro_tt_UO2 = macro_cs_UO2_scattering + macro_cs_UO2_absorption
 macro_cs_Fe_absorption = macro_gamma_Fe
 macro_tt_Fe = macro_cs_Fe_absorption + macro_scattering_Fe
 
+max_dist = 1/macro_tt_UO2
+
+
 initial_neutrons = int(input("Choose initial number of neutrons:    "))
 rowcol = int(input("Choose your matrix dimension:     "))
 
@@ -328,5 +354,10 @@ aux = Two_dimensions(initial_neutrons, macro_tt_UO2, row,
                      column, prob_matrix, initial_neutrons)
 cross_amount_matrix = aux.quadrants(
     row, column, prob_matrix, initial_neutrons)
+distance = Distance(row,column)
+dist_matrix = distance.dist(row,column)
+
+sns.heatmap(cross_amount_matrix, annot=True, cmap="viridis")
+plt.show()
 
 # como fazer quando tiver numero diferente de colunas e linhas
