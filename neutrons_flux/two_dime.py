@@ -100,6 +100,8 @@ class Two_dimensions:
         half_row = (len(row) + 2) // 2
         half_col = (len(column) + 2) // 2
         neutrons = initial_neutrons
+        distance = Distance(row,column)
+        dist_matrix = distance.dist(row,column)
         # Part 1 - First Quadrant
         aux_array = [1, 0, 2]
         aux_array2 = [1, 2, 0]
@@ -116,7 +118,7 @@ class Two_dimensions:
                         j = 0
                         while j < 2:
                                 aux_matrix[aux_array[i]][aux_array2[j]] = prob_matrix[center_aux_array2_r[i]][center_aux_array_c[j]]
-                                if aux_matrix[i][j] >= 1:
+                                if aux_matrix[i][j] >= dist_matrix[center_aux_array2_r[i]][center_aux_array_c[j]]:
                                     cross_amount_matrix[center_aux_array2_r[i]][center_aux_array_c[j]] = cross_amount_matrix[center_aux_array2_r[i]][center_aux_array_c[j]] + 1
                                 j = j + 1
                         i = i + 1
@@ -127,7 +129,7 @@ class Two_dimensions:
                         j = 0
                         while j < 2:
                             aux_matrix[aux_array[i]][aux_array[j]] = prob_matrix[center_aux_array2_r[-i]][center_aux_array2_c[j]]
-                            if aux_matrix[i][j] >= 1:
+                            if aux_matrix[i][j] >= dist_matrix[center_aux_array2_r[i]][center_aux_array_c[j]]:
                                     cross_amount_matrix[center_aux_array2_r[i]][center_aux_array_c[j]] += 1
                             j = j + 1
                         i = i + 1
@@ -141,7 +143,7 @@ class Two_dimensions:
                         
                         while i <= 2:
                             aux_matrix[2][row_aux_array3[i]] = prob_matrix[auxx][column_aux_array3[i]]
-                            if aux_matrix[2][row_aux_array3[i]] >= 1:
+                            if aux_matrix[2][row_aux_array3[i]] >=dist_matrix[auxx][column_aux_array3[i]]:
                                     cross_amount_matrix[auxx][column_aux_array3[i]] += 1
                             i = i + 1
                         auxx = auxx+1     
@@ -173,7 +175,7 @@ class Two_dimensions:
                                 aux_matrix[aux_array[i]][aux_array2[j]]= 0
                             else:
                                 aux_matrix[aux_array[i]][aux_array2[j]] = prob_matrix[center_aux_array2_r[i]][center_aux_array_c[j]]
-                            if aux_matrix[i][j] >= 1:
+                            if aux_matrix[i][j] >= dist_matrix[center_aux_array2_r[i]][center_aux_array_c[j]]:
                                     cross_amount_matrix[center_aux_array2_r[i]][center_aux_array_c[j]] += 1
                             j = j + 1
                         i = i + 1
@@ -183,7 +185,7 @@ class Two_dimensions:
                         j = 0
                         while j < 2:
                             aux_matrix[aux_array[i]][aux_array[j]] = prob_matrix[center_aux_array2_r[-i]][center_aux_array2_c[j]]
-                            if aux_matrix[i][j] >= 1:
+                            if aux_matrix[i][j] >= dist_matrix[center_aux_array2_r[i]][center_aux_array_c[j]]:
                                     cross_amount_matrix[center_aux_array2_r[i]][center_aux_array_c[j]] += 1
                             j = j + 1
                         i = i + 1
@@ -196,7 +198,7 @@ class Two_dimensions:
                         
                         while i <= 2:
                             aux_matrix[2][row_aux_array3[i]] = prob_matrix[auxx][column_aux_array3[i]]
-                            if aux_matrix[2][row_aux_array3[i]] >= 1:
+                            if aux_matrix[2][row_aux_array3[i]] >=dist_matrix[auxx][column_aux_array3[i]]:
                                     cross_amount_matrix[auxx][column_aux_array3[i]] += 1
                             i = i + 1
                         auxx = auxx+1   
@@ -225,7 +227,7 @@ class Two_dimensions:
                                 aux_matrix[aux_array[i]][aux_array2[j]]= 0
                             else:
                                 aux_matrix[aux_array[i]][aux_array2[j]] = prob_matrix[center_aux_array2_r[i]][center_aux_array_c[j]]
-                            if aux_matrix[i][j] >= 1:
+                            if aux_matrix[i][j] >= dist_matrix[center_aux_array2_r[i]][center_aux_array_c[j]]:
                                     cross_amount_matrix[center_aux_array2_r[i]][center_aux_array_c[j]] += 1
                             j = j + 1
                         i = i + 1
@@ -235,7 +237,7 @@ class Two_dimensions:
                         j = 0
                         while j < 2:
                             aux_matrix[aux_array[i]][aux_array[j]] = prob_matrix[center_aux_array2_r[-i]][center_aux_array2_c[j]]
-                            if aux_matrix[i][j] >= 1:
+                            if aux_matrix[i][j] >= dist_matrix[center_aux_array2_r[i]][center_aux_array_c[j]]:
                                     cross_amount_matrix[center_aux_array2_r[i]][center_aux_array_c[j]] += 1
                             j = j + 1
                         i = i + 1
@@ -248,7 +250,7 @@ class Two_dimensions:
                         
                         while i <= 2:
                             aux_matrix[2][row_aux_array3[i]] = prob_matrix[auxx][column_aux_array3[i]]
-                            if aux_matrix[2][row_aux_array3[i]] >= 1:
+                            if aux_matrix[2][row_aux_array3[i]] >=dist_matrix[auxx][column_aux_array3[i]]:
                                     cross_amount_matrix[auxx][column_aux_array3[i]] += 1
                             i = i + 1
                         auxx = auxx+1 
@@ -277,7 +279,7 @@ class Two_dimensions:
                                 aux_matrix[aux_array[i]][aux_array2[j]]= 0
                             else:
                                 aux_matrix[aux_array[i]][aux_array2[j]] = prob_matrix[center_aux_array2_r[i]][center_aux_array_c[j]]
-                            if aux_matrix[i][j] >= 1:
+                            if aux_matrix[i][j] >= dist_matrix[center_aux_array2_r[i]][center_aux_array_c[j]]:
                                     cross_amount_matrix[center_aux_array2_r[i]][center_aux_array_c[j]] += 1
                             j = j + 1
                         i = i + 1
@@ -287,7 +289,7 @@ class Two_dimensions:
                         j = 0
                         while j < 2:
                             aux_matrix[aux_array[i]][aux_array[j]] = prob_matrix[center_aux_array2_r[-i]][center_aux_array2_c[j]]
-                            if aux_matrix[i][j] >= 1:
+                            if aux_matrix[i][j] >= dist_matrix[center_aux_array2_r[i]][center_aux_array_c[j]]:
                                     cross_amount_matrix[center_aux_array2_r[i]][center_aux_array_c[j]] += 1
                             j = j + 1
                         i = i + 1
@@ -300,7 +302,7 @@ class Two_dimensions:
                         
                         while i <= 2:
                             aux_matrix[2][row_aux_array3[i]] = prob_matrix[auxx][column_aux_array3[i]]
-                            if aux_matrix[2][row_aux_array3[i]] >= 1:
+                            if aux_matrix[2][row_aux_array3[i]] >=dist_matrix[auxx][column_aux_array3[i]]:
                                     cross_amount_matrix[auxx][column_aux_array3[i]] += 1
                             i = i + 1
                         auxx = auxx+1
@@ -319,25 +321,25 @@ class Limiting:
         self.initial_neutrons = initial_neutrons
         
 
-    def limits(self, row, column, prob_matrix, initial_neutrons):
-        self.row = row
+    # def limits(self, row, column, prob_matrix, initial_neutrons):
+    #     self.row = row
         
-        self.column = column
-        self.prob_matrix = prob_matrix
-        self.initial_neutrons = initial_neutrons  
-        obj = Two_dimensions(row, column, prob_matrix, initial_neutrons)  
-        cross_amount = obj.quadrants(row, column, prob_matrix, initial_neutrons)
-        distance = Distance(row,column)
-        dist_matrix = distance.dist(row,column)
-        roww = row +2
-        columnn = column + 2
-        for i in range(len(roww)):
-            for j in range(len(columnn)):
-                if prob_matrix[i][j] > dist_matrix[i][j]:
-                        cross_amount[i][j] = 0 
+    #     self.column = column
+    #     self.prob_matrix = prob_matrix
+    #     self.initial_neutrons = initial_neutrons  
+    #     obj = Two_dimensions(row, column, prob_matrix, initial_neutrons)  
+    #     cross_amount = obj.quadrants(row, column, prob_matrix, initial_neutrons)
+    #     distance = Distance(row,column)
+    #     dist_matrix = distance.dist(row,column)
+    #     roww = row +2
+    #     columnn = column + 2
+    #     for i in range(len(roww)):
+    #         for j in range(len(columnn)):
+    #             if prob_matrix[i][j] > dist_matrix[i][j]:
+    #                     cross_amount[i][j] = 0 
                         
-        print("cross dist", cross_amount)
-        return cross_amount
+    #     print("cross dist", cross_amount)
+    #     return cross_amount
                    
 
 micro_scattering_U235 = 15.04 * 10 ** (-24)
@@ -382,11 +384,10 @@ prob_matrix = item.probab(
 aux = Two_dimensions(row, column, prob_matrix, initial_neutrons)
 cross_amount_matrix = aux.quadrants(
     row, column, prob_matrix, initial_neutrons)
-auxx = Limiting(row, column, prob_matrix, initial_neutrons)
-final_matrix = auxx.limits(row, column, prob_matrix, initial_neutrons)
-# distance = Distance(row,column)
-# dist_matrix = distance.dist(row,column)
+# auxx = Limiting(row, column, prob_matrix, initial_neutrons)
+# final_matrix = auxx.limits(row, column, prob_matrix, initial_neutrons)
 
-sns.heatmap(final_matrix, annot=True, cmap="viridis")
+
+sns.heatmap(cross_amount_matrix, annot=True, cmap="viridis")
 plt.show()
 
