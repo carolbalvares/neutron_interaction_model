@@ -105,6 +105,7 @@ class Two_dimensions:
         # Part 1 - First Quadrant
         aux_array = [1, 0, 2]
         aux_array2 = [1, 2, 0]
+        cross_amount_matrix[half_row][half_col]=neutrons
         hc = half_col
         while hc >= 0: 
             hr = half_row 
@@ -112,6 +113,8 @@ class Two_dimensions:
                     center_aux_array2_r = [hr, hr - 1]
                     center_aux_array_c = [hc, hc+1]
                     center_aux_array2_c = [hc, hc - 1]
+                    ii = [hr-1, hr, hr - 1]
+                    jj = [hc-1, hc, hc+1]
                     ########### first quadrant ##############
                     i = 0
                     while i < 2:
@@ -124,13 +127,27 @@ class Two_dimensions:
                         i = i + 1
                     
                     ########### second quadrant ##############
+                    total_neutrons_part = 0
                     i = 0
                     while i < 2:
                         j = 0
                         while j < 2:
                             aux_matrix[aux_array[i]][aux_array[j]] = prob_matrix[center_aux_array2_r[-i]][center_aux_array2_c[j]]
-                            if aux_matrix[i][j] >= dist_matrix[center_aux_array2_r[i]][center_aux_array_c[j]]:
-                                    cross_amount_matrix[center_aux_array2_r[i]][center_aux_array_c[j]] += 1
+                            if i!= len(row) or j!= len(column) or i!= 0 or j!=0:
+                                if aux_matrix[i][j] >= dist_matrix[center_aux_array2_r[i]][center_aux_array_c[j]]:
+                                            neutrons_part = 0
+                                            array_neutrons = [0,1,-1]
+                                            array_neutrons2 = [-1,0,1]
+                                            neutrons_part =  cross_amount_matrix[center_aux_array2_r[i]][center_aux_array_c[j]]/9
+                                            cross_amount_matrix[center_aux_array2_r[i]][center_aux_array_c[j]] = round(cross_amount_matrix[center_aux_array2_r[i]][center_aux_array_c[j]]*1/9,0)
+                                            for t in range(3):
+                                                for k in range(3):
+                                                    if ii[t] < len(cross_amount_matrix) and jj[k] < len(cross_amount_matrix[0]):
+                                                        cross_amount_matrix[ii[t]][jj[k]] += round(neutrons_part, 0)
+                                print(cross_amount_matrix)
+                            else: 
+                                    print("ops")
+                                    cross_amount_matrix[center_aux_array2_r[i]][center_aux_array_c[j]] =  total_neutrons_part
                             j = j + 1
                         i = i + 1
                     
@@ -313,34 +330,7 @@ class Two_dimensions:
         print("cross amount matrix", cross_amount_matrix)
         return cross_amount_matrix     
 
-class Limiting:
-    def __init__(self, row, column, prob_matrix, initial_neutrons):
-        self.row = row
-        self.column = column
-        self.prob_matrix = prob_matrix
-        self.initial_neutrons = initial_neutrons
-        
 
-    # def limits(self, row, column, prob_matrix, initial_neutrons):
-    #     self.row = row
-        
-    #     self.column = column
-    #     self.prob_matrix = prob_matrix
-    #     self.initial_neutrons = initial_neutrons  
-    #     obj = Two_dimensions(row, column, prob_matrix, initial_neutrons)  
-    #     cross_amount = obj.quadrants(row, column, prob_matrix, initial_neutrons)
-    #     distance = Distance(row,column)
-    #     dist_matrix = distance.dist(row,column)
-    #     roww = row +2
-    #     columnn = column + 2
-    #     for i in range(len(roww)):
-    #         for j in range(len(columnn)):
-    #             if prob_matrix[i][j] > dist_matrix[i][j]:
-    #                     cross_amount[i][j] = 0 
-                        
-    #     print("cross dist", cross_amount)
-    #     return cross_amount
-                   
 
 micro_scattering_U235 = 15.04 * 10 ** (-24)
 micro_scattering_U238 = 9.360 * 10 ** (-24)
@@ -384,8 +374,7 @@ prob_matrix = item.probab(
 aux = Two_dimensions(row, column, prob_matrix, initial_neutrons)
 cross_amount_matrix = aux.quadrants(
     row, column, prob_matrix, initial_neutrons)
-# auxx = Limiting(row, column, prob_matrix, initial_neutrons)
-# final_matrix = auxx.limits(row, column, prob_matrix, initial_neutrons)
+
 
 
 sns.heatmap(cross_amount_matrix, annot=True, cmap="viridis")
