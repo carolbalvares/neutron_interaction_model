@@ -27,13 +27,12 @@ class Probability:
         self.column = column
         self.r_array = r_array
 
-    def distance(self, num_samples, tt_cross_section, row, column, r_array):
+    def probab(self, num_samples, tt_cross_section, row, column, r_array):
         self.num_samples = num_samples
         self.tt_cross_section = tt_cross_section
         self.row = row
         self.column = column
         self.r_array = r_array
-        print("rarray", r_array)
         prob_matrix = np.zeros((len(row), len(column)))
         i = 0
         while i < len(r_array):
@@ -59,10 +58,8 @@ class Probability:
                     c += 1
                 r += 1
         matrix_corners = np.zeros((len(row) + 2, len(column) + 2))
-
-# Preencha a parte interna da nova matriz com os valores da matriz 3x3
         matrix_corners[1:len(row)+1, 1:len(column)+1] = prob_matrix
-        print("prob matrix", prob_matrix)
+        # print("prob matrix", prob_matrix)
         print("matrix_corners", matrix_corners)
         return matrix_corners
 
@@ -74,17 +71,20 @@ class Distance:
     def dist(self,row,column):
         self.row = row
         self.column = column
-        half_row = (len(row)) // 2
-        half_col = (len(column)) // 2
+        half_row = ((len(row))+1) // 2
+        half_col = ((len(column))+1) // 2
         distance_matrix =  np.zeros((len(row), len(column)))
         for i in range(len(row)):
             for j in range(len(column)):
-                distance_matrix[i][j] = np.sqrt((i - half_row)**2 + (j - half_col)**2)
+                distance_matrix[i][j] = round(np.sqrt((i + 1 - half_row)**2 + (j + 1 - half_col)**2), 3)
+        final_dist_matrix = np.zeros((len(row) + 2, len(column) + 2))
+        final_dist_matrix[1:len(row)+1, 1:len(column)+1] = distance_matrix
         print("dist", distance_matrix)
-        return distance_matrix
+        print("final", final_dist_matrix)
+        return final_dist_matrix
 
 class Two_dimensions:
-    def __init__(self, num_samples, tt_cross_section, row, column, prob_matrix, initial_neutrons):
+    def __init__(self, row, column, prob_matrix, initial_neutrons):
         self.row = row
         self.column = column
         self.prob_matrix = prob_matrix
@@ -120,6 +120,7 @@ class Two_dimensions:
                                     cross_amount_matrix[center_aux_array2_r[i]][center_aux_array_c[j]] = cross_amount_matrix[center_aux_array2_r[i]][center_aux_array_c[j]] + 1
                                 j = j + 1
                         i = i + 1
+                    
                     ########### second quadrant ##############
                     i = 0
                     while i < 2:
@@ -130,6 +131,7 @@ class Two_dimensions:
                                     cross_amount_matrix[center_aux_array2_r[i]][center_aux_array_c[j]] += 1
                             j = j + 1
                         i = i + 1
+                    
                     ########### third and fourth quadrant ##############
                     row_aux_array3 = [0, 1, 2]
                     column_aux_array3 = [hc - 1, hc, hc+1]
@@ -142,9 +144,10 @@ class Two_dimensions:
                             if aux_matrix[2][row_aux_array3[i]] >= 1:
                                     cross_amount_matrix[auxx][column_aux_array3[i]] += 1
                             i = i + 1
-                        auxx = auxx+1                  
-                    print("aux matriz 1", aux_matrix)
-                    print("cross_matrix", cross_amount_matrix)
+                        auxx = auxx+1     
+                               
+                    # print("aux matriz 1", aux_matrix)
+                    # print("cross_matrix", cross_amount_matrix)
                     # aux_matrix[1][1] = neutrons
                     # div_neutrons = np.floor(neutrons/8)
   
@@ -197,8 +200,8 @@ class Two_dimensions:
                                     cross_amount_matrix[auxx][column_aux_array3[i]] += 1
                             i = i + 1
                         auxx = auxx+1   
-                    print("cross_matrix", cross_amount_matrix)             
-                    print("aux matriz 2", aux_matrix)
+                    # print("cross_matrix", cross_amount_matrix)             
+                    # print("aux matriz 2", aux_matrix)
                     hr = hr + 1
             hc = hc + 1
        
@@ -249,8 +252,8 @@ class Two_dimensions:
                                     cross_amount_matrix[auxx][column_aux_array3[i]] += 1
                             i = i + 1
                         auxx = auxx+1 
-                    print("cross_matrix", cross_amount_matrix)                     
-                    print("aux matriz 3", aux_matrix)
+                    # print("cross_matrix", cross_amount_matrix)                     
+                    # print("aux matriz 3", aux_matrix)
                     hr = hr - 1
             hc = hc + 1
                 
@@ -301,14 +304,42 @@ class Two_dimensions:
                                     cross_amount_matrix[auxx][column_aux_array3[i]] += 1
                             i = i + 1
                         auxx = auxx+1
-                    print("cross_matrix", cross_amount_matrix)
-                    print("aux matriz 4", aux_matrix)
+                    # print("cross_matrix", cross_amount_matrix)
+                    # print("aux matriz 4", aux_matrix)
                     hr = hr + 1
             hc = hc - 1  
+        print("cross amount matrix", cross_amount_matrix)
         return cross_amount_matrix     
-                    
 
-# problema ta no while que ta se sobrepondo a terceira e quarta parte debugar printando cada novo centro e elemneto
+class Limiting:
+    def __init__(self, row, column, prob_matrix, initial_neutrons):
+        self.row = row
+        self.column = column
+        self.prob_matrix = prob_matrix
+        self.initial_neutrons = initial_neutrons
+        
+
+    def limits(self, row, column, prob_matrix, initial_neutrons):
+        self.row = row
+        
+        self.column = column
+        self.prob_matrix = prob_matrix
+        self.initial_neutrons = initial_neutrons  
+        obj = Two_dimensions(row, column, prob_matrix, initial_neutrons)  
+        cross_amount = obj.quadrants(row, column, prob_matrix, initial_neutrons)
+        distance = Distance(row,column)
+        dist_matrix = distance.dist(row,column)
+        roww = row +2
+        columnn = column + 2
+        for i in range(len(roww)):
+            for j in range(len(columnn)):
+                if prob_matrix[i][j] > dist_matrix[i][j]:
+                        cross_amount[i][j] = 0 
+                        
+        print("cross dist", cross_amount)
+        return cross_amount
+                   
+
 micro_scattering_U235 = 15.04 * 10 ** (-24)
 micro_scattering_U238 = 9.360 * 10 ** (-24)
 micro_scattering_O = 3.780 * 10 ** (-24)
@@ -324,8 +355,6 @@ macro_cs_UO2_absorption = macro_cs_gamma_fuel + macro_cs_fission
 
 
 macro_tt_UO2 = macro_cs_UO2_scattering + macro_cs_UO2_absorption
-
-# print("macro tt cross section", macro_tt_UO2)
 
 
 macro_cs_Fe_absorption = macro_gamma_Fe
@@ -348,16 +377,16 @@ for x in range(rowcol):
 obj = Random_array(initial_neutrons)
 r_array_result = obj.random(initial_neutrons)
 item = Probability(initial_neutrons, macro_tt_UO2, row, column, r_array_result)
-prob_matrix = item.distance(
+prob_matrix = item.probab(
     initial_neutrons, macro_tt_UO2, row, column, r_array_result)
-aux = Two_dimensions(initial_neutrons, macro_tt_UO2, row,
-                     column, prob_matrix, initial_neutrons)
+aux = Two_dimensions(row, column, prob_matrix, initial_neutrons)
 cross_amount_matrix = aux.quadrants(
     row, column, prob_matrix, initial_neutrons)
-distance = Distance(row,column)
-dist_matrix = distance.dist(row,column)
+auxx = Limiting(row, column, prob_matrix, initial_neutrons)
+final_matrix = auxx.limits(row, column, prob_matrix, initial_neutrons)
+# distance = Distance(row,column)
+# dist_matrix = distance.dist(row,column)
 
-sns.heatmap(cross_amount_matrix, annot=True, cmap="viridis")
+sns.heatmap(final_matrix, annot=True, cmap="viridis")
 plt.show()
 
-# como fazer quando tiver numero diferente de colunas e linhas
