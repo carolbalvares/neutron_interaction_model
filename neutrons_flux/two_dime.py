@@ -4,9 +4,9 @@ from homogenization.hmg_fission import macro_cs_fission
 from homogenization.hmg_gamma import macro_cs_gamma_fuel, macro_gamma_Fe
 from homogenization.hmg_scattering import macro_scattering_Fe
 from parameters import *
-import matplotlib.pyplot as plt
-import pandas as pd
-import seaborn as sns
+# import matplotlib.pyplot as plt
+# import pandas as pd
+# import seaborn as sns
 
 
 class Random_array:
@@ -79,7 +79,7 @@ class Distance:
                 distance_matrix[i][j] = round(np.sqrt((i + 1 - half_row)**2 + (j + 1 - half_col)**2), 3)
         final_dist_matrix = np.zeros((len(row) + 2, len(column) + 2))
         final_dist_matrix[1:len(row)+1, 1:len(column)+1] = distance_matrix
-        print("dist", distance_matrix)
+        # print("dist", distance_matrix)
         print("final", final_dist_matrix)
         return final_dist_matrix
 
@@ -102,6 +102,7 @@ class Two_dimensions:
         neutrons = initial_neutrons
         distance = Distance(row,column)
         dist_matrix = distance.dist(row,column)
+        
         # Part 1 - First Quadrant
         aux_array = [1, 0, 2]
         aux_array2 = [1, 2, 0]
@@ -113,7 +114,7 @@ class Two_dimensions:
                     center_aux_array2_r = [hr, hr - 1]
                     center_aux_array_c = [hc, hc+1]
                     center_aux_array2_c = [hc, hc - 1]
-                    ii = [hr-1, hr, hr - 1]
+                    ii = [hr-1, hr, hr+1]
                     jj = [hc-1, hc, hc+1]
                     ########### first quadrant ##############
                     i = 0
@@ -121,11 +122,9 @@ class Two_dimensions:
                         j = 0
                         while j < 2:
                                 aux_matrix[aux_array[i]][aux_array2[j]] = prob_matrix[center_aux_array2_r[i]][center_aux_array_c[j]]
-                                if i!= len(row) or j!= len(column) or i!= 0 or j!=0:
+                                if center_aux_array2_r[i]!= len(row) or center_aux_array_c[j]!= len(column) or center_aux_array2_r[i]!= 0 or center_aux_array_c[j]!=0:
                                     if aux_matrix[i][j] >= dist_matrix[center_aux_array2_r[i]][center_aux_array_c[j]]:
                                                 neutrons_part = 0
-                                                array_neutrons = [0,1,-1]
-                                                array_neutrons2 = [-1,0,1]
                                                 neutrons_part =  cross_amount_matrix[center_aux_array2_r[i]][center_aux_array_c[j]]/9
                                                 cross_amount_matrix[center_aux_array2_r[i]][center_aux_array_c[j]] = round(cross_amount_matrix[center_aux_array2_r[i]][center_aux_array_c[j]]*1/9,0)
                                                 for t in range(3):
@@ -147,7 +146,7 @@ class Two_dimensions:
                         j = 0
                         while j < 2:
                             aux_matrix[aux_array[i]][aux_array[j]] = prob_matrix[center_aux_array2_r[-i]][center_aux_array2_c[j]]
-                            if i!= len(row) or j!= len(column) or i!= 0 or j!=0:
+                            if center_aux_array2_r[i]!= len(row) or center_aux_array_c[j]!= len(column) or center_aux_array2_r[i]!= 0 or center_aux_array_c[j]!=0:
                                 if aux_matrix[i][j] >= dist_matrix[center_aux_array2_r[i]][center_aux_array_c[j]]:
                                             neutrons_part = 0
                                             array_neutrons = [0,1,-1]
@@ -159,7 +158,7 @@ class Two_dimensions:
                                                     if ii[t] < len(cross_amount_matrix) and jj[k] < len(cross_amount_matrix[0]):  
                                                         ####mudar o nome da variavel ou uniformizar e tratar as corners de outra maneira
                                                         cross_amount_matrix[ii[t]][jj[k]] += round(neutrons_part, 0)
-                                print(cross_amount_matrix)
+                                # print(cross_amount_matrix)
                             else: 
                                     print("ops")
                             
@@ -169,15 +168,29 @@ class Two_dimensions:
                     ########### third and fourth quadrant ##############
                     row_aux_array3 = [0, 1, 2]
                     column_aux_array3 = [hc - 1, hc, hc+1]
-                    i = 0
+                    j = 0
                     auxx = hr+1
                     while auxx != len(row):
-                        
-                        while i <= 2:
-                            aux_matrix[2][row_aux_array3[i]] = prob_matrix[auxx][column_aux_array3[i]]
-                            if aux_matrix[2][row_aux_array3[i]] >=dist_matrix[auxx][column_aux_array3[i]]:
-                                    cross_amount_matrix[auxx][column_aux_array3[i]] += 1
-                            i = i + 1
+                        j=0
+                        while j <= 2:
+                            aux_matrix[2][row_aux_array3[j]] = prob_matrix[auxx][column_aux_array3[j]]
+                            m=0
+                            while m <2:
+                                if center_aux_array_c[m]!= len(column) or center_aux_array_c[m]!=0:
+                                    if aux_matrix[2][row_aux_array3[m]] >=dist_matrix[auxx][column_aux_array3[m]]:
+                                            neutrons_part = 0
+                                            array_neutrons = [0,1,-1]
+                                            array_neutrons2 = [-1,0,1]
+                                            neutrons_part =  cross_amount_matrix[2][center_aux_array_c[m]]/9
+                                            cross_amount_matrix[2][center_aux_array_c[m]] = round(cross_amount_matrix[2][center_aux_array_c[m]]*1/9,0)
+                                            for t in range(3):
+                                                        for k in range(3):
+                                                            if ii[t] < len(cross_amount_matrix) and jj[k] < len(cross_amount_matrix[0]):  
+                                                                ####mudar o nome da variavel ou uniformizar e tratar as corners de outra maneira
+                                                                cross_amount_matrix[ii[t]][jj[k]] += round(neutrons_part, 0)
+                                    # print(cross_amount_matrix)
+                                m=m+1
+                            j = j + 1
                         auxx = auxx+1     
                                
                     # print("aux matriz 1", aux_matrix)
@@ -188,7 +201,7 @@ class Two_dimensions:
                     hr = hr - 1
             hc = hc - 1
        
-       
+        # Part 2 - Second Quadrant
         aux_array = [1, 0, 2]
         aux_array2 = [2, 1, 0]
         hc = half_col + 1
@@ -207,11 +220,9 @@ class Two_dimensions:
                                 aux_matrix[aux_array[i]][aux_array2[j]]= 0
                             else:
                                 aux_matrix[aux_array[i]][aux_array2[j]] = prob_matrix[center_aux_array2_r[i]][center_aux_array_c[j]]
-                                if i!= len(row) or j!= len(column) or i!= 0 or j!=0:
+                                if center_aux_array2_r[i]!= len(row) or center_aux_array_c[j]!= len(column) or center_aux_array2_r[i]!= 0 or center_aux_array_c[j]!=0:
                                     if aux_matrix[i][j] >= dist_matrix[center_aux_array2_r[i]][center_aux_array_c[j]]:
                                                 neutrons_part = 0
-                                                array_neutrons = [0,1,-1]
-                                                array_neutrons2 = [-1,0,1]
                                                 neutrons_part =  cross_amount_matrix[center_aux_array2_r[i]][center_aux_array_c[j]]/9
                                                 cross_amount_matrix[center_aux_array2_r[i]][center_aux_array_c[j]] = round(cross_amount_matrix[center_aux_array2_r[i]][center_aux_array_c[j]]*1/9,0)
                                                 for t in range(3):
@@ -219,7 +230,7 @@ class Two_dimensions:
                                                         if ii[t] < len(cross_amount_matrix) and jj[k] < len(cross_amount_matrix[0]):  
                                                             ####mudar o nome da variavel ou uniformizar e tratar as corners de outra maneira
                                                             cross_amount_matrix[ii[t]][jj[k]] += round(neutrons_part, 0)
-                                    print(cross_amount_matrix)
+                                    # print(cross_amount_matrix)
                                 else: 
                                     print("ops")
                                 
@@ -231,7 +242,7 @@ class Two_dimensions:
                         j = 0
                         while j < 2:
                             aux_matrix[aux_array[i]][aux_array[j]] = prob_matrix[center_aux_array2_r[-i]][center_aux_array2_c[j]]
-                            if i!= len(row) or j!= len(column) or i!= 0 or j!=0:
+                            if center_aux_array2_r[i]!= len(row) or center_aux_array_c[j]!= len(column) or center_aux_array2_r[i]!= 0 or center_aux_array_c[j]!=0:
                                 if aux_matrix[i][j] >= dist_matrix[center_aux_array2_r[i]][center_aux_array_c[j]]:
                                             neutrons_part = 0
                                             array_neutrons = [0,1,-1]
@@ -243,7 +254,7 @@ class Two_dimensions:
                                                     if ii[t] < len(cross_amount_matrix) and jj[k] < len(cross_amount_matrix[0]):  
                                                         ####mudar o nome da variavel ou uniformizar e tratar as corners de outra maneira
                                                         cross_amount_matrix[ii[t]][jj[k]] += round(neutrons_part, 0)
-                                print(cross_amount_matrix)
+                                # print(cross_amount_matrix)
                             else: 
                                     print("ops")
                                     
@@ -252,16 +263,30 @@ class Two_dimensions:
                     ########### third and fourth quadrant ##############
                     row_aux_array3 = [0, 1, 2]
                     column_aux_array3 =[hc - 1, hc, hc+1]
-                    i = 0
+                    j = 0
                     auxx = hr+1
                     while auxx != len(row):
-                        
-                        while i <= 2:
-                            aux_matrix[2][row_aux_array3[i]] = prob_matrix[auxx][column_aux_array3[i]]
-                            if aux_matrix[2][row_aux_array3[i]] >=dist_matrix[auxx][column_aux_array3[i]]:
-                                    cross_amount_matrix[auxx][column_aux_array3[i]] += 1
-                            i = i + 1
-                        auxx = auxx+1   
+                        j=0
+                        while j <= 2:
+                            aux_matrix[2][row_aux_array3[j]] = prob_matrix[auxx][column_aux_array3[j]]
+                            m=0
+                            while m <2:
+                                if center_aux_array_c[m]!= len(column) or center_aux_array_c[m]!=0:
+                                    if aux_matrix[2][row_aux_array3[m]] >=dist_matrix[auxx][column_aux_array3[m]]:
+                                            neutrons_part = 0
+                                            array_neutrons = [0,1,-1]
+                                            array_neutrons2 = [-1,0,1]
+                                            neutrons_part =  cross_amount_matrix[2][center_aux_array_c[m]]/9
+                                            cross_amount_matrix[2][center_aux_array_c[m]] = round(cross_amount_matrix[2][center_aux_array_c[m]]*1/9,0)
+                                            for t in range(3):
+                                                        for k in range(3):
+                                                            if ii[t] < len(cross_amount_matrix) and jj[k] < len(cross_amount_matrix[0]):  
+                                                                ####mudar o nome da variavel ou uniformizar e tratar as corners de outra maneira
+                                                                cross_amount_matrix[ii[t]][jj[k]] += round(neutrons_part, 0)
+                                    # print(cross_amount_matrix)
+                                m=m+1
+                            j = j + 1
+                        auxx = auxx+1     
                     # print("cross_matrix", cross_amount_matrix)             
                     # print("aux matriz 2", aux_matrix)
                     hr = hr + 1
@@ -273,25 +298,28 @@ class Two_dimensions:
         aux_array2 = [1, 0, 2]
         hc = half_col + 1
         while hc < len(column): 
-            hr = half_row - 1
+            hr = half_row -1
             while 0 <= hr:
                     center_aux_array2_r = [hr, hr - 1]
+                    ####center aux array 2 [2,1]
                     center_aux_array_c = [hc-1, hc]
-                    center_aux_array2_c = [hc, hc - 1]
+                    ###### center_aux_array_c? [3,4]
+                    center_aux_array2_c = [hc, hc + 1]
+                    #####center aux_array2_c: 4,3
                     ########### first quadrant ##############
                     i = 0
                     while i < 2:
                         j = 0
                         while j < 2:
-                            if hc + 1> len(column):
+                            if hc + 1> len(column) or hr<=0:
                                 aux_matrix[aux_array[i]][aux_array2[j]]= 0
                             else:
                                 aux_matrix[aux_array[i]][aux_array2[j]] = prob_matrix[center_aux_array2_r[i]][center_aux_array_c[j]]
-                                if i!= len(row) or j!= len(column) or i!= 0 or j!=0:
+                                print("prob_matrix[center_aux_array2_r[i]][center_aux_array_c[j]]", prob_matrix[center_aux_array2_r[i]][center_aux_array_c[j]])
+                                print("center_aux_array2_r[i]",center_aux_array2_r[i])
+                                if center_aux_array2_r[i]!= len(row) or center_aux_array_c[j]!= len(column) or center_aux_array2_r[i]!= 0 or center_aux_array_c[j]!=0:
                                     if aux_matrix[i][j] >= dist_matrix[center_aux_array2_r[i]][center_aux_array_c[j]]:
                                                 neutrons_part = 0
-                                                array_neutrons = [0,1,-1]
-                                                array_neutrons2 = [-1,0,1]
                                                 neutrons_part =  cross_amount_matrix[center_aux_array2_r[i]][center_aux_array_c[j]]/9
                                                 cross_amount_matrix[center_aux_array2_r[i]][center_aux_array_c[j]] = round(cross_amount_matrix[center_aux_array2_r[i]][center_aux_array_c[j]]*1/9,0)
                                                 for t in range(3):
@@ -299,7 +327,7 @@ class Two_dimensions:
                                                         if ii[t] < len(cross_amount_matrix) and jj[k] < len(cross_amount_matrix[0]):  
                                                             ####mudar o nome da variavel ou uniformizar e tratar as corners de outra maneira
                                                             cross_amount_matrix[ii[t]][jj[k]] += round(neutrons_part, 0)
-                                    print(cross_amount_matrix)
+                                    # print(cross_amount_matrix)
                                 else: 
                                         print("ops")
                                 
@@ -311,11 +339,9 @@ class Two_dimensions:
                         j = 0
                         while j < 2:
                             aux_matrix[aux_array[i]][aux_array[j]] = prob_matrix[center_aux_array2_r[-i]][center_aux_array2_c[j]]
-                            if i!= len(row) or j!= len(column) or i!= 0 or j!=0:
+                            if center_aux_array2_r[i]!= len(row) or center_aux_array_c[j]!= len(column) or center_aux_array2_r[i]!= 0 or center_aux_array_c[j]!=0:
                                     if aux_matrix[i][j] >= dist_matrix[center_aux_array2_r[i]][center_aux_array_c[j]]:
                                                 neutrons_part = 0
-                                                array_neutrons = [0,1,-1]
-                                                array_neutrons2 = [-1,0,1]
                                                 neutrons_part =  cross_amount_matrix[center_aux_array2_r[i]][center_aux_array_c[j]]/9
                                                 cross_amount_matrix[center_aux_array2_r[i]][center_aux_array_c[j]] = round(cross_amount_matrix[center_aux_array2_r[i]][center_aux_array_c[j]]*1/9,0)
                                                 for t in range(3):
@@ -323,30 +349,43 @@ class Two_dimensions:
                                                         if ii[t] < len(cross_amount_matrix) and jj[k] < len(cross_amount_matrix[0]):  
                                                             ####mudar o nome da variavel ou uniformizar e tratar as corners de outra maneira
                                                             cross_amount_matrix[ii[t]][jj[k]] += round(neutrons_part, 0)
-                                    print(cross_amount_matrix)
+                                    # print(cross_amount_matrix)
                             else: 
                                         print("ops")
                             
                             j = j + 1
                         i = i + 1
                     ########### third and fourth quadrant ##############
-                    row_aux_array3 = [0, 1, 2]
-                    column_aux_array3 = [hc - 1, hc, hc+1]
-                    i = 0
-                    auxx = hr+1
+                    aux_array = [0, 1, 2]
+                    column_aux_array3 =[hc - 1, hc, hc+1]
+                    j = 0
+                    auxx = hc+1
                     while auxx != len(row):
-                        
-                        while i <= 2:
-                            aux_matrix[2][row_aux_array3[i]] = prob_matrix[auxx][column_aux_array3[i]]
-                            if aux_matrix[2][row_aux_array3[i]] >=dist_matrix[auxx][column_aux_array3[i]]:
-                                    cross_amount_matrix[auxx][column_aux_array3[i]] += 1
-                            i = i + 1
-                        auxx = auxx+1 
-                    # print("cross_matrix", cross_amount_matrix)                     
-                    # print("aux matriz 3", aux_matrix)
-                    hr = hr - 1
+                        j=0
+                        while j <= 2:
+                            aux_matrix[2][aux_array[j]] = prob_matrix[auxx][column_aux_array3[j]]
+                            m=0
+                            while m <2:
+                                if center_aux_array_c[m]!= len(column) or center_aux_array_c[m]!=0:
+                                    if aux_matrix[2][aux_array[m]] >=dist_matrix[auxx][column_aux_array3[m]]:
+                                            neutrons_part = 0
+                                            array_neutrons = [0,1,-1]
+                                            array_neutrons2 = [-1,0,1]
+                                            neutrons_part =  cross_amount_matrix[2][center_aux_array_c[m]]/9
+                                            cross_amount_matrix[2][center_aux_array_c[m]] = round(cross_amount_matrix[2][center_aux_array_c[m]]*1/9,0)
+                                            for t in range(3):
+                                                        for k in range(3):
+                                                            if ii[t] < len(cross_amount_matrix) and jj[k] < len(cross_amount_matrix[0]):  
+                                                                ####mudar o nome da variavel ou uniformizar e tratar as corners de outra maneira
+                                                                cross_amount_matrix[ii[t]][jj[k]] += round(neutrons_part, 0)
+                                    # print(cross_amount_matrix)
+                                m=m+1
+                            j = j + 1
+                        auxx = auxx+1     
+                    # print("cross_matrix", cross_amount_matrix)             
+                    # print("aux matriz 2", aux_matrix)
+                    hr = hr + 1
             hc = hc + 1
-                
                 
          # Part 4 - Fourth Quadrant
         aux_array = [0, 1, 2]
@@ -377,11 +416,9 @@ class Two_dimensions:
                         j = 0
                         while j < 2:
                             aux_matrix[aux_array[i]][aux_array[j]] = prob_matrix[center_aux_array2_r[-i]][center_aux_array2_c[j]]
-                            if i!= len(row) or j!= len(column) or i!= 0 or j!=0:
+                            if center_aux_array2_r[i]!= len(row) or center_aux_array_c[j]!= len(column) or center_aux_array2_r[i]!= 0 or center_aux_array_c[j]!=0:
                                     if aux_matrix[i][j] >= dist_matrix[center_aux_array2_r[i]][center_aux_array_c[j]]:
                                                 neutrons_part = 0
-                                                array_neutrons = [0,1,-1]
-                                                array_neutrons2 = [-1,0,1]
                                                 neutrons_part =  cross_amount_matrix[center_aux_array2_r[i]][center_aux_array_c[j]]/9
                                                 cross_amount_matrix[center_aux_array2_r[i]][center_aux_array_c[j]] = round(cross_amount_matrix[center_aux_array2_r[i]][center_aux_array_c[j]]*1/9,0)
                                                 for t in range(3):
@@ -389,31 +426,43 @@ class Two_dimensions:
                                                         if ii[t] < len(cross_amount_matrix) and jj[k] < len(cross_amount_matrix[0]):  
                                                             ####mudar o nome da variavel ou uniformizar e tratar as corners de outra maneira
                                                             cross_amount_matrix[ii[t]][jj[k]] += round(neutrons_part, 0)
-                                    print(cross_amount_matrix)
+                                    # print(cross_amount_matrix)
                             else: 
                                     print("ops")
                             
                             j = j + 1
                         i = i + 1
                     ########### third and fourth quadrant ##############
-                    row_aux_array3 = [0, 1, 2]
+                    aux_array_2 = [0, 1, 2]
                     column_aux_array3 =[hc - 1, hc, hc+1]
-                    i = 0
+                    j = 0
                     auxx = hr+1
                     while auxx != len(row):
-                        
-                        while i <= 2:
-                            aux_matrix[2][row_aux_array3[i]] = prob_matrix[auxx][column_aux_array3[i]]
-                            if aux_matrix[2][row_aux_array3[i]] >=dist_matrix[auxx][column_aux_array3[i]]:
-                                    cross_amount_matrix[auxx][column_aux_array3[i]] += 1
-                            i = i + 1
-                        auxx = auxx+1
-                    # print("cross_matrix", cross_amount_matrix)
-                    # print("aux matriz 4", aux_matrix)
+                        j=0
+                        while j <= 2:
+                            aux_matrix[2][aux_array_2[j]] = prob_matrix[auxx][column_aux_array3[j]]
+                            m=0
+                            while m <2:
+                                if center_aux_array_c[m]!= len(column) or center_aux_array_c[m]!=0:
+                                    if aux_matrix[2][aux_array_2[m]] >=dist_matrix[auxx][column_aux_array3[m]]:
+                                            neutrons_part = 0
+                                            array_neutrons = [0,1,-1]
+                                            array_neutrons2 = [-1,0,1]
+                                            neutrons_part =  cross_amount_matrix[2][center_aux_array_c[m]]/9
+                                            cross_amount_matrix[2][center_aux_array_c[m]] = round(cross_amount_matrix[2][center_aux_array_c[m]]*1/9,0)
+                                            for t in range(3):
+                                                        for k in range(3):
+                                                            if ii[t] < len(cross_amount_matrix) and jj[k] < len(cross_amount_matrix[0]):  
+                                                                ####mudar o nome da variavel ou uniformizar e tratar as corners de outra maneira
+                                                                cross_amount_matrix[ii[t]][jj[k]] += round(neutrons_part, 0)
+                                    # print(cross_amount_matrix)
+                                m=m+1
+                            j = j + 1
+                        auxx = auxx+1     
+                    # print("cross_matrix", cross_amount_matrix)             
+                    # print("aux matriz 2", aux_matrix)
                     hr = hr + 1
-            hc = hc - 1  
-        print("cross amount matrix", cross_amount_matrix)
-        return cross_amount_matrix     
+            hc = hc + 1
 
 
 
@@ -462,6 +511,6 @@ cross_amount_matrix = aux.quadrants(
 
 
 
-sns.heatmap(cross_amount_matrix, annot=True, cmap="viridis")
-plt.show()
+# sns.heatmap(cross_amount_matrix, annot=True, cmap="viridis")
+# plt.show()
 
