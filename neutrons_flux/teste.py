@@ -122,25 +122,33 @@ class Two_dimensions:
                     j = 0
                     while j < 3:
                         # Verificar limites da matriz
-                        if center_aux_array2_r[i] >= 0 and center_aux_array2_r[i] < len(row) and center_aux_array_c[j] >= 0 and center_aux_array_c[j] < len(column):
+                        if (
+                            center_aux_array2_r[i] >= 0
+                            and center_aux_array2_r[i] < len(prob_matrix)
+                            and center_aux_array_c[j] >= 0
+                            and center_aux_array_c[j] < len(prob_matrix[0])
+                        ):
                             aux_matrix[aux_array[i]][aux_array2[j]] = prob_matrix[center_aux_array2_r[i]][center_aux_array_c[j]]
                             print("aux matrix", aux_matrix)
-                            if aux_matrix[i][j] >= dist_matrix[center_aux_array2_r[i]][center_aux_array_c[j]]:
+                            if aux_matrix[aux_array[i]][aux_array2[j]] >= dist_matrix[center_aux_array2_r[i]][center_aux_array_c[j]]:
                                 neutrons_part = 0
                                 neutrons_part = cross_amount_matrix[center_aux_array2_r[i]][center_aux_array_c[j]] / 9
                                 cross_amount_matrix[center_aux_array2_r[i]][center_aux_array_c[j]] = round(cross_amount_matrix[center_aux_array2_r[i]][center_aux_array_c[j]] * 1/9, 0)
                                 for t in range(2):
                                     for k in range(2):
-                                        if center_aux_array2_r[t] < len(cross_amount_matrix) and center_aux_array_c[k] < len(cross_amount_matrix[0]):
+                                        if (
+                                            center_aux_array2_r[t] < len(cross_amount_matrix)
+                                            and center_aux_array_c[k] < len(cross_amount_matrix[0])
+                                        ):
                                             cross_amount_matrix[center_aux_array2_r[t]][center_aux_array_c[k]] += round(neutrons_part, 0)
-                        else:
+                        elif hr == 0 or hr == len(row) - 1 or hc == 0 or hc == len(column) - 1:
                             # Reiniciar geração de números aleatórios e calcular distância novamente
-                            prob_matrix[center_aux_array2_r[i]][center_aux_array_c[j]] =  prob_matrix[center_aux_array2_r[i]][center_aux_array_c[j]] 
+                            prob_matrix[center_aux_array2_r[i]][center_aux_array_c[j]] = 0
 
                         j = j + 1
                     i = i + 1
-                hr = hr + 1
-            hc = hc + 1
+                hr = hr - 1
+            hc = hc - 1
 
 
 
