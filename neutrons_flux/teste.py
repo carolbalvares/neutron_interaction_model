@@ -334,6 +334,6 @@ cross_amount_matrix = aux.quadrants(
 
 
 
-sns.heatmap(cross_amount_matrix, annot=True, cmap="viridis")
+sns.heatmap(cross_amount_matrix, annot=False, cmap="viridis")
 plt.show()
 
