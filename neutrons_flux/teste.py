@@ -60,7 +60,7 @@ class Probability:
         matrix_corners = np.zeros((len(row) + 2, len(column) + 2))
         matrix_corners[1:len(row)+1, 1:len(column)+1] = prob_matrix
         # print("prob matrix", prob_matrix)
-        print("matrix_corners", matrix_corners)
+        print("matrix_prob", matrix_corners)
         return matrix_corners
 
 class Distance:
@@ -79,7 +79,6 @@ class Distance:
                 distance_matrix[i][j] = round(np.sqrt((i + 1 - half_row)**2 + (j + 1 - half_col)**2), 3)
         final_dist_matrix = np.zeros((len(row) + 2, len(column) + 2))
         final_dist_matrix[1:len(row)+1, 1:len(column)+1] = distance_matrix
-        # print("dist", distance_matrix)
         print("final", final_dist_matrix)
         return final_dist_matrix
 
@@ -103,18 +102,17 @@ class Two_dimensions:
         distance = Distance(row, column)
         dist_matrix = distance.dist(row, column)
 
-        # Part 1 - First Quadrant
+        # Part 1 
         aux_array = [1, 0, 2]
         aux_array2 = [1, 2, 0]
-        cross_amount_matrix[half_row][half_col] = neutrons
+        cross_amount_matrix[half_row][half_col] = neutrons/4
         hc = half_col
         while hc >= 0:
             hr = half_row
             while hr >= 0:
-                center_aux_array2_r = [hr, hr - 1, hr + 1]
-                center_aux_array_c = [hc, hc - 1, hc + 1]
+                center_aux_array2_r = [hr, hr + 1, hr - 1]
+                center_aux_array_c = [hc, hc + 1, hc - 1]
                 center_aux_array2_c = [hc, hc - 1]
-                ########### first quadrant ##############
                 aux_matrix = np.zeros((3, 3))
                 i = 0
                 while i < 3:
@@ -149,6 +147,141 @@ class Two_dimensions:
                     i = i + 1
                 hr = hr - 1
             hc = hc - 1
+            
+        # Part 2 
+        aux_array = [1, 0, 2]
+        aux_array2 = [1, 2, 0]
+        cross_amount_matrix[half_row][half_col] = neutrons/4
+        hc = half_col
+        while hc <= len(column):
+            hr = half_row
+            while hr >= 0:
+                center_aux_array2_r = [hr, hr + 1, hr - 1]
+                center_aux_array_c = [hc, hc + 1, hc - 1]
+                aux_matrix = np.zeros((3, 3))
+                i = 0
+                while i < 3:
+                    j = 0
+                    while j < 3:
+                        # Verificar limites da matriz
+                        if (
+                            center_aux_array2_r[i] >= 0
+                            and center_aux_array2_r[i] <= len(prob_matrix)
+                            and center_aux_array_c[j] >= 0
+                            and center_aux_array_c[j] <= len(prob_matrix[0])
+                        ):
+                            aux_matrix[aux_array[i]][aux_array[j]] = prob_matrix[center_aux_array2_r[i]][center_aux_array_c[j]]
+                            if not np.all(aux_matrix == 0):
+                                if aux_matrix[aux_array[i]][aux_array2[j]] >= dist_matrix[center_aux_array2_r[i]][center_aux_array_c[j]]:
+                                    neutrons_part = 0
+                                    if(hr-1<len(row) and hc+1>0):
+                                        neutrons_part = cross_amount_matrix[center_aux_array2_r[i]][center_aux_array_c[j]] / 9
+                                        cross_amount_matrix[center_aux_array2_r[i]][center_aux_array_c[j]] = round(cross_amount_matrix[center_aux_array2_r[i]][center_aux_array_c[j]] * 1/9, 0)
+                                        for t in range(2):
+                                            for k in range(2):
+                                                if (
+                                                    center_aux_array2_r[t] < len(cross_amount_matrix)
+                                                    and center_aux_array_c[k] < len(cross_amount_matrix[0])
+                                                ):
+                                                    cross_amount_matrix[center_aux_array2_r[t]][center_aux_array_c[k]] += round(neutrons_part, 0)
+                            elif hr == 0 or hr == len(row) - 1 or hc == 0 or hc == len(column) - 1:
+                                prob_matrix[center_aux_array2_r[i]][center_aux_array_c[j]] = 0
+                            print("cross amount", cross_amount_matrix)
+
+                        j = j + 1
+                    i = i + 1
+                hr = hr - 1
+            hc = hc + 1
+            
+        # Part 3 
+        aux_array = [1, 0, 2]
+        aux_array2 = [1, 2, 0]
+        cross_amount_matrix[half_row][half_col] = neutrons/4
+        hc = half_col
+        while hc >= 0:
+            hr = half_row
+            while hr <= len(row):
+                center_aux_array2_r = [hr, hr + 1, hr - 1]
+                center_aux_array_c = [hc, hc + 1, hc - 1]
+                aux_matrix = np.zeros((3, 3))
+                i = 0
+                while i < 3:
+                    j = 0
+                    while j < 3:
+                        # Verificar limites da matriz
+                        if (
+                            center_aux_array2_r[i] >= 0
+                            and center_aux_array2_r[i] <= len(prob_matrix)
+                            and center_aux_array_c[j] >= 0
+                            and center_aux_array_c[j] <= len(prob_matrix[0])
+                        ):
+                            aux_matrix[aux_array[i]][aux_array[j]] = prob_matrix[center_aux_array2_r[i]][center_aux_array_c[j]]
+                            if not np.all(aux_matrix == 0):
+                                if aux_matrix[aux_array[i]][aux_array2[j]] >= dist_matrix[center_aux_array2_r[i]][center_aux_array_c[j]]:
+                                    neutrons_part = 0
+                                    if(hr-1<len(row) and hc+1>0):
+                                        neutrons_part = cross_amount_matrix[center_aux_array2_r[i]][center_aux_array_c[j]] / 9
+                                        cross_amount_matrix[center_aux_array2_r[i]][center_aux_array_c[j]] = round(cross_amount_matrix[center_aux_array2_r[i]][center_aux_array_c[j]] * 1/9, 0)
+                                        for t in range(2):
+                                            for k in range(2):
+                                                if (
+                                                    center_aux_array2_r[t] < len(cross_amount_matrix)
+                                                    and center_aux_array_c[k] < len(cross_amount_matrix[0])
+                                                ):
+                                                    cross_amount_matrix[center_aux_array2_r[t]][center_aux_array_c[k]] += round(neutrons_part, 0)
+                            elif hr == 0 or hr == len(row) - 1 or hc == 0 or hc == len(column) - 1:
+                                prob_matrix[center_aux_array2_r[i]][center_aux_array_c[j]] = 0
+                            print("cross amount", cross_amount_matrix)
+
+                        j = j + 1
+                    i = i + 1
+                hr = hr + 1
+            hc = hc - 1
+            
+        # Part 4
+        aux_array = [1, 0, 2]
+        aux_array2 = [1, 2, 0]
+        cross_amount_matrix[half_row][half_col] = neutrons/4
+        hc = half_col
+        while hc <= len(column):
+            hr = half_row
+            while hr <= len(row):
+                center_aux_array2_r = [hr, hr + 1, hr - 1]
+                center_aux_array_c = [hc, hc + 1, hc - 1]
+                aux_matrix = np.zeros((3, 3))
+                i = 0
+                while i < 3:
+                    j = 0
+                    while j < 3:
+                        # Verificar limites da matriz
+                        if (
+                            center_aux_array2_r[i] >= 0
+                            and center_aux_array2_r[i] <= len(prob_matrix)
+                            and center_aux_array_c[j] >= 0
+                            and center_aux_array_c[j] <= len(prob_matrix[0])
+                        ):
+                            aux_matrix[aux_array[i]][aux_array[j]] = prob_matrix[center_aux_array2_r[i]][center_aux_array_c[j]]
+                            if not np.all(aux_matrix == 0):
+                                if aux_matrix[aux_array[i]][aux_array2[j]] >= dist_matrix[center_aux_array2_r[i]][center_aux_array_c[j]]:
+                                    neutrons_part = 0
+                                    if(hr-1<len(row) and hc+1>0):
+                                        neutrons_part = cross_amount_matrix[center_aux_array2_r[i]][center_aux_array_c[j]] / 9
+                                        cross_amount_matrix[center_aux_array2_r[i]][center_aux_array_c[j]] = round(cross_amount_matrix[center_aux_array2_r[i]][center_aux_array_c[j]] * 1/9, 0)
+                                        for t in range(2):
+                                            for k in range(2):
+                                                if (
+                                                    center_aux_array2_r[t] < len(cross_amount_matrix)
+                                                    and center_aux_array_c[k] < len(cross_amount_matrix[0])
+                                                ):
+                                                    cross_amount_matrix[center_aux_array2_r[t]][center_aux_array_c[k]] += round(neutrons_part, 0)
+                            elif hr == 0 or hr == len(row) - 1 or hc == 0 or hc == len(column) - 1:
+                                prob_matrix[center_aux_array2_r[i]][center_aux_array_c[j]] = 0
+                            print("cross amount", cross_amount_matrix)
+
+                        j = j + 1
+                    i = i + 1
+                hr = hr + 1
+            hc = hc + 1
 
 
 
