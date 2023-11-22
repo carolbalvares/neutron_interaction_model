@@ -114,7 +114,6 @@ class Two_dimensions:
                 center_aux_array2_r = [hr, hr - 1, hr + 1]
                 center_aux_array_c = [hc, hc - 1, hc + 1]
                 center_aux_array2_c = [hc, hc - 1]
-                pp = [0, 1]
                 ########### first quadrant ##############
                 aux_matrix = np.zeros((3, 3))
                 i = 0
@@ -124,26 +123,27 @@ class Two_dimensions:
                         # Verificar limites da matriz
                         if (
                             center_aux_array2_r[i] >= 0
-                            and center_aux_array2_r[i] < len(prob_matrix)
+                            and center_aux_array2_r[i] <= len(prob_matrix)
                             and center_aux_array_c[j] >= 0
-                            and center_aux_array_c[j] < len(prob_matrix[0])
+                            and center_aux_array_c[j] <= len(prob_matrix[0])
                         ):
-                            aux_matrix[aux_array[i]][aux_array2[j]] = prob_matrix[center_aux_array2_r[i]][center_aux_array_c[j]]
-                            print("aux matrix", aux_matrix)
-                            if aux_matrix[aux_array[i]][aux_array2[j]] >= dist_matrix[center_aux_array2_r[i]][center_aux_array_c[j]]:
-                                neutrons_part = 0
-                                neutrons_part = cross_amount_matrix[center_aux_array2_r[i]][center_aux_array_c[j]] / 9
-                                cross_amount_matrix[center_aux_array2_r[i]][center_aux_array_c[j]] = round(cross_amount_matrix[center_aux_array2_r[i]][center_aux_array_c[j]] * 1/9, 0)
-                                for t in range(2):
-                                    for k in range(2):
-                                        if (
-                                            center_aux_array2_r[t] < len(cross_amount_matrix)
-                                            and center_aux_array_c[k] < len(cross_amount_matrix[0])
-                                        ):
-                                            cross_amount_matrix[center_aux_array2_r[t]][center_aux_array_c[k]] += round(neutrons_part, 0)
-                        elif hr == 0 or hr == len(row) - 1 or hc == 0 or hc == len(column) - 1:
-                            # Reiniciar geração de números aleatórios e calcular distância novamente
-                            prob_matrix[center_aux_array2_r[i]][center_aux_array_c[j]] = 0
+                            aux_matrix[aux_array[i]][aux_array[j]] = prob_matrix[center_aux_array2_r[i]][center_aux_array_c[j]]
+                            if not np.all(aux_matrix == 0):
+                                if aux_matrix[aux_array[i]][aux_array2[j]] >= dist_matrix[center_aux_array2_r[i]][center_aux_array_c[j]]:
+                                    neutrons_part = 0
+                                    if(hr-1<len(row) and hc-1<len(column)):
+                                        neutrons_part = cross_amount_matrix[center_aux_array2_r[i]][center_aux_array_c[j]] / 9
+                                        cross_amount_matrix[center_aux_array2_r[i]][center_aux_array_c[j]] = round(cross_amount_matrix[center_aux_array2_r[i]][center_aux_array_c[j]] * 1/9, 0)
+                                        for t in range(2):
+                                            for k in range(2):
+                                                if (
+                                                    center_aux_array2_r[t] < len(cross_amount_matrix)
+                                                    and center_aux_array_c[k] < len(cross_amount_matrix[0])
+                                                ):
+                                                    cross_amount_matrix[center_aux_array2_r[t]][center_aux_array_c[k]] += round(neutrons_part, 0)
+                            elif hr == 0 or hr == len(row) - 1 or hc == 0 or hc == len(column) - 1:
+                                prob_matrix[center_aux_array2_r[i]][center_aux_array_c[j]] = 0
+                            print("cross amount", cross_amount_matrix)
 
                         j = j + 1
                     i = i + 1
