@@ -313,15 +313,15 @@ max_dist = 1/macro_tt_UO2
 
 
 initial_neutrons = int(input("Choose initial number of neutrons:    "))
-rowcol = int(input("Choose your matrix dimension:     "))
-
+row_input = int(input("Choose your matrix row dimension:     "))
+col_input = int(input("Choose your matrix column dimension:     "))
 rowcol_array = np.array([])
 column = np.array([])
 row = np.array([])
-for x in range(rowcol):
-    column = np.append(column, int(x+1))
+for x in range(row_input):
     row = np.append(row, int(x+1))
-
+for y in range(col_input):
+    column = np.append(column, int(y+1))
 
 obj = Random_array(initial_neutrons)
 r_array_result = obj.random(initial_neutrons)
