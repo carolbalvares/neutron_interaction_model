@@ -60,7 +60,7 @@ class Probability:
         matrix_corners = np.zeros((len(row) + 2, len(column) + 2))
         matrix_corners[1:len(row)+1, 1:len(column)+1] = prob_matrix
         # print("prob matrix", prob_matrix)
-        print("matrix_prob", matrix_corners)
+        # print("matrix_prob", matrix_corners)
         return matrix_corners
 
 class Distance:
@@ -78,8 +78,8 @@ class Distance:
             for j in range(len(column)):
                 distance_matrix[i][j] = round(np.sqrt((i + 1 - half_row)**2 + (j + 1 - half_col)**2), 3)
         final_dist_matrix = np.zeros((len(row) + 2, len(column) + 2))
-        final_dist_matrix[1:len(row)+1, 1:len(column)+1] = distance_matrix
-        print("final", final_dist_matrix)
+        final_dist_matrix[1:len(row)+1, 1:len(column)+1] = distance_matrix #*10
+        # print("final", final_dist_matrix)
         return final_dist_matrix
 
 class Two_dimensions:
@@ -286,6 +286,10 @@ class Two_dimensions:
                     i = i + 1
                 hr = hr + 1
             hc = hc + 1
+        # print("cross amount", cross_amount_matrix)
+        df = pd.DataFrame(cross_amount_matrix)
+        nome_arquivo = "matriz_excel_python_1.xlsx"
+        df.to_excel(nome_arquivo, index=False, header=False)
         return cross_amount_matrix
 
 
