@@ -13,6 +13,7 @@ macro_abs_H2O = 0.022
 
 gm235=14.0979
 gm238 = 9.23954
+####micro
 
 # parameters
 macro_gamma_U235 = n_U235 * micro_gamma_U235 * 10 ** (-24)

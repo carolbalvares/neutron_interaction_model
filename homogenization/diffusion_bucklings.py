@@ -26,6 +26,6 @@ radial_buckling = (2.405/r_o)**2  # where r_o is the active core radius
 geo_buckling = (2.405/r_o)**2 + (np.pi/z_o)**2
 mat_buckling = (tt_nt_yield * macro_cs_fission - macro_cs_absorption)/dif_coef  # tt_nt_yield =  Total-neutron Yield
 #####tt_nt_yield so paraa U235?
-
+####consertar malha quadrada
 
 #https://www-nds.iaea.org/sgnucdat/a6.htm

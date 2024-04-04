@@ -8,6 +8,7 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import seaborn as sns
 
+######fazer pra uma dimensao
 
 class Random_array:
     def __init__(self, num_samples):
@@ -112,7 +113,7 @@ class Two_dimensions:
             while hr >= 0:
                 center_aux_array2_r = [hr, hr - 1, hr + 1]
                 center_aux_array_c = [hc, hc - 1, hc + 1]
-                center_aux_array2_c = [hc, hc - 1]
+                # center_aux_array2_c = [hc, hc - 1]
                 aux_matrix = np.zeros((3, 3))
                 i = 0
                 while i < 3:
@@ -286,16 +287,18 @@ class Two_dimensions:
                     i = i + 1
                 hr = hr + 1
             hc = hc + 1
-        # print("cross amount", cross_amount_matrix)
+        print("cross amount", cross_amount_matrix)
+        print("soma", np.sum(cross_amount_matrix))
         df = pd.DataFrame(cross_amount_matrix)
         nome_arquivo = "matriz_excel_python_1.xlsx"
         df.to_excel(nome_arquivo, index=False, header=False)
         return cross_amount_matrix
 
 
-micro_scattering_U235 = 15.04 * 10 ** (-24)
-micro_scattering_U238 = 9.360 * 10 ** (-24)
-micro_scattering_O = 3.780 * 10 ** (-24)
+# micro_scattering_U235 = 15.04 * 10 ** (-24)
+# micro_scattering_U238 = 9.360 * 10 ** (-24)
+# micro_scattering_O = 3.780 * 10 ** (-24)
+# ##corrigir tudo
 
 macro_scattering_U235 = micro_scattering_U235 * n_U235
 macro_scattering_U238 = micro_scattering_U238 * n_U238
