@@ -4,13 +4,12 @@ from parameters import *
 
 # core homogenization
 
-# given data
+# given data (micro fission cross section)
 micro_fission_U235 = 584.4 * 10 ** (-24)
 micro_fission_U238 = 11.77 * 10 ** (-27) 
 
 
-# calculations
-
+#calculating homogeneous macro and micro gamma cross section
 macro_fission_U235 = micro_fission_U235 * n_U235
 macro_fission_U238 = micro_fission_U238 * n_U238
 
