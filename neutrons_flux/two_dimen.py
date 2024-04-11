@@ -203,17 +203,17 @@ class Two_dimensions:
                                     )
                                     neutrons_part = 0
                                     for t in range(2):
-                                        for k in range(2):
-                                            if center_aux_array2_r[t] < len(
-                                                cross_amount_matrix
-                                            ) and center_aux_array_c[k] < len(
-                                                cross_amount_matrix[0]
-                                            ):
-                                                cross_amount_matrix[
-                                                    center_aux_array2_r[t]
-                                                ][center_aux_array_c[k]] += round(
-                                                    neutrons_part, 0
-                                                )
+                                            for k in range(2):
+                                                if center_aux_array2_r[t] < len(
+                                                    cross_amount_matrix
+                                                ) and center_aux_array_c[k] < len(
+                                                    cross_amount_matrix[0]
+                                                ):
+                                                    cross_amount_matrix[
+                                                        center_aux_array2_r[t]
+                                                    ][center_aux_array_c[k]] += round(
+                                                        neutrons_part, 0
+                                                    )
                             elif (
                                 hr == 0
                                 or hr == len(row) - 1
@@ -307,17 +307,17 @@ class Two_dimensions:
                                     )
                                     neutrons_part = 0
                                     for t in range(2):
-                                        for k in range(2):
-                                            if center_aux_array2_r[t] < len(
-                                                cross_amount_matrix
-                                            ) and center_aux_array_c[k] < len(
-                                                cross_amount_matrix[0]
-                                            ):
-                                                cross_amount_matrix[
-                                                    center_aux_array2_r[t]
-                                                ][center_aux_array_c[k]] += round(
-                                                    neutrons_part, 0
-                                                )
+                                            for k in range(2):
+                                                if center_aux_array2_r[t] < len(
+                                                    cross_amount_matrix
+                                                ) and center_aux_array_c[k] < len(
+                                                    cross_amount_matrix[0]
+                                                ):
+                                                    cross_amount_matrix[
+                                                        center_aux_array2_r[t]
+                                                    ][center_aux_array_c[k]] += round(
+                                                        neutrons_part, 0
+                                                    )
                             elif (
                                 hr == 0
                                 or hr == len(row) - 1
@@ -410,15 +410,17 @@ class Two_dimensions:
                                     )
                                     neutrons_part = 0
                                     for t in range(2):
-                                        for k in range(2):
-                                            if center_aux_array2_r[t] < len(
-                                                cross_amount_matrix
-                                            ) and center_aux_array_c[k] < len(
-                                                cross_amount_matrix[0]
-                                            ):
-                                                cross_amount_matrix[center_aux_array2_r[t]][
-                                                    center_aux_array_c[k]
-                                                ] += round(neutrons_part, 0)
+                                            for k in range(2):
+                                                if center_aux_array2_r[t] < len(
+                                                    cross_amount_matrix
+                                                ) and center_aux_array_c[k] < len(
+                                                    cross_amount_matrix[0]
+                                                ):
+                                                    cross_amount_matrix[
+                                                        center_aux_array2_r[t]
+                                                    ][center_aux_array_c[k]] += round(
+                                                        neutrons_part, 0
+                                                    )
                             elif (
                                 hr == 0
                                 or hr == len(row) - 1
@@ -490,7 +492,7 @@ class Two_dimensions:
                                     if hr - 1 < len(row) and hc + 1 > 0:
                                         neutrons_part = (
                                             cross_amount_matrix[center_aux_array2_r[i]][
-                                                center_aux_array_c[j]
+                                        center_aux_array_c[j]
                                             ]
                                             / 9
                                         )
@@ -520,15 +522,17 @@ class Two_dimensions:
                                     )
                                     neutrons_part = 0
                                     for t in range(2):
-                                        for k in range(2):
-                                            if center_aux_array2_r[t] < len(
-                                                cross_amount_matrix
-                                            ) and center_aux_array_c[k] < len(
-                                                cross_amount_matrix[0]
-                                            ):
-                                                cross_amount_matrix[center_aux_array2_r[t]][
-                                                    center_aux_array_c[k]
-                                                ] += round(neutrons_part, 0)
+                                            for k in range(2):
+                                                if center_aux_array2_r[t] < len(
+                                                    cross_amount_matrix
+                                                ) and center_aux_array_c[k] < len(
+                                                    cross_amount_matrix[0]
+                                                ):
+                                                    cross_amount_matrix[
+                                                        center_aux_array2_r[t]
+                                                    ][center_aux_array_c[k]] += round(
+                                                        neutrons_part, 0
+                                                    )
                             elif (
                                 hr == 0
                                 or hr == len(row) - 1
