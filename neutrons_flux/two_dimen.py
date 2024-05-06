@@ -68,6 +68,8 @@ class Probability:
         matrix_corners = np.zeros((len(row) + 2, len(column) + 2))
         matrix_corners[1 : len(row) + 1, 1 : len(column) + 1] = prob_matrix
 
+
+        print("matrix", matrix_corners)
         return matrix_corners
 
 
@@ -90,7 +92,7 @@ class Distance:
                 )
         final_dist_matrix = np.zeros((len(row) + 2, len(column) + 2))
         final_dist_matrix[1 : len(row) + 1, 1 : len(column) + 1] = (
-            distance_matrix  # *10
+            distance_matrix  *5
         )
         print("final", final_dist_matrix)
         return final_dist_matrix
@@ -118,16 +120,19 @@ class Two_dimensions:
         distance = Distance(row, column)
         dist_matrix = distance.dist(row, column)
 
-        # Part 1
+        # II QUADRANT  #######################################################################################amarelo no centro certinho
         # vetores auxiliares usado para acessar elementos da matriz auxiliar
+        #######################################ver se pode generalizar esses arrays
         aux_array = [1, 0, 2]
         aux_array2 = [1, 2, 0]
         cross_amount_matrix[half_row][half_col] = neutrons / 4
+        #This "while" makes all windows in the second quadrant to be analysed
         hc = half_col
         while hc >= 0:
             hr = half_row
             while hr >= 0:
-                center_aux_array2_r = [hr, hr - 1, hr + 1]
+                #################################################ver se pode generalizar esses arrays
+                center_aux_array_r = [hr, hr - 1, hr + 1]
                 center_aux_array_c = [hc, hc - 1, hc + 1]
                 # verifica se todos os elementos da matriz auxiliar são diferentes de zero
                 # matriz auxiliar
@@ -138,13 +143,13 @@ class Two_dimensions:
                     while j < 3:
                         # Verificar limites da matriz
                         if (
-                            center_aux_array2_r[i] >= 0
-                            and center_aux_array2_r[i] <= len(prob_matrix)
+                            center_aux_array_r[i] >= 0
+                            and center_aux_array_r[i] <= len(prob_matrix)
                             and center_aux_array_c[j] >= 0
                             and center_aux_array_c[j] <= len(prob_matrix[0])
                         ):
                             aux_matrix[aux_array[i]][aux_array[j]] = prob_matrix[
-                                center_aux_array2_r[i]
+                                center_aux_array_r[i]
                             ][center_aux_array_c[j]]
                             if not np.all(aux_matrix == 0):
                                 # comparando um valor da aux_matrix com o valor correspondente na dist_matrix.
@@ -153,48 +158,57 @@ class Two_dimensions:
                                 # Portanto, a quantidade de nêutrons na célula atual é atualizada.
                                 if (
                                     aux_matrix[aux_array[i]][aux_array2[j]]
-                                    >= dist_matrix[center_aux_array2_r[i]][
+                                    >= dist_matrix[center_aux_array_r[i]][
                                         center_aux_array_c[j]
                                     ]
-                                ):
-                                    neutrons_part = 0
-                                    cross_amount_matrix[center_aux_array2_r[i]][
+                                ):  
+                                    neutrons_part = (
+                                            cross_amount_matrix[center_aux_array_r[i]][
+                                                center_aux_array_c[j]
+                                            ]
+                                            / 9
+                                        )
+                                    # neutrons_part_si= 100000
+                                    cross_amount_matrix[center_aux_array_r[i]][
                                         center_aux_array_c[j]
-                                        # 8/9 dos neutrons ficam na casa atual
-                                    ] = round(
-                                        cross_amount_matrix[center_aux_array2_r[i]][
+                                    ] = round(# 8/9 dos neutrons ficam na casa atual para que o centro tambem receba sua parte
+                                        cross_amount_matrix[center_aux_array_r[i]][
                                             center_aux_array_c[j]
                                         ]
                                         * 8
                                         / 9,
                                         0,
+                                        #arredonda para 0 os numeros quebrados
                                     )
+                                    #se a casa a uma linha acima e uma coluna a esquerda da casa analisada forem menores que o 
+                                    #comprimento da linha e da coluna, entra-se no if:
+                                    #seleciona-se 1/9 da quantidade total (((((ver isso)))))
                                     if hr - 1 < len(row) and hc - 1 < len(column):
-                                        neutrons_part = (
-                                            cross_amount_matrix[center_aux_array2_r[i]][
-                                                center_aux_array_c[j]
-                                            ]
-                                            / 9
-                                        )
-
+                                        #se popula cross_amount_matrix 
                                         for t in range(2):
                                             for k in range(2):
-                                                if center_aux_array2_r[t] < len(
+                                                #se o valor do center_aux_array_r (formato center_aux_array_r = [hr, hr - 1, hr + 1]) em t for maior que a len de linhas de cross_amount_matrix
+                                                #e se o valor de center_aux_array_c for maior que o  len de colunas de cross_amount_matrix 
+                                                # Em Python, você pode obter o número de linhas e colunas de uma matriz (assumindo que é uma lista de listas)
+                                                # usando len(matrix) para as linhas e len(matrix[0]) para as colunas.
+                                                if center_aux_array_r[t] < len(
                                                     cross_amount_matrix
                                                 ) and center_aux_array_c[k] < len(
                                                     cross_amount_matrix[0]
                                                 ):
+                                                    #caso essas condicoes forem verdadeiras, a matrix cross_amount_matrix recebe na posicao analisada
+                                                    #anteriormente uma adicao a seu valor que e neutrons_part
                                                     cross_amount_matrix[
-                                                        center_aux_array2_r[t]
+                                                        center_aux_array_r[t]
                                                     ][center_aux_array_c[k]] += round(
                                                         neutrons_part, 0
                                                     )
                                 else:
-                                    cross_amount_matrix[center_aux_array2_r[i]][
+                                    cross_amount_matrix[center_aux_array_r[i]][
                                         center_aux_array_c[j]
                                         # 8/9 dos neutrons ficam na casa atual
                                     ] = round(
-                                        cross_amount_matrix[center_aux_array2_r[i]][
+                                        cross_amount_matrix[center_aux_array_r[i]][
                                             center_aux_array_c[j]
                                         ]
                                         * 8
@@ -204,13 +218,13 @@ class Two_dimensions:
                                     neutrons_part = 0
                                     for t in range(2):
                                             for k in range(2):
-                                                if center_aux_array2_r[t] < len(
+                                                if center_aux_array_r[t] < len(
                                                     cross_amount_matrix
                                                 ) and center_aux_array_c[k] < len(
                                                     cross_amount_matrix[0]
                                                 ):
                                                     cross_amount_matrix[
-                                                        center_aux_array2_r[t]
+                                                        center_aux_array_r[t]
                                                     ][center_aux_array_c[k]] += round(
                                                         neutrons_part, 0
                                                     )
@@ -220,7 +234,7 @@ class Two_dimensions:
                                 or hc == 0
                                 or hc == len(column) - 1
                             ):
-                                prob_matrix[center_aux_array2_r[i]][
+                                prob_matrix[center_aux_array_r[i]][
                                     center_aux_array_c[j]
                                 ] = 0
                             # print("cross amount", cross_amount_matrix)
@@ -230,7 +244,7 @@ class Two_dimensions:
                 hr = hr - 1
             hc = hc - 1
 
-        # Part 2
+        # I QUADRANT ##############centro certinho###################################################
         aux_array = [1, 0, 2]
         aux_array2 = [1, 2, 0]
         cross_amount_matrix[half_row][half_col] = neutrons / 4
@@ -238,7 +252,7 @@ class Two_dimensions:
         while hc <= len(column):
             hr = half_row
             while hr >= 0:
-                center_aux_array2_r = [hr, hr - 1, hr + 1]
+                center_aux_array_r = [hr, hr - 1, hr + 1]
                 center_aux_array_c = [hc, hc + 1, hc - 1]
                 aux_matrix = np.zeros((3, 3))
                 i = 0
@@ -247,26 +261,26 @@ class Two_dimensions:
                     while j < 3:
                         # Verificar limites da matriz
                         if (
-                            center_aux_array2_r[i] >= 0
-                            and center_aux_array2_r[i] <= len(prob_matrix)
+                            center_aux_array_r[i] >= 0
+                            and center_aux_array_r[i] <= len(prob_matrix)
                             and center_aux_array_c[j] >= 0
                             and center_aux_array_c[j] <= len(prob_matrix[0])
                         ):
                             aux_matrix[aux_array[i]][aux_array[j]] = prob_matrix[
-                                center_aux_array2_r[i]
+                                center_aux_array_r[i]
                             ][center_aux_array_c[j]]
                             if not np.all(aux_matrix == 0):
                                 if (
                                     aux_matrix[aux_array[i]][aux_array2[j]]
-                                    >= dist_matrix[center_aux_array2_r[i]][
+                                    >= dist_matrix[center_aux_array_r[i]][
                                         center_aux_array_c[j]
                                     ]
                                 ):
                                     neutrons_part = 0
-                                    cross_amount_matrix[center_aux_array2_r[i]][
+                                    cross_amount_matrix[center_aux_array_r[i]][
                                         center_aux_array_c[j]
                                     ] = round(
-                                        cross_amount_matrix[center_aux_array2_r[i]][
+                                        cross_amount_matrix[center_aux_array_r[i]][
                                             center_aux_array_c[j]
                                         ]
                                         * 8
@@ -275,30 +289,31 @@ class Two_dimensions:
                                     )
                                     if hr - 1 < len(row) and hc + 1 > 0:
                                         neutrons_part = (
-                                            cross_amount_matrix[center_aux_array2_r[i]][
+                                            cross_amount_matrix[center_aux_array_r[i]][
                                                 center_aux_array_c[j]
                                             ]
                                             / 9
                                         )
+                                        # neutrons_part_si = 100090
 
                                         for t in range(2):
                                             for k in range(2):
-                                                if center_aux_array2_r[t] < len(
+                                                if center_aux_array_r[t] < len(
                                                     cross_amount_matrix
                                                 ) and center_aux_array_c[k] < len(
                                                     cross_amount_matrix[0]
                                                 ):
                                                     cross_amount_matrix[
-                                                        center_aux_array2_r[t]
+                                                        center_aux_array_r[t]
                                                     ][center_aux_array_c[k]] += round(
                                                         neutrons_part, 0
                                                     )
                                 else:
-                                    cross_amount_matrix[center_aux_array2_r[i]][
+                                    cross_amount_matrix[center_aux_array_r[i]][
                                         center_aux_array_c[j]
                                         # 8/9 dos neutrons ficam na casa atual
                                     ] = round(
-                                        cross_amount_matrix[center_aux_array2_r[i]][
+                                        cross_amount_matrix[center_aux_array_r[i]][
                                             center_aux_array_c[j]
                                         ]
                                         * 8
@@ -308,13 +323,13 @@ class Two_dimensions:
                                     neutrons_part = 0
                                     for t in range(2):
                                             for k in range(2):
-                                                if center_aux_array2_r[t] < len(
+                                                if center_aux_array_r[t] < len(
                                                     cross_amount_matrix
                                                 ) and center_aux_array_c[k] < len(
                                                     cross_amount_matrix[0]
                                                 ):
                                                     cross_amount_matrix[
-                                                        center_aux_array2_r[t]
+                                                        center_aux_array_r[t]
                                                     ][center_aux_array_c[k]] += round(
                                                         neutrons_part, 0
                                                     )
@@ -324,7 +339,7 @@ class Two_dimensions:
                                 or hc == 0
                                 or hc == len(column) - 1
                             ):
-                                prob_matrix[center_aux_array2_r[i]][
+                                prob_matrix[center_aux_array_r[i]][
                                     center_aux_array_c[j]
                                 ] = 0
                             # print("cross amount", cross_amount_matrix)
@@ -334,7 +349,7 @@ class Two_dimensions:
                 hr = hr - 1
             hc = hc + 1
 
-        # Part 3
+        # III QUADRANT #################################################################################################################
         aux_array = [1, 0, 2]
         aux_array2 = [1, 2, 0]
         cross_amount_matrix[half_row][half_col] = neutrons / 4
@@ -342,7 +357,7 @@ class Two_dimensions:
         while hc >= 0:
             hr = half_row
             while hr <= len(row):
-                center_aux_array2_r = [hr, hr + 1, hr - 1]
+                center_aux_array_r = [hr, hr + 1, hr - 1]
                 center_aux_array_c = [hc, hc - 1, hc + 1]
                 aux_matrix = np.zeros((3, 3))
                 i = 0
@@ -351,26 +366,26 @@ class Two_dimensions:
                     while j < 3:
                         # Verificar limites da matriz
                         if (
-                            center_aux_array2_r[i] >= 0
-                            and center_aux_array2_r[i] <= len(prob_matrix)
+                            center_aux_array_r[i] >= 0
+                            and center_aux_array_r[i] <= len(prob_matrix)
                             and center_aux_array_c[j] >= 0
                             and center_aux_array_c[j] <= len(prob_matrix[0])
                         ):
                             aux_matrix[aux_array[i]][aux_array[j]] = prob_matrix[
-                                center_aux_array2_r[i]
+                                center_aux_array_r[i]
                             ][center_aux_array_c[j]]
                             if not np.all(aux_matrix == 0):
                                 if (
                                     aux_matrix[aux_array[i]][aux_array2[j]]
-                                    >= dist_matrix[center_aux_array2_r[i]][
+                                    >= dist_matrix[center_aux_array_r[i]][
                                         center_aux_array_c[j]
                                     ]
                                 ):
                                     neutrons_part = 0
-                                    cross_amount_matrix[center_aux_array2_r[i]][
+                                    cross_amount_matrix[center_aux_array_r[i]][
                                         center_aux_array_c[j]
                                     ] = round(
-                                        cross_amount_matrix[center_aux_array2_r[i]][
+                                        cross_amount_matrix[center_aux_array_r[i]][
                                             center_aux_array_c[j]
                                         ]
                                         * 8
@@ -379,29 +394,30 @@ class Two_dimensions:
                                     )
                                     if hr - 1 < len(row) and hc + 1 > 0:
                                         neutrons_part = (
-                                            cross_amount_matrix[center_aux_array2_r[i]][
+                                            cross_amount_matrix[center_aux_array_r[i]][
                                                 center_aux_array_c[j]
                                             ]
                                             / 9
                                         )
+                                        # neutrons_part_si=100000
                                         for t in range(2):
                                             for k in range(2):
-                                                if center_aux_array2_r[t] < len(
+                                                if center_aux_array_r[t] < len(
                                                     cross_amount_matrix
                                                 ) and center_aux_array_c[k] < len(
                                                     cross_amount_matrix[0]
                                                 ):
                                                     cross_amount_matrix[
-                                                        center_aux_array2_r[t]
+                                                        center_aux_array_r[t]
                                                     ][center_aux_array_c[k]] += round(
                                                         neutrons_part, 0
                                                     )
                                 else:
-                                    cross_amount_matrix[center_aux_array2_r[i]][
+                                    cross_amount_matrix[center_aux_array_r[i]][
                                         center_aux_array_c[j]
                                         # 8/9 dos neutrons ficam na casa atual
                                     ] = round(
-                                        cross_amount_matrix[center_aux_array2_r[i]][
+                                        cross_amount_matrix[center_aux_array_r[i]][
                                             center_aux_array_c[j]
                                         ]
                                         * 8
@@ -411,13 +427,13 @@ class Two_dimensions:
                                     neutrons_part = 0
                                     for t in range(2):
                                             for k in range(2):
-                                                if center_aux_array2_r[t] < len(
+                                                if center_aux_array_r[t] < len(
                                                     cross_amount_matrix
                                                 ) and center_aux_array_c[k] < len(
                                                     cross_amount_matrix[0]
                                                 ):
                                                     cross_amount_matrix[
-                                                        center_aux_array2_r[t]
+                                                        center_aux_array_r[t]
                                                     ][center_aux_array_c[k]] += round(
                                                         neutrons_part, 0
                                                     )
@@ -427,7 +443,7 @@ class Two_dimensions:
                                 or hc == 0
                                 or hc == len(column) - 1
                             ):
-                                prob_matrix[center_aux_array2_r[i]][
+                                prob_matrix[center_aux_array_r[i]][
                                     center_aux_array_c[j]
                                 ] = 0
                             elif (
@@ -436,7 +452,7 @@ class Two_dimensions:
                                 or hc == 0
                                 or hc == len(column) - 1
                             ):
-                                prob_matrix[center_aux_array2_r[i]][
+                                prob_matrix[center_aux_array_r[i]][
                                     center_aux_array_c[j]
                                 ] = 0
                             # print("cross amount", cross_amount_matrix)
@@ -446,7 +462,7 @@ class Two_dimensions:
                 hr = hr + 1
             hc = hc - 1
 
-        # Part 4
+        # IV QUADRANT
         aux_array = [1, 0, 2]
         aux_array2 = [1, 2, 0]
         cross_amount_matrix[half_row][half_col] = neutrons / 4
@@ -454,7 +470,7 @@ class Two_dimensions:
         while hc <= len(column):
             hr = half_row
             while hr <= len(row):
-                center_aux_array2_r = [hr, hr + 1, hr - 1]
+                center_aux_array_r = [hr, hr + 1, hr - 1]
                 center_aux_array_c = [hc, hc + 1, hc - 1]
                 aux_matrix = np.zeros((3, 3))
                 i = 0
@@ -463,25 +479,25 @@ class Two_dimensions:
                     while j < 3:
                         # Verificar limites da matriz
                         if (
-                            center_aux_array2_r[i] >= 0
-                            and center_aux_array2_r[i] <= len(prob_matrix)
+                            center_aux_array_r[i] >= 0
+                            and center_aux_array_r[i] <= len(prob_matrix)
                             and center_aux_array_c[j] >= 0
                             and center_aux_array_c[j] <= len(prob_matrix[0])
                         ):
                             aux_matrix[aux_array[i]][aux_array[j]] = prob_matrix[
-                                center_aux_array2_r[i]
+                                center_aux_array_r[i]
                             ][center_aux_array_c[j]]
                             if not np.all(aux_matrix == 0):
                                 if (
                                     aux_matrix[aux_array[i]][aux_array2[j]]
-                                    >= dist_matrix[center_aux_array2_r[i]][
+                                    >= dist_matrix[center_aux_array_r[i]][
                                         center_aux_array_c[j]
                                     ]
                                 ):
-                                    cross_amount_matrix[center_aux_array2_r[i]][
+                                    cross_amount_matrix[center_aux_array_r[i]][
                                         center_aux_array_c[j]
                                     ] = round(
-                                        cross_amount_matrix[center_aux_array2_r[i]][
+                                        cross_amount_matrix[center_aux_array_r[i]][
                                             center_aux_array_c[j]
                                         ]
                                         * 8
@@ -491,29 +507,30 @@ class Two_dimensions:
                                     neutrons_part = 0
                                     if hr - 1 < len(row) and hc + 1 > 0:
                                         neutrons_part = (
-                                            cross_amount_matrix[center_aux_array2_r[i]][
+                                            cross_amount_matrix[center_aux_array_r[i]][
                                         center_aux_array_c[j]
                                             ]
                                             / 9
                                         )
+                                        # neutrons_part=99999
                                         for t in range(2):
                                             for k in range(2):
-                                                if center_aux_array2_r[t] < len(
+                                                if center_aux_array_r[t] < len(
                                                     cross_amount_matrix
                                                 ) and center_aux_array_c[k] < len(
                                                     cross_amount_matrix[0]
                                                 ):
                                                     cross_amount_matrix[
-                                                        center_aux_array2_r[t]
+                                                        center_aux_array_r[t]
                                                     ][center_aux_array_c[k]] += round(
                                                         neutrons_part, 0
                                                     )
                                 else:
-                                    cross_amount_matrix[center_aux_array2_r[i]][
+                                    cross_amount_matrix[center_aux_array_r[i]][
                                         center_aux_array_c[j]
                                         # 8/9 dos neutrons ficam na casa atual
                                     ] = round(
-                                        cross_amount_matrix[center_aux_array2_r[i]][
+                                        cross_amount_matrix[center_aux_array_r[i]][
                                             center_aux_array_c[j]
                                         ]
                                         * 8
@@ -523,13 +540,13 @@ class Two_dimensions:
                                     neutrons_part = 0
                                     for t in range(2):
                                             for k in range(2):
-                                                if center_aux_array2_r[t] < len(
+                                                if center_aux_array_r[t] < len(
                                                     cross_amount_matrix
                                                 ) and center_aux_array_c[k] < len(
                                                     cross_amount_matrix[0]
                                                 ):
                                                     cross_amount_matrix[
-                                                        center_aux_array2_r[t]
+                                                        center_aux_array_r[t]
                                                     ][center_aux_array_c[k]] += round(
                                                         neutrons_part, 0
                                                     )
@@ -539,7 +556,7 @@ class Two_dimensions:
                                 or hc == 0
                                 or hc == len(column) - 1
                             ):
-                                prob_matrix[center_aux_array2_r[i]][
+                                prob_matrix[center_aux_array_r[i]][
                                     center_aux_array_c[j]
                                 ] = 0
                             # print("cross amount", cross_amount_matrix)
@@ -577,15 +594,15 @@ macro_cs_UO2_absorption = macro_cs_gamma + macro_cs_fission
 
 macro_tt_UO2 = (macro_cs_UO2_absorption + macro_cs_UO2_scattering) * 10 ** (-23)
 
-micro_tt_UO2 = micro_cs_scattering + micro_cs_absorption
+# micro_tt_UO2 = micro_cs_scattering + micro_cs_absorption
 
 
-macro_cs_Fe_absorption = macro_gamma_Fe
-macro_tt_Fe = macro_cs_Fe_absorption + macro_scattering_Fe
+# macro_cs_Fe_absorption = macro_gamma_Fe
+# macro_tt_Fe = macro_cs_Fe_absorption + macro_scattering_Fe
 
-print("micro_tt_UO2", micro_tt_UO2)
-print("micro_cs_scattering", micro_cs_scattering)
-print("micro_cs_absorption", micro_cs_absorption)
+# print("micro_tt_UO2", micro_tt_UO2)
+# print("micro_cs_scattering", micro_cs_scattering)
+# print("micro_cs_absorption", micro_cs_absorption)
 
 # max_dist = 1/micro_tt_UO2
 # print("max_dist", max_dist)
