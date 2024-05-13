@@ -3,15 +3,19 @@ import pandas as pd
 import numpy as np
 
 
-row1_python = np.array([ 10394,  20930,  28445,  20711,  10337])
-row2_python = np.array( [ 20829,  46065,  72324,  46096,  21339])
-row3_python = np.array( [ 28314,  72135, 171527 , 72222,  28880])
-row4_python = np.array([ 21010,  46415,  73140,  46308,  21254])
-row5_python = np.array([ 10347 , 21232,  28629 , 21249 , 10474])
+
+row1_python = np.array([ 11758 , 23554,  31080,  23261 , 11653 ])
+row2_python = np.array( [ 23193,  50619 , 77453,  50230,  23195 ])
+row3_python = np.array(  [  30994,  77276, 176874 , 76907 , 30932])
+row4_python = np.array([23243 , 50009,  76400,  49547,  22835])
+row5_python = np.array( [  11690 , 23129,  30467 , 22808,  11201])
 total_python = np.array(
-    [
-   10394,  20930,  28445,  20711,  10337,  20829,  46065,  72324,  46096,  21339, 28314,  72135, 171527 , 72222,  28880,  21010,  46415,  73140,  46308,  21254, 10347 , 21232,  28629 , 21249 , 10474
-    ]
+   [  11758 , 23554,  31080,  23261 , 11653,
+ 23193,  50619 , 77453,  50230,  23195,
+ 30994,  77276, 176874 , 76907 , 30932,
+ 23243 , 50009,  76400,  49547,  22835,
+ 11690,  23129 , 30467 , 22808,  11201
+]
 )
 
 
@@ -34,86 +38,90 @@ plt.ylabel("Y [cm]")
 plt.show()
 
 
+####lado 5 ###
+### total 25#####
 
 
-row1_openmc50 = np.array([523 	,
-2169 	,
-3572 	,
-2185 	,
+row1_openmc = np.array([	   523 	,
+2.169 	,
+3.572 	,
+2.185 	,
 526 	
-])
-row2_openmc50 = np.array([2198 	,
-12661 	,
-24161 	,
-12596 	,
-2174 	
 
 ])
-row3_openmc50 = np.array([
-    3606 	,
-24215 	,
-49360 	,
-24187 	,
-3568 	])
-row4_openmc50 = np.array([2171 	,
-12650 	,
-24268 	,
-12612 	,
-2196 	
-
+row2_openmc = np.array([
+2.198 	,
+12.661 	,
+24.161 	,
+12.596 	,
+2.174 	
 ])
-row5_openmc50 = np.array([ 
-                          513 	,
-2158 	,
-3632 	,
-2171 	,
+row3_openmc = np.array([
+    3.606 	,
+24.215 	,
+49.360 	,
+24.187 	,
+3.568 	
+
+   	])
+row4_openmc = np.array([
+2.171 	,
+12.650 	,
+24.268 	,
+12.612 	,
+2.196 	
+])
+row5_openmc = np.array([ 
+513 	,
+2.158 	,
+3.632 	,
+2.171 	,
 527 	
 
 ])
-total_openmc50 = np.array(
+total_openmc = np.array(
     [
-        523 	,
-2169 	,
-3572 	,
-2185 	,
+    523 	,
+2.169 	,
+3.572 	,
+2.185 	,
 526 	,
-2198 	,
-12661 	,
-24161 	,
-12596 	,
-2174 	,
-3606 	,
-24215 	,
-49360 	,
-24187 	,
-3568 	,
-2171 	,
-12650 	,
-24268 	,
-12612 	,
-2196 	,
+2.198 	,
+12.661 	,
+24.161 	,
+12.596 	,
+2.174 	,
+3.606 	,
+24.215 	,
+49.360 	,
+24.187 	,
+3.568 	,
+2.171 	,
+12.650 	,
+24.268 	,
+12.612 	,
+2.196 	,
 513 	,
-2158 	,
-3632 	,
-2171 	,
-527 	,
-
-
+2.158 	,
+3.632 	,
+2.171 	,
+527 	
+   
     ]
 )
 
 
-df_mc_50 = pd.DataFrame(
+df_mc_ = pd.DataFrame(
     {
-        "Coluna1": row1_openmc50,
-        "Coluna2": row2_openmc50,
-        "Coluna3": row3_openmc50,
-        "Coluna4": row4_openmc50,
-        "Coluna5": row5_openmc50,
+        "Coluna1": row1_openmc,
+        "Coluna2": row2_openmc,
+        "Coluna3": row3_openmc,
+        "Coluna4": row4_openmc,
+        "Coluna5": row5_openmc,
     }
 )
 fig = plt.figure()
-plt.imshow(df_mc_50, origin="lower", cmap="viridis", extent=(-50, 50, -50, 50))
+plt.imshow(df_mc_, origin="lower", cmap="viridis", extent=(-50, 50, -50, 50))
 plt.colorbar(label="Fluxo de Nêutrons OpenMC lado50")
 plt.title("Fluxo de Nêutrons OpenMC lado50")
 plt.xlabel("X [cm]")
@@ -122,7 +130,7 @@ plt.show()
 
 np_array_10 = np.array([])
 for i in range(25):
-    aux = (abs(total_python[i] - total_openmc50[i])) * 100 / total_python[i]
+    aux = (abs(total_python[i] - total_openmc[i])) * 100 / total_python[i]
     np_array_10 = np.append(np_array_10, aux)
     # print("np_array1", np_array_50)
 sum_1 = np.sum(np_array_10)
