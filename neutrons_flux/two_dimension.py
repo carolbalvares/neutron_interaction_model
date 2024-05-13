@@ -89,6 +89,7 @@ def simulate_neutrons(grid, start_position, num_particles, interaction_probs, di
                 break
             dx, dy = random.choice(directions)
             x, y = x + dx, y + dy
+    print("neutron_count_grid", neutron_count_grid)
     return neutron_count_grid, interaction_positions
 
 def plot_grid(neutron_count_grid):
@@ -100,7 +101,7 @@ def plot_grid(neutron_count_grid):
 
 def main():
     grid_size = 5
-    fuel_size = 1
+    fuel_size= 1
     num_particles = 100000
     row, column = 5, 5
     start_position = (grid_size // 2, grid_size // 2)
@@ -122,12 +123,33 @@ def main():
 
     macro_tt_UO2 = (macro_cs_UO2_absorption + macro_cs_UO2_scattering) * 10 ** (-23)
 
+    # grid = initialize_grid(grid_size, fuel_size)
+    # probs = initialize_interaction_probabilities(grid_size, num_particles, macro_tt_UO2, row, column)
+    # distance_matrix = create_distance_matrix(row, column)
+    # neutron_count_grid, interaction_positions = simulate_neutrons(grid, start_position, num_particles, probs, distance_matrix)
+    
+      # Posições iniciais para duas fontes de nêutrons
+    start_position_1 = (grid_size // 2, grid_size // 2)  # Centro
+    start_position_2 = (grid_size // 2, 0)  # Canto superior
+
+    # Inicializações gerais
     grid = initialize_grid(grid_size, fuel_size)
     probs = initialize_interaction_probabilities(grid_size, num_particles, macro_tt_UO2, row, column)
     distance_matrix = create_distance_matrix(row, column)
-    neutron_count_grid, interaction_positions = simulate_neutrons(grid, start_position, num_particles, probs, distance_matrix)
+
+    # Simulação para a primeira fonte
+    neutron_count_grid_1, interaction_positions_1 = simulate_neutrons(grid, start_position_1, num_particles, probs, distance_matrix)
+
+    # Simulação para a segunda fonte
+    neutron_count_grid_2, interaction_positions_2 = simulate_neutrons(grid, start_position_2, num_particles, probs, distance_matrix)
+
+    # Combinar as contagens de nêutrons de ambas as fontes
+    combined_neutron_count_grid = neutron_count_grid_1 + neutron_count_grid_2
+
     
-    plot_grid(neutron_count_grid)
+    
+    
+    plot_grid(combined_neutron_count_grid)
     if interaction_positions:
         print(f"Primeira interação ocorreu na posição: {interaction_positions[0]}")
     else:
