@@ -1,10 +1,12 @@
 import numpy as np
+
+
 import sys
 sys.path.append('../')  # Adjust the path as needed
 from parameters import *
-from hmg_scattering import macro_cs_scattering
-from hmg_absorption import macro_cs_absorption
-from hmg_fission import macro_cs_fission
+from homogenization.hmg_scattering import macro_cs_scattering
+from homogenization.hmg_absorption import macro_cs_absorption
+from homogenization.hmg_fission import macro_cs_fission
 
 # core homogenization
 

@@ -1,9 +1,8 @@
-from parameters import *
-from homogenization.hmg_scattering import macro_scattering_Fe
-from homogenization.hmg_gamma import macro_cs_gamma_fuel, macro_gamma_Fe
-from homogenization.hmg_fission import macro_cs_fission
+
 import sys
 sys.path.append('../')
+from parameters import *
+from homogenization.cross_sections import *
 import matplotlib.pyplot as plt
 import pandas as pd
 import seaborn as sns
@@ -24,98 +23,46 @@ class One_d_one_material:
         self.distance_array = distance_array
         self.tt_cross_section = tt_cross_section
 
-    def n_neutrons_cross(self, num_samples, distance_array, tt_cross_section):
-        self.distance_array = distance_array
-        self.num_samples = num_samples
-        self.tt_cross_section = tt_cross_section
-        # cant_cross_array = np.array([])
-        cross_array = np.array([])
+    def n_neutrons_cross(self):
         cross_amount_array = np.array([])
-        dist_to_collision = 0
-        aux_array = np.array([])
-        r_samples_array = np.random.rand(num_samples).round(3)
-        # print("samples array:   ", r_samples_array)
-        aux_array = r_samples_array
-        for e in range(len(distance_array)):
-            cross_array = np.array([])
-            cross_amount = 0
-            cant_cross_amount = 0
-            cant_cross_amount = False
-            num_samples_aux = num_samples
-            for i in range(num_samples_aux):
-                if aux_array[i] != 1:
-                    dist_to_collision = -np.log(1 - aux_array[i]) / tt_cross_section
-                else:
-                    while aux_array[i] == 1:
-                        aux_array[i] = round(np.random.rand(), 3)
-                    dist_to_collision = -np.log(1 - aux_array[i]) / tt_cross_section
-                # print("dist to collision", dist_to_collision)
-                if cant_cross_amount != False:
-                    if dist_to_collision < distance_array[e] :
-                        cant_cross_amount += 1
-                        cross_array = np.append(
-                            cross_array, 0.000
-                        )
+        # Gera amostras aleatórias apenas uma vez para todos os nêutrons
+        r_samples_array = np.random.rand(self.num_samples)
+        distances_to_collision = -np.log(1 - r_samples_array) / self.tt_cross_section
 
-                        num_samples_aux = num_samples_aux - 1
-
-                    else:
-                        cross_amount += 1
-                        cross_array = np.append(cross_array, aux_array[i])
-
-                        num_samples_aux = num_samples_aux - 1
-
-                else:
-                    if dist_to_collision < distance_array[e] :
-                        cant_cross_amount = 1
-                        cross_amount = 0
-                        cross_array = np.append(cross_array, 0.000)
-                        num_samples_aux = num_samples_aux - 1
-
-                    else:
-                        cross_amount = 1
-                        cross_array = np.append(cross_array, aux_array[i])
-                        cant_cross_amount = 0
-                        num_samples_aux = num_samples_aux - 1
-
-            # discretizations = discretizations - 1
+        # Itera sobre cada distância especificada
+        for distance in self.distance_array:
+            # Conta quantos nêutrons conseguem atravessar essa distância
+            cross_amount = np.sum(distances_to_collision >= distance)
             cross_amount_array = np.append(cross_amount_array, cross_amount)
-            aux_array = cross_array
-            non_zero_indices = aux_array != 0
-            new_random_values = np.random.rand(non_zero_indices.sum()).round(3)
-            aux_array[non_zero_indices] = new_random_values
-            # print("discretization:  ", discretizations)
-            # print("aux_array", aux_array)
-            
 
         return cross_amount_array
 
 
-micro_scattering_U235 = 15.04 * 10 ** (-24)
-micro_scattering_U238 = 9.360 * 10 ** (-24)
-micro_scattering_O = 3.780 * 10 ** (-24)
+num_particles = 100000
+
+
 
 macro_scattering_U235 = micro_scattering_U235 * n_U235
 macro_scattering_U238 = micro_scattering_U238 * n_U238
 macro_scattering_O = micro_scattering_O * n_O
 
-macro_cs_UO2_scattering = (macro_scattering_U235 + macro_scattering_U238 +
-                           macro_scattering_O)*(tt_vol_UO2) / tt_act_core_vol
+macro_cs_UO2_scattering = (
+        (macro_scattering_U235 + macro_scattering_U238 + macro_scattering_O)
+        * (tt_vol_UO2)
+        / tt_act_core_vol
+    )
 
-macro_cs_UO2_absorption = macro_cs_gamma_fuel + macro_cs_fission
+micro_cs_UO2_scattering = macro_cs_UO2_scattering / (6.02214076 * 10 ** (23))
 
+macro_cs_UO2_absorption = macro_cs_gamma + macro_cs_fission
 
-macro_tt_UO2 = macro_cs_UO2_scattering + macro_cs_UO2_absorption
-
-# print("macro tt cross section", macro_tt_UO2)
-
-
-macro_cs_Fe_absorption = macro_gamma_Fe
-macro_tt_Fe = macro_cs_Fe_absorption + macro_scattering_Fe
+macro_tt_UO2 = (macro_cs_UO2_absorption + macro_cs_UO2_scattering) * 10 ** (-23)
 
 
-initial_neutrons = int(input("Choose initial number of neutrons:    "))
-distance = int(input("Distance:     "))
+print("macro_tt_UO2", macro_tt_UO2)
+
+initial_neutrons = num_particles
+distance = 5
 
 
 distance_array = np.array([])
@@ -124,9 +71,11 @@ for i in range(distance):
 
 aux = One_d_one_material(
     initial_neutrons, distance_array, macro_tt_UO2)
-cross_amount_array = aux.n_neutrons_cross(
-    initial_neutrons, distance_array, macro_tt_UO2)
+
+# Chamada correta do método sem passar argumentos adicionais
+cross_amount_array = aux.n_neutrons_cross()
 print("amount that crosses:       ", cross_amount_array)
+
 
 aux = 1
 

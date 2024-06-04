@@ -1,8 +1,9 @@
+from .hmg_fission import macro_cs_fission
+from .hmg_gamma import macro_cs_gamma
 import sys
 sys.path.append('../')  # Adjust the path as needed
 from parameters import *
-from hmg_fission import macro_cs_fission
-from hmg_gamma import macro_cs_gamma
+
 
 # given data (micro gamma cross section)
 micro_abs_H2O = 0.66 * 10**(-24)
