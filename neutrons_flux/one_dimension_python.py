@@ -80,38 +80,6 @@ cross_amount_array = aux.n_neutrons_cross()
 print("amount that crosses:       ", cross_amount_array)
 
 
-# mesh_array = []
-# aggregated_cross_amount = []
-
-# for i in range(0, len(cross_amount_array), 5):
-#     mesh_array = [1, 2, 3, 4, 5]
-#     sum_cross = np.sum(cross_amount_array[i:i+5])
-#     aggregated_cross_amount.append(sum_cross)
-
-# cross_df = pd.DataFrame({
-#     'Distance': mesh_array,
-#     'CrossAmount': aggregated_cross_amount
-# })
-
-
-# # Convertendo os valores para inteiros
-# aggregated_cross_amount = [int(round(num)) for num in aggregated_cross_amount]
-
-
-# cross_df = pd.DataFrame({
-#     'Distance': mesh_array,
-#     'CrossAmount': aggregated_cross_amount
-# })
-
-# # cross_df = pd.DataFrame({'Distance': mesh_array, 'CrossAmount': cross_amount_array, 'Index': aux})
-# # Criando um heatmap
-# sns.heatmap(cross_df.pivot(columns='Distance', values='CrossAmount'), cmap='viridis', annot=True, fmt='d')
-# plt.xlabel('Distance')
-# plt.ylabel('Sample Index')
-# plt.title('Neutron Cross Amount Heatmap')
-# plt.show()
-
-# aux = 1
 
 aggregated_cross_amount = [0, 0, 0, 0, 0]
 
@@ -120,19 +88,13 @@ for i in range(0, len(cross_amount_array), 5):
     group_index = i // 5
     aggregated_cross_amount[group_index] = sum_cross
 
-# Supondo que mesh_array seja um índice de distância ou algum identificador de grupo
 mesh_array = [1, 2, 3, 4, 5]
 
-# Criando o DataFrame
-
-
-# Criação do DataFrame
 cross_df = pd.DataFrame({
     'Distance': mesh_array,
     'CrossAmount': aggregated_cross_amount
 })
 
-# Conversão para inteiros
 cross_df['CrossAmount'] = cross_df['CrossAmount'].round().astype(int)
 cross_df['Distance'] = cross_df['Distance'].round().astype(int)
 new_df = pd.DataFrame(cross_df['CrossAmount'].values.reshape(1, -1), 
