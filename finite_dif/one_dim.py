@@ -9,7 +9,7 @@ from homogenization.cross_sections import micro_cs_absorption
 # Parâmetros
 n = 5  # Número de pontos na grade
 print("dif_coef", dif_coef)
-Δx = 1.0  # Espaçamento da grade
+Δx = 10.0  # Espaçamento da grade
 print("micro_cs_absorption", micro_cs_absorption)
 micro_cs_absorption = 0.1  # Coeficiente de absorção
 S_source = [100000, 0, 0, 0, 0]  # Fonte de partículas em cada ponto
