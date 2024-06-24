@@ -1,4 +1,3 @@
-
 import sys
 sys.path.append('../')
 from parameters import *
@@ -62,9 +61,13 @@ macro_tt_UO2 = (macro_cs_UO2_absorption + macro_cs_UO2_scattering) * 10 ** (-23)
 print("macro_tt_UO2", macro_tt_UO2)
 
 initial_neutrons = num_particles
-distance = 5
+distance = 10
+
+mesh = 5
 
 
+    
+     
 distance_array = np.array([])
 for i in range(distance):
     distance_array = np.append(distance_array, i+1)
@@ -77,18 +80,77 @@ cross_amount_array = aux.n_neutrons_cross()
 print("amount that crosses:       ", cross_amount_array)
 
 
-aux = 1
+# mesh_array = []
+# aggregated_cross_amount = []
 
-cross_df = pd.DataFrame({'Distance': distance_array, 'CrossAmount': cross_amount_array, 'Index': aux})
+# for i in range(0, len(cross_amount_array), 5):
+#     mesh_array = [1, 2, 3, 4, 5]
+#     sum_cross = np.sum(cross_amount_array[i:i+5])
+#     aggregated_cross_amount.append(sum_cross)
+
+# cross_df = pd.DataFrame({
+#     'Distance': mesh_array,
+#     'CrossAmount': aggregated_cross_amount
+# })
 
 
-# Criar um heatmap
-heatmap_data = cross_df.pivot( index = 'Index', columns='Distance', values='CrossAmount')
-sns.heatmap(heatmap_data, cmap='viridis', annot=True, fmt='.1f', cbar_kws={'label': 'Cross Amount'})
+# # Convertendo os valores para inteiros
+# aggregated_cross_amount = [int(round(num)) for num in aggregated_cross_amount]
+
+
+# cross_df = pd.DataFrame({
+#     'Distance': mesh_array,
+#     'CrossAmount': aggregated_cross_amount
+# })
+
+# # cross_df = pd.DataFrame({'Distance': mesh_array, 'CrossAmount': cross_amount_array, 'Index': aux})
+# # Criando um heatmap
+# sns.heatmap(cross_df.pivot(columns='Distance', values='CrossAmount'), cmap='viridis', annot=True, fmt='d')
+# plt.xlabel('Distance')
+# plt.ylabel('Sample Index')
+# plt.title('Neutron Cross Amount Heatmap')
+# plt.show()
+
+# aux = 1
+
+aggregated_cross_amount = [0, 0, 0, 0, 0]
+
+for i in range(0, len(cross_amount_array), 5):
+    sum_cross = np.sum(cross_amount_array[i:i+5])
+    group_index = i // 5
+    aggregated_cross_amount[group_index] = sum_cross
+
+# Supondo que mesh_array seja um índice de distância ou algum identificador de grupo
+mesh_array = [1, 2, 3, 4, 5]
+
+# Criando o DataFrame
+
+
+# Criação do DataFrame
+cross_df = pd.DataFrame({
+    'Distance': mesh_array,
+    'CrossAmount': aggregated_cross_amount
+})
+
+# Conversão para inteiros
+cross_df['CrossAmount'] = cross_df['CrossAmount'].round().astype(int)
+cross_df['Distance'] = cross_df['Distance'].round().astype(int)
+new_df = pd.DataFrame(cross_df['CrossAmount'].values.reshape(1, -1), 
+                      index=[1], 
+                      columns=cross_df['Distance'])
+
+# Criando o heatmap
+plt.figure(figsize=(8, 4))
+sns.heatmap(new_df, cmap='viridis', annot=True, fmt='d')
 plt.xlabel('Distance')
-plt.ylabel('Sample')
+plt.ylabel('Constant Index (1)')
 plt.title('Neutron Cross Amount Heatmap')
 plt.show()
+
+
+
+
+
 
 # strange value https://www.dgtresearch.com/diffusion-coefficients/
 # https://www.nuclear-power.com/nuclear-power/reactor-physics/neutron-diffusion-theory/neutron-current-density/
