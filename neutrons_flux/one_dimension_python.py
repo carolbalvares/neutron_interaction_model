@@ -47,7 +47,7 @@ class One_d_one_material:
                 if distance_collided < cell_boundary:
                     cross_amount_array[i] += 1
                     break  # Interrompe o loop assim que o nêutron é contado para uma célula
-
+        print(cross_amount_array)
         return cross_amount_array
 
 
@@ -71,15 +71,16 @@ print("amount that crosses:       ", cross_amount_array)
 
 
 
-aggregated_cross_amount = [0, 0, 0, 0, 0]
+aggregated_cross_amount = [0] * (len(cross_amount_array) // 2)
 
-for i in range(0, len(cross_amount_array), 5):
-    sum_cross = np.sum(cross_amount_array[i:i+5])
-    group_index = i // 5
+for i in range(0, len(cross_amount_array), 2):
+    sum_cross = np.sum(cross_amount_array[i:i+2])
+    group_index = i // 2
     aggregated_cross_amount[group_index] = sum_cross
-
+    
+    
 mesh_array = [1, 2, 3, 4, 5]
-
+print("aggregated_cross_amount", aggregated_cross_amount)
 cross_df = pd.DataFrame({
     'Distance': mesh_array,
     'CrossAmount': aggregated_cross_amount
