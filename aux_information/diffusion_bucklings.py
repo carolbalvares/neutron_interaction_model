@@ -1,10 +1,12 @@
 import numpy as np
+
+
 import sys
 sys.path.append('../')  # Adjust the path as needed
 from parameters import *
-from hmg_scattering import macro_cs_scattering
-from hmg_absorption import macro_cs_absorption
-from hmg_fission import macro_cs_fission
+from homogenization.hmg_scattering import macro_cs_scattering
+from homogenization.hmg_absorption import macro_cs_absorption
+from homogenization.hmg_fission import macro_cs_fission
 
 # core homogenization
 
@@ -14,10 +16,13 @@ z_o = general_height
 tt_nt_yield = 2.4355
 
 #diffusion
-mi_d = 2/(3*18) #18 = Water molecular mass
-avg_free_path_transp = 1 / (macro_cs_scattering*(1-mi_d))
+# mi_d = 2/(3*18) #18 = Water molecular mass
+avg_free_path_transp = 1 / (macro_cs_scattering)
+print("avg_free_path_transp", avg_free_path_transp)
+print("macro_cs_scattering", macro_cs_scattering)
+#macro_cs_scattering 2.0421609142803487
 dif_coef = avg_free_path_transp / 3
-# print("dif", dif_coef)
+print("dif", dif_coef)
 dif_lenght = dif_coef / macro_cs_absorption
 # print("difll",dif_lenght)
 

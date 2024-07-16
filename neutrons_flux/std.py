@@ -3,107 +3,125 @@ import pandas as pd
 import numpy as np
 
 
-row1_python50 = np.array([19268, 43654, 48772, 43654, 19268])
-row2_python50 = np.array([40945, 90022, 98154, 90022, 40945])
-row3_python50 = np.array([43354, 92736, 173415, 92736, 43354])
-row4_python50 = np.array([40945, 90022, 98154, 90022, 40945])
-row5_python50 = np.array([19268, 43654, 48772, 43654, 19268])
-total_python50 = np.array(
-    [
-        19268,
-        43654,
-        48772,
-        43654,
-        19268,
-        40945,
-        90022,
-        98154,
-        90022,
-        40945,
-        43354,
-        92736,
-        173415,
-        92736,
-        43354,
-        40945,
-        90022,
-        98154,
-        90022,
-        40945,
-        19268,
-        43654,
-        48772,
-        43654,
-        19268,
-    ]
+
+row1_python = np.array([ 11758 , 23554,  31080,  23261 , 11653 ])
+row2_python = np.array( [ 23193,  50619 , 77453,  50230,  23195 ])
+row3_python = np.array(  [  30994,  77276, 176874 , 76907 , 30932])
+row4_python = np.array([23243 , 50009,  76400,  49547,  22835])
+row5_python = np.array( [  11690 , 23129,  30467 , 22808,  11201])
+total_python = np.array(
+   [  11758 , 23554,  31080,  23261 , 11653,
+ 23193,  50619 , 77453,  50230,  23195,
+ 30994,  77276, 176874 , 76907 , 30932,
+ 23243 , 50009,  76400,  49547,  22835,
+ 11690,  23129 , 30467 , 22808,  11201
+]
 )
 
 
-df_py_50 = pd.DataFrame(
+df_py = pd.DataFrame(
     {
-        "Coluna1": row1_python50,
-        "Coluna2": row2_python50,
-        "Coluna3": row3_python50,
-        "Coluna4": row4_python50,
-        "Coluna5": row5_python50,
+        "Coluna1": row1_python,
+        "Coluna2": row2_python,
+        "Coluna3": row3_python,
+        "Coluna4": row4_python,
+        "Coluna5": row5_python,
     }
 )
 
 fig = plt.figure()
-plt.imshow(df_py_50, origin="lower", cmap="viridis", extent=(-50, 50, -50, 50))
-plt.colorbar(label="Fluxo de Nêutrons Python lado 50")
+plt.imshow(df_py, origin="lower", cmap="viridis", extent=(-50, 50, -50, 50))
+plt.colorbar(label="Fluxo de Nêutrons Python lado 1")
 plt.title("Fluxo de Nêutrons Python lado 50")
 plt.xlabel("X [cm]")
 plt.ylabel("Y [cm]")
 plt.show()
 
-row1_openmc50 = np.array([3900, 3978, 3925, 3956, 3849])
-row2_openmc50 = np.array([3946, 4116, 4103, 3976, 3928])
-row3_openmc50 = np.array([4013, 4137, 4141, 3985, 3938])
-row4_openmc50 = np.array([4078, 4222, 4079, 3909, 3974])
-row5_openmc50 = np.array([3879, 4006, 4082, 3980, 3900])
-total_openmc50 = np.array(
+
+####lado 5 ###
+### total 25#####
+
+
+row1_openmc = np.array([	   523 	,
+2.169 	,
+3.572 	,
+2.185 	,
+526 	
+
+])
+row2_openmc = np.array([
+2.198 	,
+12.661 	,
+24.161 	,
+12.596 	,
+2.174 	
+])
+row3_openmc = np.array([
+    3.606 	,
+24.215 	,
+49.360 	,
+24.187 	,
+3.568 	
+
+   	])
+row4_openmc = np.array([
+2.171 	,
+12.650 	,
+24.268 	,
+12.612 	,
+2.196 	
+])
+row5_openmc = np.array([ 
+513 	,
+2.158 	,
+3.632 	,
+2.171 	,
+527 	
+
+])
+total_openmc = np.array(
     [
-        3900,
-        3978,
-        3925,
-        3956,
-        3849,
-        3946,
-        4116,
-        4103,
-        3976,
-        3928,
-        4013,
-        4137,
-        4141,
-        3985,
-        3938,
-        4078,
-        4222,
-        4079,
-        3909,
-        3974,
-        3879,
-        4006,
-        4082,
-        3980,
-        3900,
+    523 	,
+2.169 	,
+3.572 	,
+2.185 	,
+526 	,
+2.198 	,
+12.661 	,
+24.161 	,
+12.596 	,
+2.174 	,
+3.606 	,
+24.215 	,
+49.360 	,
+24.187 	,
+3.568 	,
+2.171 	,
+12.650 	,
+24.268 	,
+12.612 	,
+2.196 	,
+513 	,
+2.158 	,
+3.632 	,
+2.171 	,
+527 	
+   
     ]
 )
 
 
-df_mc_50 = pd.DataFrame(
+df_mc_ = pd.DataFrame(
     {
-        "Coluna1": row1_openmc50,
-        "Coluna2": row2_openmc50,
-        "Coluna3": row3_openmc50,
-        "Coluna4": row4_openmc50,
-        "Coluna5": row5_openmc50,
+        "Coluna1": row1_openmc,
+        "Coluna2": row2_openmc,
+        "Coluna3": row3_openmc,
+        "Coluna4": row4_openmc,
+        "Coluna5": row5_openmc,
     }
 )
 fig = plt.figure()
-plt.imshow(df_mc_50, origin="lower", cmap="viridis", extent=(-50, 50, -50, 50))
+plt.imshow(df_mc_, origin="lower", cmap="viridis", extent=(-50, 50, -50, 50))
 plt.colorbar(label="Fluxo de Nêutrons OpenMC lado50")
 plt.title("Fluxo de Nêutrons OpenMC lado50")
 plt.xlabel("X [cm]")
@@ -112,7 +130,7 @@ plt.show()
 
 np_array_10 = np.array([])
 for i in range(25):
-    aux = (abs(total_python50[i] - total_openmc50[i])) * 100 / total_python50[i]
+    aux = (abs(total_python[i] - total_openmc[i])) * 100 / total_python[i]
     np_array_10 = np.append(np_array_10, aux)
     # print("np_array1", np_array_50)
 sum_1 = np.sum(np_array_10)
@@ -120,22 +138,4 @@ sum_1 = np.sum(np_array_10)
 reshapes = np_array_10.reshape((5, 5))
 
 
-for i in range(1):
-    df_10 = pd.DataFrame(
-        {
-            "Coluna1": reshapes[i],
-            "Coluna2": reshapes[i + 1],
-            "Coluna3": reshapes[i + 2],
-            "Coluna4": reshapes[i + 3],
-            "Coluna5": reshapes[i + 4],
-        }
-    )
-fig = plt.figure()
-plt.imshow(df_10, origin="lower", cmap="viridis", extent=(-5, 5, -5, 5))
-plt.colorbar(label="Fluxo de Nêutrons python 1")
-plt.title("STD")
-plt.xlabel("X [cm]")
-plt.ylabel("Y [cm]")
-plt.show()
-
-print("para lado 10 do python e lado 10 openmc:  ", np.std(np_array_10))
+print("std:  ", np.std(np_array_10))
