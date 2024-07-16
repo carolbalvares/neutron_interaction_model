@@ -4,18 +4,19 @@ from scipy.ndimage import gaussian_filter
 
 size = 10  
 cell_size = 1  
-total_neutrons = 10000  
+total_neutrons = 100000  
 source_size = 3  
 
+# Dicionário de seções de choque atualizadas
 sigma = {
-    "H1_n_el": 30.0683,
-    "O16_n_el": 3.91335,
-    "H1_n_g": 0.332587,
-    "U235_n_el": 14.0979,
-    "U238_n_el": 9.23954,
-    "U235_n_g": 99.4178,
-    "U238_n_g": 2.68282,
-    "U235_n_f": 586.691,
+    "H1_n_el": 30.173471,
+    "O16_n_el": 3.9152284,
+    "H1_n_g": 0.3346708,
+    "U235_n_el": 14.110209,
+    "U238_n_el": 9.240251,
+    "U235_n_g": 100.135796,
+    "U238_n_g": 2.7003825,
+    "U235_n_f":  590.64465,
     "U238_n_f": 1.85034E-05,
 }
 

@@ -20,14 +20,19 @@ distance = 10
 distance_array = np.arange(1, distance + 1)
 
 # Propriedades do material - supondo que essas são carregadas ou definidas em algum lugar
-macro_scattering_U235 = micro_scattering_U235 * n_U235
-macro_scattering_U238 = micro_scattering_U238 * n_U238
-macro_scattering_O = micro_scattering_O * n_O
+macro_scattering_U235 = micro_scattering_U235 * n_U235* 10 ** (-24)
+macro_scattering_U238 = micro_scattering_U238 * n_U238* 10 ** (-24)
+macro_scattering_O = micro_scattering_O * n_O* 10 ** (-24)
+macro_scattering_Fe = micro_scattering_Fe * n_Fe* 10 ** (-24)
+macro_scattering_H2O  = micro_scattering_H2O * n_H2O* 10 ** (-24)
 macro_cs_UO2_scattering = (macro_scattering_U235 + macro_scattering_U238 + macro_scattering_O) * tt_vol_UO2 / tt_act_core_vol
 micro_cs_UO2_scattering = macro_cs_UO2_scattering / (6.02214076 * 10 ** 23)
 macro_cs_UO2_absorption = macro_cs_gamma + macro_cs_fission
-macro_tt_UO2 = (macro_cs_UO2_absorption + macro_cs_UO2_scattering) * 10 ** (-24)
-
+macro_tt_UO2 = macro_cs_UO2_absorption + macro_cs_UO2_scattering
+print("macro_tt_UO2", macro_tt_UO2)
+print("macro_scattering_U235", macro_scattering_U235)
+print("macro_scattering_U238", macro_scattering_U238)
+print("macro_cs_UO2_absorption", macro_cs_UO2_absorption)
 class One_d_one_material:
     def __init__(self, num_samples, distance_array, tt_cross_section):
         self.num_samples = num_samples
@@ -101,6 +106,6 @@ plt.title('Neutron Cross Amount Heatmap')
 plt.show()
 
 
-# strange value https://www.dgtresearch.com/diffusion-coefficients/
-# https://www.nuclear-power.com/nuclear-power/reactor-physics/neutron-diffusion-theory/neutron-current-density/
-# Não há uma regra específica da comunidade científica para arredondamento de nêutrons além do arredondamento para o número inteiro mais próximo.
+# # strange value https://www.dgtresearch.com/diffusion-coefficients/
+# # https://www.nuclear-power.com/nuclear-power/reactor-physics/neutron-diffusion-theory/neutron-current-density/
+# # Não há uma regra específica da comunidade científica para arredondamento de nêutrons além do arredondamento para o número inteiro mais próximo.
