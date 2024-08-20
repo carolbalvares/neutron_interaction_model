@@ -39,7 +39,7 @@ dados_1_fuel = [
 
 dados_arredondados = [round(num) for num in dados_1_fuel]
 array_5x5 = np.array(dados_arredondados).reshape(5, 5)
-
+dados_openmc_1_fuel = array_5x5
 print("array_5x5", array_5x5)
 
 #[  523  2169  3572  2185   526]
@@ -50,3 +50,19 @@ print("array_5x5", array_5x5)
 
 
 #TWO FUEL
+
+#ERRO PERCENTUAL ABSOLUTO
+
+# Calculando o erro percentual absoluto
+erro_percentual_absoluto = np.abs((dados_openmc_1_fuel - one_fuel_python_two_dim) / dados_openmc_1_fuel) * 100
+erro_percentual_absoluto_int = erro_percentual_absoluto.astype(int) 
+# Imprimindo o erro percentual absoluto
+print("Erro Percentual Absoluto:")
+print(erro_percentual_absoluto_int)
+
+###[[  55   79   61  130  558]
+ ###[  81   98   45   20  310]
+ ###[  63   45  149   90  378]
+ ###[ 124   17   90  134  503]
+ ###[ 573  303  371  511 1151]]
+
