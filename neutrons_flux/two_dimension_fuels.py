@@ -65,9 +65,10 @@ def create_distance_matrix(row, column):
 
 def initialize_grid(grid_size, fuel_size):
     grid = np.zeros((grid_size, grid_size), dtype=int)
-    start = (grid_size - fuel_size) // 2
-    end = start + fuel_size
-    grid[start:end, start:end] = 1
+    start_row = 0  # Começa na casa 0
+    end_row = start_row + fuel_size
+    col_position = grid_size // 2  # Escolhe uma coluna central
+    grid[start_row:end_row, col_position] = 1
     return grid
 
 def initialize_interaction_probabilities(grid_size, num_samples, tt_cross_section, row, column):
@@ -98,13 +99,17 @@ def plot_grid(neutron_count_grid):
     plt.colorbar(label='Neutron Count')
     plt.title('Neutron Transport Simulation')
     plt.show()
+    
+
 
 def main():
-    grid_size = 5
-    fuel_size= 1
+    grid_size = 6
+    fuel_size= 2
     num_particles = 100000
-    row, column = 5, 5
-    start_position = (grid_size // 2, grid_size // 2)
+    row, column = 6, 6
+    start_position_1 = (0, 1)  # Posições da primeira fonte vertical (0, 1)
+    start_position_2 = (0, 5)  # Posições da segunda fonte vertical (0, 5)
+
 
 
     macro_scattering_U235 = micro_scattering_U235 * n_U235
@@ -131,7 +136,7 @@ def main():
     # neutron_count_grid, interaction_positions = simulate_neutrons(grid, start_position, num_particles, probs, distance_matrix)
     
     start_position_1 = (grid_size // 2, 4)  
-    start_position_2 = (grid_size // 2, 0)  
+    start_position_2 = (grid_size // 2, 1)  
 
 
     grid = initialize_grid(grid_size, fuel_size)
