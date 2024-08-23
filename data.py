@@ -11,13 +11,13 @@ openmc_1d=[7481, 2054, 139, 8, 0]
 
 ## TWO DIMENSIONS PYTHON
 #ONE FUEL
-one_fuel_python_two_dim = np.array([
-    [231, 454, 1384, 5030, 3464],
-    [409, 219, 35056, 15129, 8914],
-    [1304, 35119, 123185, 46146, 17078],
-    [4874, 14858, 46224, 29601, 13255],
-    [3456, 8713, 17107, 13265, 6593]
-])
+one_fuel_python_two_dim = np.array(
+[[ 11271,  22950,  30757,  22721,  11430],
+ [ 22615,  49536,  76601,  49285,  22983],
+ [ 30242,  76126, 177070,  76686,  30819],
+ [ 23034,  49810,  77296,  49792,  23231],
+ [ 11572,  23041,  30808,  22822,  11557]])
+
 
 #TWO FUELS
 two_fuels_python_two_dim = np.array([
@@ -90,8 +90,8 @@ plt.show()
 erro_percentual_absoluto = np.abs((dados_openmc_1_fuel - one_fuel_python_two_dim) / dados_openmc_1_fuel) * 100
 erro_percentual_absoluto_int = erro_percentual_absoluto.astype(int) 
 # Imprimindo o erro percentual absoluto
-# print("Erro Percentual Absoluto:")
-# print(erro_percentual_absoluto_int)
+print("Erro Percentual Absoluto:")
+print(erro_percentual_absoluto_int)
 
 ###[[  55   79   61  130  558]
  ###[  81   98   45   20  310]

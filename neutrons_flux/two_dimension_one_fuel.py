@@ -3,6 +3,10 @@ import numpy as np
 import matplotlib.pyplot as plt
 import random
 
+sys.path.append("../")
+from homogenization.cross_sections import *
+from parameters import *
+
 class Probability:
     def __init__(self, num_samples, tt_cross_section, row, column):
         self.num_samples = num_samples
@@ -30,7 +34,6 @@ class Probability:
                                     dist_to_collision = -np.log(1 - r_array[i]) / self.tt_cross_section
                                     prob_matrix[r][c] = round(dist_to_collision, 4)
                     i += 1
-        print("prob_matrix", prob_matrix)
         return prob_matrix
 
 def create_distance_matrix(row, column):
@@ -52,7 +55,6 @@ def initialize_grid(grid_size, fuel_size):
 def initialize_interaction_probabilities(grid_size, num_samples, tt_cross_section, row, column):
     prob_aux = Probability(num_samples, tt_cross_section, row, column)
     probs = prob_aux.calculate_probabilities()
-    print("probs.reshape(grid_size, grid_size)", probs.reshape(grid_size, grid_size))
     return probs.reshape(grid_size, grid_size)
 
 def simulate_neutrons(grid, start_position, num_particles, interaction_probs, distance_matrix):
@@ -60,10 +62,9 @@ def simulate_neutrons(grid, start_position, num_particles, interaction_probs, di
     neutron_count_grid = np.zeros_like(grid)
     interaction_positions = []
     directions = [(-1, 0), (1, 0), (0, -1), (0, 1)]
-
+    
     for _ in range(num_particles):
         x, y = start_position
-        
         while 0 <= x < grid_size and 0 <= y < grid_size:
             neutron_count_grid[x, y] += 1
             if (x, y) != start_position and distance_matrix[x, y] < interaction_probs[x, y]:
@@ -71,7 +72,6 @@ def simulate_neutrons(grid, start_position, num_particles, interaction_probs, di
                 break
             dx, dy = random.choice(directions)
             x, y = x + dx, y + dy
-
     return neutron_count_grid, interaction_positions
 
 def plot_grid(neutron_count_grid):
@@ -84,14 +84,25 @@ def plot_grid(neutron_count_grid):
 def main():
     grid_size = 5
     fuel_size = 1  # Um único combustível no centro
-    num_particles = 50
+    num_particles = 100000
     row, column = 5, 5
     start_position = (grid_size // 2, grid_size // 2)
 
     # Inicializando as variáveis antes de usá-las
+    macro_scattering_U235 = micro_scattering_U235 * n_U235
+    macro_scattering_U238 = micro_scattering_U238 * n_U238
+    macro_scattering_O = micro_scattering_O * n_O
+
+    macro_cs_UO2_scattering = (
+        (macro_scattering_U235 + macro_scattering_U238 + macro_scattering_O)
+        * tt_vol_UO2
+        / tt_act_core_vol
+    )
+
+    macro_cs_UO2_absorption = macro_cs_gamma + macro_cs_fission
 
     # Calculando a seção transversal total
-    tt_cross_section =3.25107788
+    tt_cross_section = (macro_cs_UO2_absorption + macro_cs_UO2_scattering) * 10 ** (-23)
 
     grid = initialize_grid(grid_size, fuel_size)
     probs = initialize_interaction_probabilities(grid_size, num_particles, tt_cross_section, row, column)
