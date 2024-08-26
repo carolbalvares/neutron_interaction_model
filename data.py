@@ -54,35 +54,42 @@ print("array_5x5", array_5x5)
 
 #TWO FUEL
 
-vetor_open_mc_2_fuels = [
-    417.277881, 568.303584, 328.082992, 309.428923, 537.547924, 395.725026,
-    3830.096881, 4741.876118, 1858.099379, 1824.086267, 4517.616617, 3658.592061,
-    15360.686992, 18188.617726, 5435.373847, 5239.025079, 17428.737828, 14784.437258,
-    15459.564036, 18189.189634, 5399.159350, 5214.448501, 17402.764544, 14801.381269,
-    3856.860364, 4763.051403, 1887.989268, 1823.572185, 4527.080067, 3658.616315,
-    413.811241, 561.672496, 317.545459, 320.884645, 526.441665, 395.762879
+import matplotlib.pyplot as plt
+import numpy as np
+
+# Dados da contagem de nêutrons
+neutron_count_data = [
+    154.296755, 248.654716, 162.416725, 97.017701, 151.805467, 232.432938, 141.320686,
+    1317.152938, 2143.269191, 1122.724266, 504.250580, 1095.267562, 2051.546448, 1237.214166,
+    6386.441436, 10407.463775, 4738.546517, 1558.353397, 4545.791608, 10022.281368, 6145.666243, 10685.897103, 16641.625137, 7847.271076,
+    2323.861223, 7487.261480, 15925.691608, 10183.015271, 6436.618149, 10398.128644, 4749.030859, 1573.594470,
+    4563.551286, 9971.905661, 6165.691177, 1304.066889, 2133.196767, 1106.685375, 517.570215, 1091.913929, 2066.837452, 1243.343589,
+    152.432225, 251.928326, 156.888182, 96.494780, 153.436496, 224.517845, 144.070805
 ]
 
-# Convertendo os números para inteiros
-vetor_open_mc_2_fuels = [int(x) for x in vetor_open_mc_2_fuels]
+# Reshape dos dados para uma matriz 7x7
+neutron_count_grid = np.array(neutron_count_data).reshape(7, 7)
 
-# Transformando o vetor em uma matriz 6x6 usando numpy
-matriz_numpy = np.array(vetor_open_mc_2_fuels).reshape(6, 6)
+# Função para plotar o gráfico
+def plot_grid(neutron_count_grid):
+    plt.figure(figsize=(10, 8))
+    im = plt.imshow(neutron_count_grid, cmap='viridis', interpolation='nearest')
+    plt.colorbar(im, label='Neutron Count')
+    plt.title('Neutron Transport Simulation')
+    plt.show()
 
-# Exibindo a matriz em numpy
-print(matriz_numpy)
-# [[  417   568   328   309   537   395]
-#  [ 3830  4741  1858  1824  4517  3658]
-#  [15360 18188  5435  5239 17428 14784]
-#  [15459 18189  5399  5214 17402 14801]
-#  [ 3856  4763  1887  1823  4527  3658]
-#  [  413   561   317   320   526   395]]
+# Executando a função de plotagem
+plot_grid(neutron_count_grid)
 
-plt.figure(figsize=(10, 8))
-plt.imshow(matriz_numpy, cmap='viridis', interpolation='nearest')
-plt.colorbar(label='Two Dimension Matrix with Two Fuels')  # Corrigido o rótulo do colorbar
-plt.title('Two Dimension Matrix with Two Fuels')  # Corrigido o título
-plt.show()
+#[
+#    [  154,  249,  162,   97,  152,  232,  141],
+#   [ 1317, 2143, 1123,  504, 1095, 2052, 1237],
+#    [ 6386, 10407, 4739, 1558, 4546, 10022, 6146],
+#   [10686, 16642, 7847, 2324, 7487, 15926, 10183],
+#   [ 6437, 10398, 4749, 1574, 4564, 9972, 6166],
+#   [ 1304, 2133, 1107,  518, 1092, 2067, 1243],
+#   [  152,  252,  157,   96,  153,  225,  144]
+#]
 
 #ERRO PERCENTUAL ABSOLUTO
 
