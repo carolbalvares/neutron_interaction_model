@@ -1,8 +1,7 @@
-
+import sys
 import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
-import seaborn as sns
 import random
 
 
@@ -86,7 +85,7 @@ def simulate_neutrons(grid, start_position, num_particles, interaction_probs, di
                 break
             dx, dy = random.choice(directions)
             x, y = x + dx, y + dy
-    print("neutron_count_grid",neutron_count_grid)
+    print("neutron cont", neutron_count_grid)
     return neutron_count_grid, interaction_positions
 
 def plot_grid(neutron_count_grid):
@@ -103,30 +102,13 @@ def main():
     row, column = 5, 5
     start_position = (grid_size // 2, grid_size // 2)
 
-# macro_scattering_U235 = micro_scattering_U235 * n_U235
-    # macro_scattering_U238 = micro_scattering_U238 * n_U238
-    # macro_scattering_O = micro_scattering_O * n_O
-
-    # macro_cs_UO2_scattering = (
-    #     (macro_scattering_U235 + macro_scattering_U238 + macro_scattering_O)
-    #     * (tt_vol_UO2)
-    #     / tt_act_core_vol
-    # )
-
-    # micro_cs_UO2_scattering = macro_cs_UO2_scattering / (6.02214076 * 10 ** (23))
-
-    # macro_cs_UO2_absorption = macro_cs_gamma + macro_cs_fission
-
-    # macro_tt_UO2 = (macro_cs_UO2_absorption + macro_cs_UO2_scattering) * 10 ** (-23)
-
-
-    tt_cross_section = 1.19499022
+    macro_tt_UO2 = 3.251077
 
     grid = initialize_grid(grid_size, fuel_size)
-    probs = initialize_interaction_probabilities(grid_size, num_particles, tt_cross_section, row, column)
+    probs = initialize_interaction_probabilities(grid_size, num_particles, macro_tt_UO2, row, column)
     distance_matrix = create_distance_matrix(row, column)
     neutron_count_grid, interaction_positions = simulate_neutrons(grid, start_position, num_particles, probs, distance_matrix)
-
+    
     plot_grid(neutron_count_grid)
     if interaction_positions:
         print(f"Primeira interação ocorreu na posição: {interaction_positions[0]}")
