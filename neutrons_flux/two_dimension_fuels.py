@@ -50,7 +50,7 @@ class Probability:
                     i += 1
                     c += 1
                 r += 1
-        print("prob matriz", prob_matrix)
+        # print("prob matriz", prob_matrix)
         return prob_matrix
 
 def create_distance_matrix(row, column):
@@ -60,7 +60,7 @@ def create_distance_matrix(row, column):
         for j in range(column):
             distance = np.sqrt((center_x - i) ** 2 + (center_y - j) ** 2)
             distance_matrix[i, j] = distance
-    print("DISTANCE MATRIZ", distance_matrix)
+    # print("DISTANCE MATRIZ", distance_matrix)
     return distance_matrix
 
 def initialize_grid(grid_size, fuel_size):
@@ -90,7 +90,7 @@ def simulate_neutrons(grid, start_position, num_particles, interaction_probs, di
                 break
             dx, dy = random.choice(directions)
             x, y = x + dx, y + dy
-    print("neutron_count_grid", neutron_count_grid)
+    
     return neutron_count_grid, interaction_positions
 
 def plot_grid(neutron_count_grid):
@@ -103,12 +103,12 @@ def plot_grid(neutron_count_grid):
 
 
 def main():
-    grid_size = 6
+    grid_size = 7
     fuel_size= 2
     num_particles = 100000
-    row, column = 6, 6
-    start_position_1 = (0, 1)  # Posições da primeira fonte vertical (0, 1)
-    start_position_2 = (0, 5)  # Posições da segunda fonte vertical (0, 5)
+    row, column = 7, 7
+    start_position_1 = (3, 1)  # Posições da primeira fonte vertical (0, 1)
+    start_position_2 = (3, 5)  # Posições da segunda fonte vertical (0, 5)
 
 
 
@@ -129,14 +129,11 @@ def main():
     macro_tt_UO2 = (macro_cs_UO2_absorption + macro_cs_UO2_scattering) * 10 ** (-23)
 
 
-    print("macro_tt_UO2", macro_tt_UO2)
     # grid = initialize_grid(grid_size, fuel_size)
     # probs = initialize_interaction_probabilities(grid_size, num_particles, macro_tt_UO2, row, column)
     # distance_matrix = create_distance_matrix(row, column)
     # neutron_count_grid, interaction_positions = simulate_neutrons(grid, start_position, num_particles, probs, distance_matrix)
     
-    start_position_1 = (grid_size // 2, 4)  
-    start_position_2 = (grid_size // 2, 1)  
 
 
     grid = initialize_grid(grid_size, fuel_size)
@@ -148,7 +145,7 @@ def main():
 
     combined_neutron_count_grid = neutron_count_grid_1 + neutron_count_grid_2
 
-    
+    print("combined_neutron_count_grid",combined_neutron_count_grid)
     
     
     plot_grid(combined_neutron_count_grid)
