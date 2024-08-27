@@ -8,9 +8,14 @@ openmc_1d = [7481, 2054, 139, 8, 0]
 
 # Dados de duas dimensões com Python
 # Dados com um combustível
-one_fuel_python_two_dim = np.array([
-
+one_fuel_python_two_dim =  np.array([
+    [523, 2169, 3572, 2185, 526],
+    [2198, 12661, 24161, 12596, 2174],
+    [3606, 24215, 49360, 24187, 3568],
+    [2171, 12650, 24268, 12612, 2196],
+    [513, 2158, 3632, 2171, 527]
 ])
+
 
 # Dados com dois combustíveis
 two_fuels_python_two_dim = np.array([
@@ -19,13 +24,11 @@ two_fuels_python_two_dim = np.array([
 # Dados de duas dimensões para OpenMC
 # Dados para um combustível, já transformados em inteiros e organizados em uma matriz 5x5
 dados_openmc_1_fuel = np.array([
-[4, 18, 62, 92, 68, 19, 4],
- [22, 172, 920, 1766, 914, 166, 22],
- [62, 908, 9463, 22699, 9576, 918, 64],
- [98, 1768, 22521, 49546, 22563, 1744, 101],
- [61, 904, 9524, 22469, 9455, 896, 65],
- [19, 162, 912, 1756, 899, 170, 21],
- [4, 18, 64, 95, 66, 20, 3]
+[523, 2169, 3572, 2185, 526],
+[2198, 12661, 24161, 12596, 2174],
+[3606, 24215, 49360, 24187, 3568],
+[2171, 12650, 24268, 12612, 2196],
+[513, 2158, 3632, 2171, 527]
 ])
 
 # Dados de contagem de nêutrons arredondados e transformados em uma matriz 7x7
@@ -39,15 +42,3 @@ dados_openmc_2_fuels= np.array([  154,   249,   162,    97,   152,   232,   141]
 
 
 
-
-# # Função para plotar uma matriz como gráfico de calor
-# def plot_heatmap(data, title, xlabel, ylabel):
-#     plt.figure(figsize=(10, 8))
-#     sns.heatmap(data, annot=True, cmap='viridis', fmt='d')
-#     plt.title(title)
-#     plt.xlabel(xlabel)
-#     plt.ylabel(ylabel)
-#     plt.show()
-
-# # Execução da função de plotagem para os dados de um combustível
-# plot_heatmap(dados_openmc_1_fuel_int, "Distribuição de Nêutrons - OpenMC, Um Combustível", "Posição X", "Posição Y")
