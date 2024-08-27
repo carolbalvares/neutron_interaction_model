@@ -19,19 +19,19 @@ materials = openmc.Materials([fuel, water])
 materials.export_to_xml()
 
 # Definição da geometria
-surf_fuel_xmin = openmc.XPlane(x0=-7)
-surf_fuel_xmax = openmc.XPlane(x0=7)
-surf_fuel_ymin = openmc.YPlane(y0=-7)
-surf_fuel_ymax = openmc.YPlane(y0=7)
-surf_fuel_zmin = openmc.ZPlane(z0=-7)
-surf_fuel_zmax = openmc.ZPlane(z0=7)
+surf_fuel_xmin = openmc.XPlane(x0=-5)
+surf_fuel_xmax = openmc.XPlane(x0=5)
+surf_fuel_ymin = openmc.YPlane(y0=-5)
+surf_fuel_ymax = openmc.YPlane(y0=5)
+surf_fuel_zmin = openmc.ZPlane(z0=-5)
+surf_fuel_zmax = openmc.ZPlane(z0=5)
 
-surf_water_xmin = openmc.XPlane(x0=-49, boundary_type="vacuum")
-surf_water_xmax = openmc.XPlane(x0=49, boundary_type="vacuum")
-surf_water_ymin = openmc.YPlane(y0=-49, boundary_type="vacuum")
-surf_water_ymax = openmc.YPlane(y0=49, boundary_type="vacuum")
-surf_water_zmin = openmc.ZPlane(z0=-49, boundary_type="vacuum")
-surf_water_zmax = openmc.ZPlane(z0=49, boundary_type="vacuum")
+surf_water_xmin = openmc.XPlane(x0=-25, boundary_type="vacuum")
+surf_water_xmax = openmc.XPlane(x0=25, boundary_type="vacuum")
+surf_water_ymin = openmc.YPlane(y0=-25, boundary_type="vacuum")
+surf_water_ymax = openmc.YPlane(y0=25, boundary_type="vacuum")
+surf_water_zmin = openmc.ZPlane(z0=-25, boundary_type="vacuum")
+surf_water_zmax = openmc.ZPlane(z0=25, boundary_type="vacuum")
 
 cell_fuel = openmc.Cell(
     region=+surf_fuel_xmin & -surf_fuel_xmax & +surf_fuel_ymin & -surf_fuel_ymax & +surf_fuel_zmin & -surf_fuel_zmax,
@@ -68,9 +68,9 @@ settings.export_to_xml()
 
 # Definição da malha e do tally para calcular o fluxo
 mesh = openmc.RegularMesh()
-mesh.dimension = [7, 7, 1]
-mesh.lower_left = [-49, -49, -0.5]
-mesh.upper_right = [49, 49, 0.5]
+mesh.dimension = [5, 5, 1]
+mesh.lower_left = [-25, -25, -0.5]
+mesh.upper_right = [25, 25, 0.5]
 
 mesh_filter = openmc.MeshFilter(mesh)
 tally = openmc.Tally(name="flux_tally")

@@ -1,9 +1,7 @@
 import sys
 import numpy as np
 import matplotlib.pyplot as plt
-import pandas as pd
 import random
-
 
 class Probability:
     def __init__(self, num_samples, tt_cross_section, row, column):
@@ -12,51 +10,36 @@ class Probability:
         self.row = row
         self.column = column
 
-    def probab(self,num_samples, tt_cross_section, row, column ):
-        self.num_samples = num_samples
-        self.tt_cross_section = tt_cross_section
-        self.row = row
-        self.column = column
-        r_array = np.random.rand(self.num_samples).round(3)
-        prob_matrix = np.zeros((self.row, self.column))
-
+    def probab(self, num_samples, tt_cross_section, row, column):
+        r_array = np.random.rand(num_samples).round(3)
         prob_matrix = np.zeros((row, column))
 
         i = 0
         while i < len(r_array):
-            r = 0
-            while r < row:
-                c = 0
-                while c < column:
+            for r in range(row):
+                for c in range(column):
                     if i < len(r_array):
                         if r_array[i] != 1:
-                            dist_to_collision = (
-                                -np.log(1 - r_array[i]) / tt_cross_section
-                            )
+                            dist_to_collision = -np.log(1 - r_array[i]) / tt_cross_section
                             prob_matrix[r][c] = round(dist_to_collision, 4)
                         else:
                             while i < len(r_array) and r_array[i] == 1:
                                 r_array[i] = round(np.random.rand(), 3)
                                 i += 1
                                 if i < len(r_array):
-                                    dist_to_collision = (
-                                        -np.log(1 - r_array[i]) / tt_cross_section
-                                    )
+                                    dist_to_collision = -np.log(1 - r_array[i]) / tt_cross_section
                                     prob_matrix[r][c] = round(dist_to_collision, 4)
                     i += 1
-                    c += 1
-                r += 1
-        print("prob matriz", prob_matrix)
         return prob_matrix
 
-def create_distance_matrix(row, column):
+def create_distance_matrix(row, column, cell_size):
     center_x, center_y = (row // 2, column // 2)
     distance_matrix = np.zeros((row, column))
     for i in range(row):
         for j in range(column):
-            distance = np.sqrt((center_x - i) ** 2 + (center_y - j) ** 2)
+            distance = np.sqrt(((center_x - i) * cell_size) ** 2 + ((center_y - j) * cell_size) ** 2)
             distance_matrix[i, j] = distance
-    print("DISTANCE MATRIZ", distance_matrix)
+    print("DISTANCE MATRIX", distance_matrix)
     return distance_matrix
 
 def initialize_grid(grid_size, fuel_size):
@@ -85,7 +68,7 @@ def simulate_neutrons(grid, start_position, num_particles, interaction_probs, di
                 break
             dx, dy = random.choice(directions)
             x, y = x + dx, y + dy
-    print("neutron cont", neutron_count_grid)
+    print("neutron count", neutron_count_grid)
     return neutron_count_grid, interaction_positions
 
 def plot_grid(neutron_count_grid):
@@ -101,12 +84,13 @@ def main():
     num_particles = 100000
     row, column = 5, 5
     start_position = (grid_size // 2, grid_size // 2)
+    cell_size = 10  # Tamanho da célula em unidades arbitrárias (pode ser cm, metros, etc.)
 
     macro_tt_UO2 = 3.251077
 
     grid = initialize_grid(grid_size, fuel_size)
     probs = initialize_interaction_probabilities(grid_size, num_particles, macro_tt_UO2, row, column)
-    distance_matrix = create_distance_matrix(row, column)
+    distance_matrix = create_distance_matrix(row, column, cell_size)
     neutron_count_grid, interaction_positions = simulate_neutrons(grid, start_position, num_particles, probs, distance_matrix)
     
     plot_grid(neutron_count_grid)
