@@ -5,10 +5,6 @@ import pandas as pd
 import seaborn as sns
 import random
 
-sys.path.append("../")
-from homogenization.cross_sections import *
-from parameters import *
-
 class Probability:
     def __init__(self, num_samples, tt_cross_section, row, column):
         self.num_samples = num_samples
@@ -110,24 +106,7 @@ def main():
     start_position_1 = (3, 1)  # Posições da primeira fonte vertical (0, 1)
     start_position_2 = (3, 5)  # Posições da segunda fonte vertical (0, 5)
 
-
-
-    macro_scattering_U235 = micro_scattering_U235 * n_U235
-    macro_scattering_U238 = micro_scattering_U238 * n_U238
-    macro_scattering_O = micro_scattering_O * n_O
-
-    macro_cs_UO2_scattering = (
-        (macro_scattering_U235 + macro_scattering_U238 + macro_scattering_O)
-        * (tt_vol_UO2)
-        / tt_act_core_vol
-    )
-
-    micro_cs_UO2_scattering = macro_cs_UO2_scattering / (6.02214076 * 10 ** (23))
-
-    macro_cs_UO2_absorption = macro_cs_gamma + macro_cs_fission
-
-    macro_tt_UO2 = (macro_cs_UO2_absorption + macro_cs_UO2_scattering) * 10 ** (-23)
-
+    macro_tt_UO2 = 1.194990
 
     # grid = initialize_grid(grid_size, fuel_size)
     # probs = initialize_interaction_probabilities(grid_size, num_particles, macro_tt_UO2, row, column)
@@ -145,12 +124,16 @@ def main():
 
     combined_neutron_count_grid = neutron_count_grid_1 + neutron_count_grid_2
 
-    print("combined_neutron_count_grid",combined_neutron_count_grid)
-    
+    # Combinar posições de interação das duas simulações
+    combined_interaction_positions = interaction_positions_1 + interaction_positions_2
+
+    print("combined_neutron_count_grid", combined_neutron_count_grid)
     
     plot_grid(combined_neutron_count_grid)
-    if interaction_positions:
-        print(f"Primeira interação ocorreu na posição: {interaction_positions[0]}")
+
+    # Checar e imprimir a primeira posição de interação, se existir
+    if combined_interaction_positions:
+        print(f"Primeira interação ocorreu na posição: {combined_interaction_positions[0]}")
     else:
         print("Nenhuma interação ocorreu.")
 
